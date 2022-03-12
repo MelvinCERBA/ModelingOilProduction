@@ -2,43 +2,48 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
+from functions import Hubbert_curve
 
 # The parametrized function to be plotted
-def y(t, a, b, tau):
-    return a / (1+b*np.e**(-t/tau))
 
-def yp(t, a, b, tau):
-    r1 = a*b/tau
-    return r1 * np.e**(-t/tau) / (1+b*np.e**(-t/tau))**2
+f = Hubbert_curve
 
+# Data
+nameFile = "oil_france"
+
+if True:
+    X, Y = [],[]
+    with open("../data/{}.csv".format(nameFile),"r") as file:
+        for line in file.readlines()[1:]:
+            X.append(int(line.split(";")[5]))
+            Y.append(float(line.split(";")[6]))
 
 # Define initial parameters
-init_tau = 1
-max_tau = 2
-init_a = 3
-max_a = 10
-init_b = 20
-max_b = 50
+init_tau = 7
+max_tau = 2*init_tau
+
+init_a = 4*max(Y)*init_tau
+max_a = 2*init_a
+
+init_b = np.e**((X[Y.index(max(Y))]-X[0])/init_tau)
+max_b = 2*init_b
+
 
 n = 1000
-tmax = np.log(max_b*10)*max_tau
-t = np.linspace(0, tmax, n)
-
+tmin = X[0]
+tmax = X[-1]
+t = np.linspace(tmin, tmax, n)
 
 # Create the figure and the line that we will manipulate
-fig = plt.figure()
-y_ax = fig.add_subplot(211)
-line1, = y_ax.plot(t, y(t, init_a, init_b, init_tau), lw=2)
-line1b, = y_ax.plot(t,[init_a]*n, '--r')
-y_ax.set_ylim([0, max_a*1.05])
-y_ax.set_xlim([0, tmax])
+fig, ax = plt.subplots()
 
-yp_ax = fig.add_subplot(212)
-line2, = yp_ax.plot(t, yp(t, init_a, init_b, init_tau), lw=2)
+plt.scatter(X,Y,color = "red", marker = "+")
 
-yp_ax.set_ylim([0, max_a*1.05/(4*init_tau*0.8)])
-yp_ax.set_xlim([0, tmax])
-yp_ax.set_xlabel('Time [s]')
+line, = plt.plot(t, f(t-tmin, (init_a, init_b, init_tau)), lw=2)
+
+ax.set_ylim([0, max(Y)*1.5])
+ax.set_xlim([tmin, tmax])
+ax.set_xlabel('Time [yr]')
 
 
 # adjust the main plot to make room for the sliders
@@ -78,9 +83,7 @@ b_slider = Slider(
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    line1.set_ydata(y(t, a_slider.val, b_slider.val, tau_slider.val))
-    line1b.set_ydata([a_slider.val]*n)
-    line2.set_ydata(yp(t, a_slider.val, b_slider.val, tau_slider.val))
+    line.set_ydata(f(t-tmin, (a_slider.val, b_slider.val, tau_slider.val)))
     fig.canvas.draw_idle()
 
 
