@@ -11,12 +11,11 @@ f = Hubbert_curve
 # Data
 nameFile = "oil_france"
 
-if True:
-    X, Y = [],[]
-    with open("../data/{}.csv".format(nameFile),"r") as file:
-        for line in file.readlines()[1:]:
-            X.append(int(line.split(";")[5]))
-            Y.append(float(line.split(";")[6]))
+X, Y = [],[]
+with open("../data/{}.csv".format(nameFile),"r") as file:
+    for line in file.readlines()[1:]:
+        X.append(int(line.split(";")[5]))
+        Y.append(float(line.split(";")[6]))
 
 # Define initial parameters
 init_tau = 7
