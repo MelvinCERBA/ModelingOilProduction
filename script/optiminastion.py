@@ -20,7 +20,7 @@ def optimiser_Hubbert(nameFile, init_args, dt=10**-6, eps = 0.1):
     grad = DP.gradient_fitness(theta)
 
 
-    while np.linalg.norm(grad)>eps and n<100000:
+    while np.linalg.norm(grad)>eps and n<1000:
         grad = DP.gradient_fitness(theta)
         theta = theta - dt*grad
         F.append(DP.fitness(theta))
