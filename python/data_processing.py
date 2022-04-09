@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import matplotlib.pyplot as plt
 """
 Data
 """
@@ -30,10 +31,18 @@ class Data_processing:
         if len(T) == 0:
             raise Exception("Location not found")
 
-        self.t_start = min(T)
-        self.t_end = max(T)
+        self.t_start = T[0]
+        self.t_end = T[-1]
+
+        for k in range(len(self.oil_production[1:])):
+            self.oil_production[k+1] += self.oil_production[k]
 
     def get_data(self):
         return self.oil_production
+
+    def plot(self):
+        plt.figure()
+        plt.scatter(range(self.t_start,self.t_end+1),self.oil_production)
+        plt.show()
 
 

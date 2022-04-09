@@ -66,7 +66,7 @@ def least_square(data,t_start, Dt, func, args):
     ----------
     Dt : float
         Time step.
-    func : Func
+    func : Function
         Function of modelisation.
     args : List
         Arguments of the function.
@@ -80,3 +80,17 @@ def least_square(data,t_start, Dt, func, args):
         J += (func(t_start + n*Dt,args)-d_n)**2
 
     return Dt*J
+
+def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
+    t = np.arange(t_start, t_end, 1)
+    sig = sigmoide(t, (Qmax, ts, tau))
+
+    noised_sig = [sig[0]]
+
+    for k in range(len(sig)-1):
+        rd = np.random.normal(noised_sig[k] + sig[k+1]-sig[k] ,noise*(sig[k+1]-sig[k])/5)
+
+        clip_rd = np.clip(rd,noised_sig[k],np.inf)
+        noised_sig.append(clip_rd)
+
+    return noised_sig
