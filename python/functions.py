@@ -56,7 +56,7 @@ def grad_sigmoide(t, args):
 
     dQdtau = ((t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
 
-    return np.array([dQdQmax, dQdts, dQdtau])
+    return np.array([dQdQmax, dQdts, dQdtau]).transpose()
 
 def least_square(data,t_start, Dt, func, args):
     """
@@ -75,11 +75,21 @@ def least_square(data,t_start, Dt, func, args):
     -------
     J(args).
     """
-    J = 0
-    for n, d_n in enumerate(data):
-        J += (func(t_start + n*Dt,args)-d_n)**2
+    t = np.arange(t_start, t_start+Dt*len(data), Dt)
 
-    return Dt*J
+    J = Dt *np.linalg.norm(data-func(t,args))
+
+    return J
+
+def grad_least_square(data, t_start, Dt, func, grad_func, args):
+
+    T = np.arange(t_start, t_start+Dt*len(data), Dt)
+    grad_J = np.zeros(3)
+
+    for k,t in enumerate(T):
+        grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
+
+    return grad_J
 
 def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     t = np.arange(t_start, t_end, 1)

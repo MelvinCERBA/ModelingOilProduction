@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from functions import sigmoide, noised_sigmoide, grad_sigmoide, least_square
+from functions import sigmoide, noised_sigmoide, grad_sigmoide, least_square,grad_least_square
 
 def plot_sigmoide(Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     """
@@ -62,6 +62,30 @@ def test_grad_sigmoide(delta, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
             diff_max = diff
 
     return diff_max
+
+def test_grad_least_square(delta, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
+    """
+    Compare the gradient of the least square function to a finite differences gradient made with the least square function
+
+    """
+
+    t = np.arange(t_start, t_end, 10000)
+    data = sigmoide(t,(Qmax,ts,tau))
+
+    least_square_origine = least_square(t, t_start, 1, sigmoide, (Qmax, ts, tau))
+
+    dJdQmax = (least_square(data, t_start, 1, sigmoide,(Qmax+delta, ts, tau))-least_square_origine)/delta
+
+    dJdts = (least_square(data, t_start, 1,sigmoide, (Qmax, ts+delta, tau))-least_square_origine)/delta
+
+    dJdtau = (least_square(data, t_start, 1,sigmoide,(Qmax, ts, tau+delta))-least_square_origine)/delta
+
+    grad_sig = grad_least_square(data, t_start, 1,sigmoide, grad_sigmoide,(Qmax, ts, tau))
+
+    diff = abs(grad_sig - np.array([dJdQmax, dJdts, dJdtau]))
+
+    return diff
+
 
 def plot_isocurve_Qmax_fixed(percentage, Qmax=1, ts_init=50, tau_init=6, t_start=0, t_end=200):
 
