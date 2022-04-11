@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 
-from functions import Hubbert_curve
+from Functions import Hubbert_curve
 
 # The parametrized function to be plotted
 
