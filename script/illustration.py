@@ -9,8 +9,9 @@ global tau, a, b, N, tmin, tmax, t, Qmax, tmid
 tau = 7
 a = 90000
 b = 30
+Hmax = a/(4*tau)
 
-Qmax = a/(4*tau)
+Qmax = a
 tmid = tau*np.log(b)
     
 N = 10000
@@ -90,7 +91,7 @@ def plotHubbert(hideScale=True):
     
     plt.show()
 
-def plotHubbertAnnote(hideScale=True):
+def plotHubbertAnnote(hideScale=False):
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
     # function to be plotted
     H = Hubbert_curve
@@ -100,8 +101,8 @@ def plotHubbertAnnote(hideScale=True):
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)
     
-    plt.xticks([tmid],[r'$\tau ln(b)$'], size='xx-large')
-    plt.yticks([Qmax],[r'$\frac{a}{4 \tau }$'], size='large')
+    plt.xticks([tmid],[r'$\tau ln(b)$'], fontsize=16)
+    plt.yticks([Hmax],[r'$\frac{a}{4 \tau }$'], fontsize=16)
     
     
     for direction in ["right", "top"]:
@@ -128,8 +129,8 @@ def plotHubbertAnnote(hideScale=True):
     ax.set_xlim([tmin, tmax])
     
     # plots the doted lines
-    plt.plot(np.linspace(tmin, tmid, N),[Qmax]*N,'--', color = "red")
-    plt.plot([tmid]*N,np.linspace(0, Qmax, N),'--', color = "red")
+    plt.plot(np.linspace(tmin, tmid, N),[Hmax]*N,'--', color = "red")
+    plt.plot([tmid]*N,np.linspace(0, Hmax, N),'--', color = "red")
     
     plt.show()
     
@@ -180,7 +181,8 @@ def plotHubbertAndData(hideScale=True):
     # Defines window
     ax.set_ylim([0, max(Y)*1.5])
     ax.set_xlim([tmin, tmax])
-    #ax.set_xlabel('Temps')
+    ax.set_ylabel('Production')
+    ax.set_xlabel('Temps')
     
 def plotSigmoide(hideScale=True):
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
@@ -210,7 +212,7 @@ def plotSigmoide(hideScale=True):
     line, = plt.plot(t, S(t-tmin, (Qmax, tmid, tau)), lw=2)
     
     # defines the window
-    ax.set_ylim([0, 4000])
+    ax.set_ylim([0, Qmax*1.2])
     ax.set_xlim([tmin, tmax])
     
     plt.show()
@@ -239,25 +241,24 @@ def plotSigmoideAnnote(hideScale=False):
     line, = plt.plot(t, S(t-tmin, (Qmax, tmid, tau)), lw=2)
     
     # defines the window
-    ax.set_ylim([0, 4000])
+    ax.set_ylim([0, Qmax*1.2])
     ax.set_xlim([tmin, tmax])
     
     # plots the doted lines
-    plt.xticks([tmid],[r'$t_{*}$'], size='large')
+    plt.xticks([tmid],[r'$t_{*}$'], fontsize=16)
     plt.plot([tmid]*N,np.linspace(0, Qmax/2, N),'--', color = "red")
     
-    plt.yticks([Qmax],[r'$Q_{max}$'], size='large')
+    plt.yticks([Qmax, Qmax/2],[r'$Q_{max}$', r'$\frac{Q_{max}}{2}$'], fontsize=16)
     plt.plot(t,[Qmax]*N,'--', color = "red")
-    
-    plt.yticks([Qmax/2],[r'$\frac{Q_{max}}{2}$'], size='large')
     plt.plot(np.linspace(0, tmid, N),[Qmax/2]*N,'--', color = "red")
+
     
     # turns off axis numbers if desired
     if hideScale:
         ax.set_yticklabels([])
         ax.set_xticklabels([])
     
-    plt.annotate(r'$\Delta = \frac{t_{*} Q_{max}}{\tau} (x-t_{*})+\frac{Q_{max}}{2}$', (27,1600), size='large')
+    plt.annotate(r'$\Delta = \frac{t_{*} Q_{max}}{\tau} (x-t_{*})+\frac{Q_{max}}{2}$', (tmid+3,Qmax/2), fontsize=12)
     
     # plots to curve's tangent at tmid
     plt.plot(t, delta(t-tmin))
@@ -272,7 +273,7 @@ def delta(x): # tangente à la sigmoide au point d'inflexion
 #plotSigmoide()
 
 # plotHubbertAnnote()
-# plotSigmoideAnnote()
+plotSigmoideAnnote()
 
-plotData('oil_france', True)
+#plotData('oil_france', True)
 #plotHubbertAndData()
