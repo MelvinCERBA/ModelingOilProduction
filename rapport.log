@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  12 APR 2022 23:09
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  13 APR 2022 17:37
 entering extended mode
 **./rapport.tex
 (rapport.tex
@@ -181,6 +181,9 @@ LaTeX Info: Redefining \[ on input line 2923.
 LaTeX Info: Redefining \] on input line 2924.
 )
 (rapport.aux
+
+LaTeX Warning: Label `linspring' multiply defined.
+
 
 LaTeX Warning: Label `linspring' multiply defined.
 
@@ -433,6 +436,12 @@ File: graphes/SigmoideAnnotée.png Graphic file (type png)
 <use graphes/SigmoideAnnotée.png>
 Package pdftex.def Info: graphes/SigmoideAnnotée.png  used on input line 84.
 (pdftex.def)             Requested size: 290.22105pt x 232.17738pt.
+
+Overfull \hbox (6.47086pt too wide) detected at line 86
+\OML/cmm/m/it/10 Sigmoide[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 t\OT1/cmr/m/n/10 )
+ = \OML/cmm/m/it/10 S[][] [][]
+ []
+
 [4 <./graphes/Courbe_de_Hubbert_annotée.png> <./graphes/SigmoideAnnotée.png>]
 [5] [6] (rapport.aux)
 
@@ -441,8 +450,8 @@ LaTeX Warning: There were multiply-defined labels.
  ) 
 Here is how much of TeX's memory you used:
  3600 strings out of 478864
- 58867 string characters out of 2848660
- 458184 words of memory out of 3000000
+ 58865 string characters out of 2848660
+ 459184 words of memory out of 3000000
  21460 multiletter control sequences out of 15000+600000
  409877 words of font info for 49 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -451,21 +460,23 @@ Here is how much of TeX's memory you used:
 cmbx10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmbxti10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/nivle/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/Users/nivle/AppData/Local/P
-rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><E:/Users/nivle/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><E:/Users/nivle
-/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><E:/Use
-rs/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb
-><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
-mr5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmr7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmsy5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type
-1/public/amsfonts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on rapport.pdf (6 pages, 265911 bytes).
+nts/type1/public/amsfonts/cm/cmex10.pfb><E:/Users/nivle/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/nivle/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/Users/nivle/AppDat
+a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><E:/Users/nivl
+e/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><E:/Us
+ers/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pf
+b><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmr17.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmr5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmr7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmsy10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/
+fonts/type1/public/amsfonts/cm/cmsy5.pfb><E:/Users/nivle/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on rapport.pdf (6 pages, 291903 bytes).
 PDF statistics:
- 108 PDF objects out of 1000 (max. 8388607)
+ 118 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

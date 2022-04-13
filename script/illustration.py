@@ -20,6 +20,10 @@ tmax = 50
 t = np.linspace(tmin, tmax, N)
 
 def plotData(nameFile, hideScale=False):
+    
+    # closes any previous plot
+    plt.close()
+    
     X, Y = [],[]
     with open("../data/{}.csv".format(nameFile),"r") as file:
         for line in file.readlines()[1:]:
@@ -55,11 +59,14 @@ def plotData(nameFile, hideScale=False):
     ax.set_ylabel('Production')
     return
             
-    
+
 def plotHubbert(hideScale=True):
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
     # function to be plotted
     H = Hubbert_curve
+    
+    # closes any previous plot
+    plt.close()
     
     plt.close()
     fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
@@ -96,6 +103,9 @@ def plotHubbertAnnote(hideScale=False):
     # function to be plotted
     H = Hubbert_curve
     
+    # closes any previous plot
+    plt.close()
+    
     plt.close()
     fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
     ax = SubplotZero(fig, 111)
@@ -113,8 +123,8 @@ def plotHubbertAnnote(hideScale=False):
             ax.axis[direction].set_visible(True)
     
     # titles the axis
-    plt.xlabel("x")
-    plt.ylabel(r"$H(x)$")
+    plt.xlabel("t")
+    plt.ylabel(r"$Hubbert_{a,b,\tau}(t)$")
     
     # turns off axis numbers if desired
     if hideScale:
@@ -137,6 +147,9 @@ def plotHubbertAnnote(hideScale=False):
 def plotHubbertAndData(hideScale=True):
     f = Hubbert_curve
 
+    # closes any previous plot
+    plt.close()
+    
     # Data
     nameFile = "oil_france"
     
@@ -188,7 +201,10 @@ def plotSigmoide(hideScale=True):
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
     S = Q
     
-    fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
+    # closes any previous plot
+    plt.close()
+    
+    fig = plt.figure("Sigmoide",figsize = (5,4))
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)
     
@@ -222,7 +238,10 @@ def plotSigmoideAnnote(hideScale=False):
     # function to be plotted
     S = Q
     
-    fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
+    # closes any previous plot
+    plt.close()
+    
+    fig = plt.figure("Sigmoide",figsize = (5,4))
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)
     
@@ -234,8 +253,8 @@ def plotSigmoideAnnote(hideScale=False):
             ax.axis[direction].set_visible(True)
     
     # titles the axis
-    plt.xlabel("x")
-    plt.ylabel(r"$S(x)$")
+    plt.xlabel("t")
+    plt.ylabel(r"$Sigmoide_{S_{max},t_*,\tau}(t)$")
         
     # Plots the curve
     line, = plt.plot(t, S(t-tmin, (Qmax, tmid, tau)), lw=2)
@@ -248,7 +267,7 @@ def plotSigmoideAnnote(hideScale=False):
     plt.xticks([tmid],[r'$t_{*}$'], fontsize=16)
     plt.plot([tmid]*N,np.linspace(0, Qmax/2, N),'--', color = "red")
     
-    plt.yticks([Qmax, Qmax/2],[r'$Q_{max}$', r'$\frac{Q_{max}}{2}$'], fontsize=16)
+    plt.yticks([Qmax, Qmax/2],[r'$S_{max}$', r'$\frac{S_{max}}{2}$'], fontsize=16)
     plt.plot(t,[Qmax]*N,'--', color = "red")
     plt.plot(np.linspace(0, tmid, N),[Qmax/2]*N,'--', color = "red")
 
@@ -258,7 +277,7 @@ def plotSigmoideAnnote(hideScale=False):
         ax.set_yticklabels([])
         ax.set_xticklabels([])
     
-    plt.annotate(r'$\Delta = \frac{t_{*} Q_{max}}{\tau} (x-t_{*})+\frac{Q_{max}}{2}$', (tmid+3,Qmax/2), fontsize=12)
+    plt.annotate(r'$\Delta = \frac{t_{*} S_{max}}{\tau} (x-t_{*})+\frac{S_{max}}{2}$', (tmid+3,Qmax/2), fontsize=12)
     
     # plots to curve's tangent at tmid
     plt.plot(t, delta(t-tmin))
@@ -267,13 +286,13 @@ def plotSigmoideAnnote(hideScale=False):
 
 def delta(x): # tangente à la sigmoide au point d'inflexion
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
-    return ((tmid*Qmax)/tau)*(x-tmid)+(Qmax/2) # tangente de f en a = f'(a)*(x-a)+f(a) 
+    return Hubbert_curve(tmid,(a,b,tau))*(x-tmid)+(Qmax/2) # tangente de f en a = f'(a)*(x-a)+f(a) 
 
 #plotHubbert()
 #plotSigmoide()
 
-# plotHubbertAnnote()
-plotSigmoideAnnote()
+plotHubbertAnnote()
+# plotSigmoideAnnote()
 
 #plotData('oil_france', True)
 #plotHubbertAndData()

@@ -68,17 +68,17 @@ $\indent$ Les auteurs qui se sont rapproprié la courbe de Hubbert ont notamment
 $\indent$ Une \textbf{courbe de Hubbert} est une fonction à 4 paramètres : $a$,$b$ et $\tau$, qui définissent sa forme ; et $t$, qui représente le temps.
 
 \begin{equation}\label{linspring}
-H_{a,b,\tau}(t) = \frac{\frac{a b}{\tau} e^{-\frac{t}{\tau}}}{(1+b e^{-\frac{t}{\tau}})^2}
+Hubbert_{a,b,\tau}(t) = \frac{\frac{a b}{\tau} e^{-\frac{t}{\tau}}}{(1+b e^{-\frac{t}{\tau}})^2}
 \qquad
 \begin{gathered}
 \includegraphics[width=0.6\textwidth]{graphes/Courbe_de_Hubbert_annotée.png}
 \end{gathered}
 \end{equation}
 \\
-$\indent$ Sa \textbf{sigmoïde} prend quant à elle les 4 paramètres suivants : $Q_{max}$,$t_*$ et $\tau$, qui définissent sa forme ; et $t$, qui représente le temps.
+$\indent$ Sa \textbf{sigmoïde} prend quant à elle les 4 paramètres suivants : $S_{max}$,$t_*$ et $\tau$, qui définissent sa forme ; et $t$, qui représente le temps.
 \\
 \begin{equation}\label{linspring}
-Q_{Q_{max},t_*,\tau}(t) = Q_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
+Sigmoide_{S_{max},t_*,\tau}(t) = S_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
 \qquad
 \begin{gathered}
 \includegraphics[width=0.6\textwidth]{graphes/SigmoideAnnotée.png}
@@ -87,24 +87,34 @@ Q_{Q_{max},t_*,\tau}(t) = Q_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
 
 $\indent$ avec $\Delta$ la pente de la sigmoïde au niveau du point d'inflexion $t_*$, et :
 \begin{align*}
- Q_{max} &= a \indent \indent \text{ le maximum de la sigmoïde}\\
+ S_{max} &= a \indent \indent \text{ le maximum de la sigmoïde}\\
  t_* &= \tau ln(b) \indent \text{le point d'inflexion de la sigmoïde}
 \end{align*}
-
 
 $\indent$ Introduction du modèle mathématique et explication des paramètres
 \newpage
 \section{Algorithme d'approximation}
 % Explication de l'algorithme et des mathématiques sous jacentes %
-\textit{Explication de l'algorithme et des mathématiques sous jacentes}
+$\indent$ Afin d'approximer les paramètres de la sigmoide la plus en adéquation avec nos données, nous allons utiliser la méthode de \textit{descente de gradient}. La descente de gradient est un algorithme utilisé pour trouver le minimum d'une fonction à plusieurs variables.
 
 \subsection{Caractérisation}
 % Explication détaillées de chaque parties de l'algorithme %
-\textit{Explication détaillées de chaque parties de l'algorithme}
+$\indent$ Critères à remplir 
+% init dans un intervalle contenant le minimum où S est convexe et lipschitzienne 
+% direction de descente
+	
+		
+$\indent$ Calcul du gradient\\
+$\indent$ Mise à jour des paramètres\\
+$\indent$ Calcul du critère\\
+$\indent$ On recommence jusqu'à atteindre certaines conditions\\
 
 \subsubsection{Critère}
 % Explication du critère à optimiser %
-\textit{Explication du critère à optimiser}
+$\indent$ 
+\begin{equation}\label{linspring}
+	Criterion(Sigmoide_{S_{max},t_*,\tau}) = \sum_{k=0}^{N} \delta t\lVert D(t) - Sigmoide_{S_{max},t_*,\tau}(t) \rVert^2
+\end{equation}
 
 \subsubsection{Gradient}
 % Calcule du gradient et de la jacobienne %

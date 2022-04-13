@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
-
+from mpl_toolkits.axes_grid.axislines import SubplotZero
 from data_processing import Data_Processing
 from functions import Q, gradient_Hubbert_curve
 
@@ -23,31 +23,44 @@ with open("../data/{}.csv".format(nameFile),"r") as file:
         Y.append(Y[-1] +float(line.split(";")[6]))
 
 # Define initial parameters
+hideScale=True
+
 init_Qmax = 75000
-max_Qmax = 110000
+max_Qmax = 2*init_Qmax
 
 init_tmid = 17
-max_tmid = 40
+max_tmid = 2*init_tmid
 
 init_tau = 6.5
 max_tau = 2*init_tau
 
 
 n = 1000
-tstart = X[0]
-tstop = X[-1]
-t = np.linspace(tstart, tstop, n)
+tmin = X[0]
+tmax = X[-1]
+t = np.linspace(tmin, tmax, n)
 
-# Create the figure and the line that we will manipulate
-fig, ax = plt.subplots()
+plt.close()
+fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
+ax = SubplotZero(fig, 111)
+ax.set_ylim([0, max_Qmax])
+ax.set_xlim([tmin, tmax])
+ax.set_xlabel('t')
+ax.set_ylabel(r'$Sigmoide_{S_{max},t_*,\tau}(t)$')
+fig.add_subplot(ax)
+line, = plt.plot(t, f(t-tmin, (init_Qmax, init_tmid, init_tau)), lw=2)
 
-#plt.scatter(X,Y,color = "red", marker = "+")
+for direction in ["right", "top"]:
+    ax.axis[direction].set_axisline_style("-|>")
+    ax.axis[direction].set_visible(False)
+for direction in ["left", "bottom"]:
+    ax.axis[direction].set_axisline_style("-|>")
+    ax.axis[direction].set_visible(True)
 
-line, = plt.plot(t, f(t-tstart, (init_Qmax, init_tmid, init_tau)), lw=2)
-
-ax.set_ylim([0, max(Y)*1.5])
-ax.set_xlim([tstart, tstop])
-ax.set_xlabel('Time [yr]')
+# turns off axis numbers if desired
+if hideScale:
+    ax.set_yticklabels([])
+    ax.set_xticklabels([])
 
 
 # adjust the main plot to make room for the sliders
@@ -63,17 +76,19 @@ Qmax_slider = Slider(
     valinit=init_Qmax,
     orientation="vertical"
 )
+Qmax_slider.valtext.set_visible(not(hideScale))
 
 # Make a vertically oriented slider to control the amplitude
-axtau = plt.axes([0.05, 0.25, 0.0225, 0.63])
+axtau = plt.axes([0.25, 0.15, 0.65, 0.03])
 tau_slider = Slider(
     ax=axtau,
     label=r'$\tau$',
     valmin=0,
     valmax=max_tau,
     valinit=init_tau,
-    orientation="vertical"
+    #orientation="vertical"
 )
+tau_slider.valtext.set_visible(not(hideScale))
 
 # Make a vertically oriented slider to control the amplitude
 axtmid = plt.axes([0.25, 0.1, 0.65, 0.03])
@@ -84,10 +99,11 @@ tmid_slider = Slider(
     valmax=max_tmid,
     valinit=init_tmid,
 )
+tmid_slider.valtext.set_visible(not(hideScale))
 
 # The function to be called anytime a slider's value changes
 def update(val):
-    line.set_ydata(f(t-tstart, (Qmax_slider.val, tmid_slider.val, tau_slider.val)))
+    line.set_ydata(f(t-tmin, (Qmax_slider.val, tmid_slider.val, tau_slider.val)))
     print(DP.criterion((Qmax_slider.val, tmid_slider.val, tau_slider.val), 10**-6))
     fig.canvas.draw_idle()
 
