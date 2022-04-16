@@ -111,9 +111,9 @@ def plotHubbertAnnote(hideScale=False):
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)
     
-    plt.xticks([tmid],[r'$\tau ln(b)$'], fontsize=16)
-    plt.yticks([Hmax],[r'$\frac{a}{4 \tau }$'], fontsize=16)
-    
+    plt.xticks([tmid],[r'$\tau ln(b)$'])
+    plt.yticks([Hmax],[r'$\frac{a}{4 \tau }$'], fontsize='xx-large') # fontsize ne change rien au latex
+    ax.tick_params(axis='both', which='minor', labelsize='large') # Ne change rien
     
     for direction in ["right", "top"]:
             ax.axis[direction].set_axisline_style("-|>")
