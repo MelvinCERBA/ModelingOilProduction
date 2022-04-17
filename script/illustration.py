@@ -33,7 +33,7 @@ def plotData(nameFile, hideScale=False):
     tmin = X[0]
     tmax = X[-1]
     
-    # Create the figure and the line that we will manipulate
+    # Create the figure 
     fig = plt.figure("Courbe de Hubbert",figsize = (5,4))
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)

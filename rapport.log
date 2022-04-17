@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  16 APR 2022 17:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  17 APR 2022 19:12
 entering extended mode
 **./rapport.tex
 (rapport.tex
@@ -181,6 +181,9 @@ LaTeX Info: Redefining \[ on input line 2923.
 LaTeX Info: Redefining \] on input line 2924.
 )
 (rapport.aux
+
+LaTeX Warning: Label `linspring' multiply defined.
+
 
 LaTeX Warning: Label `linspring' multiply defined.
 
@@ -389,80 +392,99 @@ File: graphes/CourbeHubbert.png Graphic file (type png)
 <use graphes/CourbeHubbert.png>
 Package pdftex.def Info: graphes/CourbeHubbert.png  used on input line 78.
 (pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
+[3 <./graphes/Production.png> <./graphes/DataEtHubbert.png> <./graphes/CourbeHu
+bbert.png>]
+<graphes/Sigmoide.png, id=33, 361.35pt x 289.08pt>
+File: graphes/Sigmoide.png Graphic file (type png)
+<use graphes/Sigmoide.png>
+Package pdftex.def Info: graphes/Sigmoide.png  used on input line 94.
+(pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 82--86
+Underfull \hbox (badness 10000) in paragraph at lines 100--102
 
  []
 
-[3 <./graphes/Production.png> <./graphes/DataEtHubbert.png> <./graphes/CourbeHu
-bbert.png>]
-<graphes/Sigmoide.png, id=34, 361.35pt x 289.08pt>
-File: graphes/Sigmoide.png Graphic file (type png)
-<use graphes/Sigmoide.png>
-Package pdftex.def Info: graphes/Sigmoide.png  used on input line 88.
-(pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
-<graphes/Courbe_de_Hubbert_annotée.png, id=35, 361.35pt x 289.08pt>
+<graphes/Courbe_de_Hubbert_annotée.png, id=34, 361.35pt x 289.08pt>
 File: graphes/Courbe_de_Hubbert_annotée.png Graphic file (type png)
 <use graphes/Courbe_de_Hubbert_annotée.png>
 Package pdftex.def Info: graphes/Courbe_de_Hubbert_annotée.png  used on input 
-line 103.
-(pdftex.def)             Requested size: 290.22105pt x 232.17738pt.
-<graphes/SigmoideAnnotée.png, id=36, 361.35pt x 289.08pt>
+line 107.
+(pdftex.def)             Requested size: 217.6621pt x 174.12862pt.
+<graphes/SigmoideAnnotée.png, id=35, 361.35pt x 289.08pt>
 File: graphes/SigmoideAnnotée.png Graphic file (type png)
 <use graphes/SigmoideAnnotée.png>
-Package pdftex.def Info: graphes/SigmoideAnnotée.png  used on input line 104.
-(pdftex.def)             Requested size: 290.22105pt x 232.17738pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4 <./graphes/Sigmoide.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 128--132
+Package pdftex.def Info: graphes/SigmoideAnnotée.png  used on input line 108.
+(pdftex.def)             Requested size: 217.6621pt x 174.12862pt.
+[4 <./graphes/Sigmoide.png> <./graphes/Courbe_de_Hubbert_annotée.png> <./graph
+es/SigmoideAnnotée.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 123--125
 
  []
 
-[5 <./graphes/Courbe_de_Hubbert_annotée.png> <./graphes/SigmoideAnnotée.png>]
 
-LaTeX Font Warning: Command \large invalid in math mode on input line 174.
+Underfull \hbox (badness 10000) in paragraph at lines 123--125
 
-LaTeX Font Info:    Calculating math sizes for size <> on input line 181.
+ []
+
+
+LaTeX Font Warning: Command \large invalid in math mode on input line 187.
+
+[5]
+LaTeX Font Info:    Calculating math sizes for size <> on input line 194.
+
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.7> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.5> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
 
 LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 181.
+(Font)              size <5> substituted on input line 194.
 
-[6] [7] [8] (rapport.aux)
+<graphes/isocurves_Smax.png, id=50, 462.528pt x 346.896pt>
+File: graphes/isocurves_Smax.png Graphic file (type png)
+<use graphes/isocurves_Smax.png>
+Package pdftex.def Info: graphes/isocurves_Smax.png  used on input line 211.
+(pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
+<graphes/isocurves_ts.png, id=51, 462.528pt x 346.896pt>
+File: graphes/isocurves_ts.png Graphic file (type png)
+<use graphes/isocurves_ts.png>
+Package pdftex.def Info: graphes/isocurves_ts.png  used on input line 212.
+(pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
+<graphes/isocurves_tau.png, id=52, 462.528pt x 346.896pt>
+File: graphes/isocurves_tau.png Graphic file (type png)
+<use graphes/isocurves_tau.png>
+Package pdftex.def Info: graphes/isocurves_tau.png  used on input line 213.
+(pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
+[6 <./graphes/isocurves_Smax.png> <./graphes/isocurves_ts.png> <./graphes/isocu
+rves_tau.png>] [7] [8] (rapport.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 4.5pt have occurred.
@@ -472,42 +494,44 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3616 strings out of 478864
- 59067 string characters out of 2848660
- 460199 words of memory out of 3000000
- 21476 multiletter control sequences out of 15000+600000
- 410558 words of font info for 52 fonts, out of 8000000 for 9000
+ 3640 strings out of 478864
+ 59697 string characters out of 2848660
+ 462199 words of memory out of 3000000
+ 21496 multiletter control sequences out of 15000+600000
+ 410893 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,11n,81p,696b,274s stack positions out of 5000i,500n,10000p,200000b,80000s
-<E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmbxti10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/amsfonts/cm/cmex10.pfb><E:/Users/nivle/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/nivle/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><E:/Users/nivle/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/Users/niv
-le/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><E:/U
-sers/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.p
-fb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm
-/cmmi8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmr10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmr12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/
-type1/public/amsfonts/cm/cmr17.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmr5.pfb><E:/Users/nivle/AppData/Local/Program
-s/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><E:/Users/nivle/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><E:/Users/nivle/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><E:/Users/nivle/
-AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><E:/Use
-rs/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy5.pfb
-><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
-msy6.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
-nts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/publ
-ic/amsfonts/cm/cmsy8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/public/amsfonts/cm/cmti10.pfb>
-Output written on rapport.pdf (8 pages, 361411 bytes).
+ 70i,9n,81p,696b,270s stack positions out of 5000i,500n,10000p,200000b,80000s
+{E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/cm-super/cm-sup
+er-ts1.enc}<E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmbx10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmbx12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmbxti10.pfb><E:/Users/nivle/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><E:/Users/nivle/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/nivle/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><E:/Users/ni
+vle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/
+Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.
+pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
+m/cmmi7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmmi8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmr10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmr17.pfb><E:/Users/nivle/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><E:/Users/nivle/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><E:/Users/nivle/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><E:/Users/nivl
+e/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><E:/Use
+rs/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pf
+b><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmsy5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmsy6.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/amsfonts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/amsfonts/cm/cmsy8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmti10.pfb><E:/Users/nivle/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on rapport.pdf (8 pages, 425684 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
+ 173 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 

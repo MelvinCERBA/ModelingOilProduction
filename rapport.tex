@@ -81,30 +81,35 @@ Hubbert_{a,b,\tau}(t) = \frac{\frac{a b}{\tau} e^{-\frac{t}{\tau}}}{(1+b e^{-\fr
 \qquad
 \end{equation}
 \\
-$\indent$ Sa \textbf{sigmoïde} prend quant à elle les 4 paramètres suivants : $S_{max}$,$t_*$ et $\tau$, qui définissent sa forme ; et $t$, qui représente le temps. Par la suite, on notera indifféremment $Sigmoide_{S_{max},t_*,\tau}(t)$, $S_{S_{max},t_*,\tau}(t)$ ou $S(t ; \Theta)$, avec $\Theta = (S_{max},t_*,\tau )$.
-\\
+$\indent$ Son intégrale, que nous appellerons \textbf{courbe sigmoïde}, est définie par :
+
+\begin{equation}\label{linspring}
+Sigmoide_{a,b,\tau}(t) =\frac{a}{1+ b e^{-t}{\tau}}
+\end{equation}
+
+$\indent$ Posons $S_{max} = a$, $t_* = \tau ln(b)$ et $\Theta = (S_{max}, t_*, \tau)$,. On obtient :
+
 \begin{equation}\label{linspring}
 \begin{gathered}
 \includegraphics[width=0.40\textwidth]{graphes/Sigmoide.png}
 \end{gathered}
-Sigmoide_{S_{max},t_*,\tau}(t) = S_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
+Sigmoide_{\Theta}(t) = S_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
 \qquad
 \end{equation}
 
-$\indent$ avec $\Delta$ la pente de la sigmoïde au niveau du point d'inflexion $t_*$, et :
-\begin{align*}
- S_{max} &= a \indent \indent \text{ le maximum de la sigmoïde}\\
- t_* &= \tau ln(b) \indent \text{le point d'inflexion de la sigmoïde}
-\end{align*}
+\textit{ Par la suite, on notera indifféremment $Sigmoide_{\Theta}(t)$, $Sig_{\Theta}(t)$ ou $Sig(t ; \Theta)$.}
+\\
 
-$\indent$ Introduction du modèle mathématique et explication des paramètres
+$\indent$ Rappelons notre objectif et nos hypothèses : nous voulons modéliser la production de pétrole au cours du temps, et nous supposons que celle-ci atteint un unique pic. Il nous faudra donc déterminer le $t$ pour lequel ce pic est atteint ainsi que la hauteur de ce pic (quantité de pétrole produit à l'instant $t$).
+
 \begin{figure}[h]
 	\centering
-    \subfigure{\includegraphics[width=0.6\textwidth]{graphes/Courbe_de_Hubbert_annotée.png}} 
-    \subfigure{\includegraphics[width=0.6\textwidth]{graphes/SigmoideAnnotée.png}} 
-    \caption{Une courbe de Hubbert et sa sigmoïde (son intégrale)}
+    \subfigure{\includegraphics[width=0.45\textwidth]{graphes/Courbe_de_Hubbert_annotée.png}} 
+    \subfigure{\includegraphics[width=0.45\textwidth]{graphes/SigmoideAnnotée.png}} 
+    \caption{Une courbe de Hubbert et sa sigmoïde ($\Delta$ : pente de la sigmoïde au point d'inflexion $t_*$) }
     %\label{fig:foobar}
 \end{figure}
+
 
 \newpage
 
@@ -115,35 +120,43 @@ $\indent$ Introduction du modèle mathématique et explication des paramètres
 
 \section{Algorithme d'approximation}
 % Explication de l'algorithme et des mathématiques sous jacentes %
-$\indent$ Afin d'approximer les paramètres de la sigmoide la plus en adéquation avec nos données, nous allons utiliser la méthode de \textit{descente de gradient}, un algorithme utilisé pour trouver le minimum d'une fonction.
+$\indent$ Afin d'approximer les paramètres de la sigmoide la plus en adéquation avec nos données, nous allons utiliser une méthode de minimisation de fonction réputée : la \textit{descente de gradient}.\\
+\\
 
+$\indent$ \textbf{Conditions à vérifier}
+\begin{itemize}
+\item \textit{Initialisation :} pour que l'algorithme "descende" vers le minimum absolu de la fonction, il faut l'initialiser dans un "creux" qui le contienne, c'est à dire un intervalle sur lequel la fonction est convexe et dont l'image contient le minimum absolu de la fonction.
+\item \textit{Direction de descente :} par ailleurs, il faut être certain que l'algorithme sache en tout instant dans quelle direction aller (ie. quelles modifications apporter aux paramètres) pour "descendre" vers le minimum. Pour cela, nous utiliserons le gradient. 
+\end{itemize}
+
+$\indent$\textbf{Algorithme}\\
+$\indent$ L'algorithme fonctionne de la manière suivante : 
+\begin{enumerate}
+\item Il calcule $\vec{\nabla}Crit_D(Sig(t;\Theta))$ le gradient de la fonction critère.
+\item Il définit une direction de descente $d$ à partir de $vec{\nabla}C$.
+\item Il modifie les paramètres initiaux selon $d$ et un pas $\delta t$.
+\item Puis il recommence, jusqu'à satisfaire des conditions prédéfinies qui assure une certaine proximité au minimum de la fonction.
+\end{enumerate}
 
 
 \subsection{Caractérisation}
 % Explication détaillées de chaque parties de l'algorithme %
-$\indent$ Critères à remplir 
-% init dans un intervalle contenant le minimum où S est convexe et lipschitzienne 
-% direction de descente
-	
-$\indent$ Calcul du gradient\\
-$\indent$ Mise à jour des paramètres\\
-$\indent$ Calcul du critère\\
-$\indent$ On recommence jusqu'à atteindre certaines conditions\\
+$\indent$ Dans cette partie, nous 
 
 
 
 \subsubsection{Critère}
 % Explication du critère à optimiser %
-$\indent$ Avant toute chose, il nous faut définir un \textit{critère} qui évalue la qualité de notre modèle. Pour cela, nous allons simplement utiliser la distance qui sépare les données de la courbe du modèle. Plus précisément, nous additionnerons pour chaque année le carré de la différence entre l'estimation du modèle et les données réelles.
+$\indent$ Avant toute chose, il nous faut une fonction à minimiser. Nous allons donc définir un \textit{critère} qui évalue la distance qui sépare les données de la courbe du modèle. Plus précisément, nous additionnerons pour chaque année le carré de la différence entre l'estimation du modèle et les données réelles.
 \begin{equation}\label{eqn:eqCrit}
-	C(S(t;\Theta )) = \sum_{k=1}^{N} \delta t | D(t_k) - S(t_k;\Theta ) |^2
+	Criterion_{Data}(Sig(t;\Theta )) = \sum_{k=1}^{N} \delta t | Data(t_k) - Sig(t_k;\Theta ) |^2
 \end{equation}
 $\indent$ avec :
 \begin{center}
-	$D(t_k)$ la somme des données de production de l'instant $t_1$ à l'instant $t_k$\\
+	$Data(t_k)$ la somme des données de production de l'instant $t_1$ à l'instant $t_k$\\
  	$\delta t$ 
 \end{center}
-
+\textit{ Par la suite, on notera indifféremment $Criterion_{Data}(Sig(t;\Theta ))$, $Crit_D(Sig(t;\Theta ))$ ou $Crit(Sig(t;\Theta ))$.}
 
 
 \subsubsection{Gradient}
@@ -152,26 +165,26 @@ $\indent$ Afin de converger vers les paramètres optimaux, l'algorithme de la de
 $\indent$ A partir de (\ref{eqn:eqCrit}), on obtient :
 
 \begin{equation}\label{linspring}
-	\vec{\nabla} C(S(t;\Theta )) = \sum_{k=1}^{N} 2 * \vec{\nabla} S(t_k ;\Theta) * (S(t_k ; \Theta )- D(t_k))
+	\vec{\nabla} Crit(Sig(t;\Theta )) = \sum_{k=1}^{N} 2 * \vec{\nabla} Sig(t_k ;\Theta) * (Sig(t_k ; \Theta )- D(t_k))
 \end{equation}
 
-$\indent$ Il nous faut donc définir $\vec{\nabla} S(\Theta)$ :
+$\indent$ Il nous faut donc définir $\vec{\nabla} Sig(\Theta)$ :
 
 $$
-\vec{\nabla} S(t;\Theta)= \dfrac{\partial ^2 S}{\partial t \partial \Theta}(t,\Theta ) 
+\vec{\nabla} Sig(t;\Theta)= \dfrac{\partial ^2 Sig}{\partial t \partial \Theta}(t,\Theta ) 
 = \left[\begin{array}{c}
-\dfrac{\partial S}{\partial t \partial S_{max}}(t,\Theta )\\
+\dfrac{\partial Sig}{\partial t \partial S_{max}}(t,\Theta )\\
 \\
-\dfrac{\partial f}{\partial t \partial t_*}(t,\Theta ) \\
+\dfrac{\partial Sig}{\partial t \partial t_*}(t,\Theta ) \\
 \\
-\dfrac{\partial f}{\partial t \partial \tau}(t,\Theta ) 
+\dfrac{\partial Sig}{\partial t \partial \tau}(t,\Theta ) 
 \end{array}\right] 
 $$
 
-$\indent$ Après calcul, on obtient :
+$\indent$ Par le calcul, on obtient :
 
 \begin{equation}\label{linspring}
-\large \vec{\nabla} S(t;\Theta) = \left[\begin{array}{c}
+\large \vec{\nabla} Sig(t;\Theta) = \left[\begin{array}{c}
 \frac{1}{1 + e^{-\frac{(t-t_*)}{\tau}}}\\
 \\
 \frac{- S_{max}}{\tau}*\frac{e^{-\frac{(t-t_*)}{\tau}}}{(1+e^{-\frac{(t-t_*)}{\tau}})^2} \\
@@ -179,18 +192,28 @@ $\indent$ Après calcul, on obtient :
 \frac{- S_{max}}{\tau ^2}*\frac{e^{-\frac{(t-t_*) * (t-t_*)}{\tau}}}{(1+e^{-\frac{(t-t_*)}{\tau}})^2}
 \end{array}\right]
 \end{equation}
-
+\\
+$\indent$ Nous sommes donc capables de calculer le gradient de la sigmoïde pour des paramètres $S_{max}$ , $t_*$ et $\tau$ donnés. Mais comment en tirer une direction de descente ? 
 
 
 \subsubsection{Direction de descente}
 % Définition de la direction de descente %
-\textit{Définition de la direction de descente}
+Le gradient nous d
 
 
 
 \subsubsection{Figure des isocourbes avec les direction de descentes}
 % Affichage de figure, et justification de la nécessité de l'utilisation d'une matrice de mise à l'échelle %
 \textit{Affichage de figure, et justification de la nécessité de l'utilisation d'une matrice de mise à l'échelle}
+
+\begin{figure}[h]
+	\centering
+    \subfigure{\includegraphics[width=0.33\textwidth]{graphes/isocurves_Smax.png}} 
+    \subfigure{\includegraphics[width=0.33\textwidth]{graphes/isocurves_ts.png}} 
+    \subfigure{\includegraphics[width=0.33\textwidth]{graphes/isocurves_tau.png}} 
+    \caption{Une courbe de Hubbert et sa sigmoïde ($\Delta$ : pente de la sigmoïde au point d'inflexion $t_*$) }
+    %\label{fig:foobar}
+\end{figure}
 
 
 
