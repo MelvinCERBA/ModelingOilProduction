@@ -26,7 +26,7 @@ def descent_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1): # ne fon
 
     return theta, F
 
-def descentRamijo_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1, alpha_max= 1, reb = 0.5, omega = 0.5, Niter = 200): # ne fonctionne qu'avec un dt assez petit
+def descentRamijo_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1, alpha_max= 1, reb = 0.5, omega = 0.5, Niter = 2000): # ne fonctionne qu'avec un dt assez petit
     Smax_init, tmid_init, tau_init = init_args
     theta = np.array([Smax_init, tmid_init, tau_init])
     
@@ -38,6 +38,7 @@ def descentRamijo_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1, alp
 
     n = 1
     while np.linalg.norm(grad)>eps and n<Niter:
+        grad = grad_least_square(data, t_start, dt, sigmoide, grad_sigmoide, theta) 
         d = -grad
         alpha = alpha_max
         theta = theta - dt*grad
@@ -57,7 +58,7 @@ def descentRamijo_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1, alp
             deltaF.append(F[-2]-F[-1])
             
         n += 1
-        print(theta, np.linalg.norm(grad), F[-1])
+        #print(theta, np.linalg.norm(grad), F[-1])
         if n%100==0:
             print(theta, np.linalg.norm(grad), F[-1])
 

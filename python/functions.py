@@ -85,7 +85,7 @@ def least_square(data,t_start, Dt, func, args):
     score = 0
 
     for x, y in enumerate(data):
-        score += Dt*(func(x,args)-y)**2
+        score += (func(x,args)-y)**2
     J = score/len(data)
 
     return J
@@ -122,3 +122,6 @@ def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
         noised_sig.append(clip_rd)
 
     return noised_sig
+
+def jacobian():
+    pass    
