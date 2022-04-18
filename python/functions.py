@@ -58,7 +58,8 @@ def grad_sigmoide(t, args):
 
     return np.array([dQdQmax, dQdts, dQdtau]).transpose()
 
-def least_square(data,t_start, Dt, func, args):
+# criterion
+def least_square(data,t_start, Dt, func, args): 
     """
     J(arg) = Dt || func(args) - data ||^2
 
@@ -75,19 +76,36 @@ def least_square(data,t_start, Dt, func, args):
     -------
     J(args).
     """
-    t = np.arange(t_start, t_start+Dt*len(data), Dt)
+# ============================ doesn't seem to work ===========================
+#     # t = np.arange(t_start, t_start+Dt*len(data), Dt)
+# 
+#     # J = Dt *np.linalg.norm(data-func(t,args))
+# =============================================================================
+    
+    score = 0
 
-    J = Dt *np.linalg.norm(data-func(t,args))
+    for x, y in enumerate(data):
+        score += Dt*(func(x,args)-y)**2
+    J = score/len(data)
 
     return J
 
 def grad_least_square(data, t_start, Dt, func, grad_func, args):
 
-    T = np.arange(t_start, t_start+Dt*len(data), Dt)
-    grad_J = np.zeros(3)
+# ============================ doesn't seem to work ===========================
+#     # T = np.arange(t_start, t_start+Dt*len(data), Dt)
+#     # grad_J = np.zeros(3)
+# 
+#     # for k,t in enumerate(T):
+#     #     grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
+# =============================================================================
 
-    for k,t in enumerate(T):
-        grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
+    grad_theta = np.zeros(3)
+
+    for x, y in enumerate(data):
+        grad_theta += 2*Dt*grad_func(x, args)*(y-func(x, args)) # grad_func est ici le gradient de la courbe d'hubert
+
+    grad_J = grad_theta/len(data)
 
     return grad_J
 

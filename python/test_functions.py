@@ -168,7 +168,6 @@ def plot_isocurve_ts_fixed(percentage, Smax_init=1, ts=50, tau_init=6, t_start=0
     np.sort([M[n//2,n//2]] + potentials)
 
     Isocurve_i = [[] for _ in range(N_isocurve)]
-
     Isocurve_j = [[] for _ in range(N_isocurve)]
 
     # Seeking for isocurve
@@ -252,4 +251,5 @@ def plot_isocurve_tau_fixed(percentage, Smax_init=1, ts_init=50, tau=6, t_start=
 
 #plot_isocurve_Qmax_fixed(0.9)
 #plot_isocurve_ts_fixed(0.9)
-plot_isocurve_tau_fixed(0.9)
+# plot_isocurve_tau_fixed(0.9)
+test_least_square()
