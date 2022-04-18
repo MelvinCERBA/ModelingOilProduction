@@ -26,7 +26,7 @@ def descent_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1): # ne fon
 
     return theta, F
 
-def descentRamijo_sigmoide(data, init_args, t_start=0, eps = 0.1, alpha_max= 10**-7, reb = 0.5, omega = 0.5, Niter = 5000): # ne fonctionne qu'avec un dt assez petit
+def descentRamijo_sigmoide(data, init_args, t_start=0, eps = 0.1, alpha_max= 10**-6, reb = 0.1, omega = 0.5, Niter = 1000): # ne fonctionne qu'avec un dt assez petit
     Smax_init, tmid_init, tau_init = init_args
     theta = np.array([Smax_init, tmid_init, tau_init])
     
@@ -90,7 +90,7 @@ def opti_sigmoide(location, init_args, optiFunc):
 """ 
         MAIN
 """
-init_args_france_Sigmoide = (75000,10,6.5)
+init_args_france_Sigmoide = (50000,1,6)
 
 
 opti_sigmoide("FRA",init_args_france_Sigmoide, descentRamijo_sigmoide) # ça ne fonctionne pas selon les params de départ
