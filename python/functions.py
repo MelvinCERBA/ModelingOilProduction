@@ -50,13 +50,23 @@ def grad_sigmoide(t, args):
     """
     Qmax, ts, tau = args
 
-    dQdQmax = 1/(1+np.e**(-(t-ts)/tau))
+    dQdQmax = 1/(1+np.e**(-(t-ts)/tau)) 
 
-    dQdts = (-1/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
+    dQdts = (-1/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2 
 
-    dQdtau = ((t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
+    dQdtau = (-(t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2 # ou ((t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
 
     return np.array([dQdQmax, dQdts, dQdtau]).transpose()
+
+
+    # Qmax, tmid, tau = args
+    
+    # r = -(t-tmid)/tau
+    # d_Qmax = 1/(1+np.e**(r))
+    # d_tmid = (-Qmax/tau)*np.e**(r)/(1+np.e**(r)**2)
+    # d_tau = (-Qmax/(tau**2))*(np.e**(r)*(t-tmid))/((1+np.e**(r))**2)
+    
+    # return np.array([d_Qmax, d_tmid, d_tau])
 
 # criterion
 def least_square(data,t_start, Dt, func, args): 
@@ -85,7 +95,7 @@ def least_square(data,t_start, Dt, func, args):
     score = 0
 
     for x, y in enumerate(data):
-        score += (func(x,args)-y)**2
+        score += Dt*(y-func(x,args))**2
     J = score/len(data)
 
     return J
