@@ -89,9 +89,9 @@ def least_square(data,t_start, Dt, func, args):
     J(args).
     """
     
-    T = np.arange(t_start, t_start+Dt*len(data), Dt)
+    T = np.arange(t_start, t_start+(Dt*len(data)), Dt)
 
-    J = -Dt * np.linalg.norm(data-func(t=T,args=args))**2
+    J = Dt * np.linalg.norm(data-func(t=T,args=args))**2
     
     # score = 0
 
@@ -123,7 +123,7 @@ def grad_least_square(data, t_start, Dt, func, grad_func, args):
     grad_J = np.zeros(3)
 
     for k,t in enumerate(T):
-        grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
+        grad_J += -2*Dt*(data[k]-func(t,args))*grad_func(t,args)
 
     # grad_theta = np.zeros(3)
 
@@ -146,6 +146,14 @@ def scale_matrix(t_start, t_end, grad_func, args):
     B = 4*jac.transpose().dot(jac)
     
     return np.linalg.inv(B)
+ 
+# =============================================================================
+#     scaler = np.zeros([3,3])
+#     for i in range(0,2,1):
+#         scaler[i,i]=B[i,i]
+#     
+#     return scaler
+# =============================================================================
 
 def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
 
