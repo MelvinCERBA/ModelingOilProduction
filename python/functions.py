@@ -51,10 +51,12 @@ def grad_sigmoide(t, args):
     Qmax, ts, tau = args
 
     dQdQmax = 1/(1+np.e**(-(t-ts)/tau)) 
+    
+    temp = -np.e**(-(t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
 
-    dQdts = (-1/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2 
+    dQdts = temp * (1/tau)
 
-    dQdtau = (-(t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2 # ou ((t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
+    dQdtau = (-(t-ts)/tau**2)*np.e**(-(t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2 # ou ((t-ts)/tau) * Qmax/(1+np.e**(-(t-ts)/tau))**2
 
     return np.array([dQdQmax, dQdts, dQdtau]).transpose()
 
@@ -86,40 +88,67 @@ def least_square(data,t_start, Dt, func, args):
     -------
     J(args).
     """
-# ============================ doesn't seem to work ===========================
-#     # t = np.arange(t_start, t_start+Dt*len(data), Dt)
-# 
-#     # J = Dt *np.linalg.norm(data-func(t,args))
-# =============================================================================
     
-    score = 0
+    T = np.arange(t_start, t_start+Dt*len(data), Dt)
 
-    for x, y in enumerate(data):
-        score += Dt*(y-func(x,args))**2
-    J = score/len(data)
+    J = -Dt * np.linalg.norm(data-func(t=T,args=args))**2
+    
+    # score = 0
 
+    # for k, d in enumerate(data):
+    #     score += Dt*(d-func(T[k],args))**2
+        
+    # J = score
+    
     return J
 
 def grad_least_square(data, t_start, Dt, func, grad_func, args):
+    """
+    grad J(arg) = 2*Dt || func(args) - data || * grad 
 
-# ============================ doesn't seem to work ===========================
-#     # T = np.arange(t_start, t_start+Dt*len(data), Dt)
-#     # grad_J = np.zeros(3)
-# 
-#     # for k,t in enumerate(T):
-#     #     grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
-# =============================================================================
+    Parameters
+    ----------
+    Dt : float
+        Time step.
+    func : Function
+        Function of modelisation.
+    args : List
+        Arguments of the function.
 
-    grad_theta = np.zeros(3)
+    Returns
+    -------
+    J(args).
+    """
+    T = np.arange(t_start, t_start+Dt*len(data), Dt)
+    grad_J = np.zeros(3)
 
-    for x, y in enumerate(data):
-        grad_theta += 2*Dt*grad_func(x, args)*(y-func(x, args)) # grad_func est ici le gradient de la courbe d'hubert
+    for k,t in enumerate(T):
+        grad_J += 2*Dt*(data[k]-func(t,args))*grad_func(t,args)
 
-    grad_J = grad_theta/len(data)
+    # grad_theta = np.zeros(3)
+
+    # for x, y in enumerate(data):
+    #     grad_theta += 2*Dt*grad_func(x, args)*(y-func(x, args)) # grad_func est ici le gradient de la courbe d'hubert
+
+    # grad_J = grad_theta
 
     return grad_J
 
+def scale_matrix(t_start, t_end, grad_func, args):
+    
+    jac = np.zeros((t_end-t_start,3))
+    
+    T = np.arange(t_start, t_end, 1)
+    
+    for k, t in enumerate(T):
+        jac[k] = grad_func(t,args)
+    
+    B = 4*jac.transpose().dot(jac)
+    
+    return np.linalg.inv(B)
+
 def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
+
     t = np.arange(t_start, t_end, 1)
     sig = sigmoide(t, (Qmax, ts, tau))
 
@@ -133,5 +162,3 @@ def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
 
     return noised_sig
 
-def jacobian():
-    pass    
