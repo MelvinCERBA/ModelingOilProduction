@@ -4,33 +4,79 @@ from data_processing_Sig import Data_processing
 import numpy as np
 import matplotlib.pyplot as plt
 
-def descent_sigmoide(data, init_args, t_start=0, dt=10**-6, eps = 0.1): # ne fonctionne qu'avec un dt assez petit
-    
+
+
+
+
+def descent(data, init_args, t_start=0, dt=10**-6, eps = 0.1, Niter= 10000): # ne fonctionne qu'avec un dt assez petit
+# =============================================================================
+#     Basic gradient descent applied to the sigmoide
+#
+# input:
+#   data        : vector of the data to be modelized
+#   init_args   : initial guess for the parameters to optimize
+#   t_start     : first value of t 
+#   dt          : size of the step
+#   eps         : scale used to decide when the gradient is small enough
+#   Niter       : maximum number of iterations
+# 
+# output:
+#   theta       : optimized parameters
+#   F           : successive values of the criterion
+# =============================================================================
+
+    # initial guess for the parameter to optimize...
     Smax_init, tmid_init, tau_init      = init_args
     theta                               = np.array([Smax_init, tmid_init, tau_init])
     
-
+    # Corresponding value for the criterion...
     F       = [least_square(data, t_start, dt, sigmoide, theta)]
 
-    n       = 0
+    # Corresponding value of the gradient...
     grad    = grad_least_square(data, t_start, dt, sigmoide, grad_sigmoide, theta)
 
-
-    while np.linalg.norm(grad)>eps and n<10000:
+    niter       = 0
+    while np.linalg.norm(grad) > eps and niter < Niter:
+        
+        # update of the gradient
         grad        = grad_least_square(data, t_start, dt, sigmoide, grad_sigmoide, theta)
+        
+        # update of the parameters
         theta       = theta - dt*grad
+        
+        # new value of the criterion
         F.append(least_square(data, t_start, dt, sigmoide, theta))
-        n           += 1
+        
+        niter   += 1
+        
         #print(theta, np.linalg.norm(grad), F[-1])
-        if n%100==0:
+        if niter%100 == 0:
             print(theta, np.linalg.norm(grad), F[-1])
 
     return theta, F
 
 
 
-def descentArmijo_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 10**-6, reb = 0.1, omega = 0.5, Niter = 5000): # ne fonctionne qu'avec un dt assez petit
-    
+def descentArmijo(data, init_args, t_start=0, eps = 0.001, Niter = 5000, alpha_max= 10**-6, reb = 0.1, omega = 0.5): # ne fonctionne qu'avec un dt assez petit
+# =============================================================================
+#     Gradient descent with Armijo rule applied to the sigmoide
+#
+# input:
+#   data        : vector of the data to be modelized
+#   init_args   : initial guess for the parameters to optimize
+#   t_start     : first value of t 
+#   eps         : scale used to decide when the gradient is small enough
+#   Niter       : maximum number of iterations
+#   alpha_max   : initial size of the step
+#   reb         : rate at wich the size of the step is reduced
+#   omega       : scale used to decide when deltaF is small enough
+# 
+# output:
+#   theta       : optimized parameters
+#   F           : successive values of the criterion
+# =============================================================================    
+
+
     # initial guess for the parameter to optimize...
     Smax_init, tmid_init, tau_init  = init_args
     theta                           = np.array([Smax_init, tmid_init, tau_init])
@@ -90,8 +136,25 @@ def descentArmijo_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 1
 
 
 
-def descentScaled_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 1, reb = 0.1, omega = 0.5, Niter = 100): # ne fonctionne qu'avec un dt assez petit
-    
+def descentScaled(data, init_args, t_start=0, eps = 0.001, Niter = 100, alpha_max= 1, reb = 0.1, omega = 0.5): # ne fonctionne qu'avec un dt assez petit
+# =============================================================================
+#     Gradient descent with Armijo rule and scaling of the descent direction, applied to the sigmoide
+#
+# input:
+#   data        : vector of the data to be modelized
+#   init_args   : initial guess for the parameters to optimize
+#   t_start     : first value of t 
+#   eps         : scale used to decide when the gradient is small enough
+#   Niter       : maximum number of iterations
+#   alpha_max   : initial size of the step
+#   reb         : rate at wich the size of the step is reduced
+#   omega       : scale used to decide when deltaF is small enough
+# 
+# output:
+#   theta       : optimized parameters
+#   F           : successive values of the criterion
+# =============================================================================    
+
     # initial guess for the parameter to optimize...
     Smax_init, tmid_init, tau_init  = init_args
     theta                           = np.array([Smax_init, tmid_init, tau_init])
@@ -109,15 +172,17 @@ def descentScaled_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 1
 
 
     niter = 1
-    print(np.linalg.norm(grad))
+    #print(np.linalg.norm(grad))
     
     while np.linalg.norm(grad) > eps*norm_grad_init and niter < Niter:
         grad        = grad_least_square(data, t_start, alpha_max, sigmoide, grad_sigmoide, theta) 
         
-        # Descent scale and direction...
+        # Descent scale...
         scaler      = scale_matrix(t_start, len(data)-1, grad_sigmoide, theta)
+        
+        # Descent direction...
         d           = -np.matmul(scaler,grad.transpose())
-        print(scaler, -grad, d)
+        # print(scaler, -grad, d)
         
         # initial step-size to be tested...
         alpha       = alpha_max
@@ -125,14 +190,14 @@ def descentScaled_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 1
         # initial update to be tested...
         theta       = theta + alpha*d
         
-        # array of the values 
+        # initial value of the criterion... 
         Ls          = least_square(data, t_start, alpha, sigmoide, theta)
         F.append(Ls)
         
         # Criterion difference for the tested update...
         deltaF      = F[-2] - F[-1]
         
-        # scalar product involved in the Arùijo rule...
+        # scalar product involved in the Armijo rule...
         prodScal    = np.dot(grad,d)
         
         # line-search based on the Armijo inquality [REF]
@@ -141,72 +206,16 @@ def descentScaled_sigmoide(data, init_args, t_start=0, eps = 0.001, alpha_max= 1
             alpha       = alpha*reb
             # New update to be tested...
             theta_new   = theta + alpha*d # addition car d est la direction de descente
-            # New crietrion difference...
-            deltaF      = F[-2] - least_square(data, t_start, alpha, sigmoide, theta_new)
-            
+            # New criterion difference...
+            try:
+                deltaF      = F[-2] - least_square(data, t_start, alpha, sigmoide, theta_new)
+            except TypeError:
+                continue
         niter += 1
-        print(theta, np.linalg.norm(grad), F[-1])
+        # print(theta, np.linalg.norm(grad), F[-1])
         if niter%100==0:
-            print(theta, np.linalg.norm(grad), F[-1])
+            #print(theta, np.linalg.norm(grad), F[-1])
 
     return theta, F
 
 
-
-def opti_sigmoide(location, init_args, optiFunc):
-    data = Data_processing(location).get_data()
-    theta, F = optiFunc(data, init_args)
-
-    X, Y = [k for k in range(0,len(data))],[data]
-
-    plt.figure()
-
-    plt.subplot(211)
-    plt.plot(F)
-
-    # plots the data
-    plt.subplot(212)
-    plt.scatter(X,Y,marker="+", color="red")
-    
-    #plots the sigmoide
-    t = np.linspace(X[0],X[-1],1000)
-    plt.plot(t,sigmoide(t-X[0], theta))
-
-    plt.show()
-    
-    
-    
-    
-def opti_sigmoide_generatedData(noise, init_args, optiFunc):
-    data = noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60)
-    theta, F = optiFunc(data, init_args)
-
-    X, Y = [k for k in range(0,len(data))],[data]
-
-    plt.figure()
-
-    plt.subplot(211)
-    plt.plot(F)
-
-    # plots the data
-    plt.subplot(212)
-    plt.scatter(X,Y,marker="+", color="red")
-    
-    #plots the sigmoide
-    t = np.linspace(X[0],X[-1],1000)
-    plt.plot(t,sigmoide(t-X[0], theta))
-
-    plt.show()
-    
-    
-    
-    
-""" 
-        MAIN
-"""
-init_args_france_Sigmoide = (70000,15,5)
-init_args_genSigmoide = (90,25,5)
-
-
-opti_sigmoide("FRA",init_args_france_Sigmoide, descentScaled_sigmoide) # ça ne fonctionne pas selon les params de départ
-# opti_sigmoide_generatedData(100,init_args_genSigmoide, descentScaled_sigmoide)

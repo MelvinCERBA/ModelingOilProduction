@@ -90,15 +90,12 @@ def least_square(data,t_start, Dt, func, args):
     """
     
     T = np.arange(t_start, t_start+(Dt*len(data)), Dt)
-
-    J = Dt * np.linalg.norm(data-func(t=T,args=args))**2
     
-    # score = 0
-
-    # for k, d in enumerate(data):
-    #     score += Dt*(d-func(T[k],args))**2
-        
-    # J = score
+    # for unknown reasons, this fails when the descent is initiated too far from the data
+    try:
+        J = Dt * np.linalg.norm(data-func(t=T,args=args))**2
+    except ValueError:
+        return
     
     return J
 
