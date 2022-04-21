@@ -6,7 +6,7 @@ from functions import sigmoide, noised_sigmoide, grad_sigmoide, least_square,gra
 from mpl_toolkits.axes_grid.axislines import SubplotZero
 from descent import descent, descentArmijo, descentScaled
 from data_processing_Sig import Data_processing
-import time
+import time as time
 
 def plot_sigmoide(Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     """
@@ -306,28 +306,40 @@ def opti_Country(location, init_args, optiFunc = descentScaled):
     
     
     
-def opti_generatedData(noise, init_args, optiFunc = descentScaled):
+def opti_generatedData(noise, perfect_args, delta_args=1.1, optiFunc = descentScaled):
 # =============================================================================
 #     Optimization of the parameters of the sigmoide to match generated data
 #input:
 #    noise           : level of noise to apply to the data
-#    init_args       : initial guess of the parameters to optimize (should not be too far from the solution)
+#    perfect_args    : parameters used to generate data
+#    delta_args      : proportion of the perfect args to be used as the initial parameters in the optimization process
 #    optiFunc        : algorithm to be used for the optimization
 #         
 #output:
 #    plots F               : shows the evolution of the criterion during the optimization
-#    plots the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the data
+#    plots the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the 
+#    chrono                : time taken by the optimization
+#    crit                  : last value of the criterion
 # =============================================================================
     
+    # perfect parameters : those of the sigmoide used to generate data
+    Qmax_perfect, ts_perfect, tau_perfect   = perfect_args
+    perfect_args                            = np.array(perfect_args)
+    
     # data with the desired amount of noise...
-    data        = noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60)
+    data        = noised_sigmoide(noise, Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect, t_start=0, t_end=60)
     
     # optimized parameters and values of the criterion during the optimization ...
-    theta, F    = optiFunc(data, init_args)
-
+    start       = time.time()
+    theta, F    = optiFunc(data, delta_args*perfect_args)
+    end         = time.time()
+    
+    chrono      = end-start
+    crit        = F[-1]
     # plots the criterion's values and the optimized sigmoide on top of the data
     plot_F_Data_Sigmoide(F, data, theta)
 
+    return chrono, crit
 
 
 
@@ -364,8 +376,8 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
 #   optiFunc            : descent algorithm to be used for optimization
 #
 #output:
-#   R^3 matrix    : time needed and criterion obtained for each level of noise and set of args tested 
-# 
+#   criterion_results    : criterion obtained for each level of noise and set of args tested 
+#   time_results         : time needed to complete the optimization for each level of noise and set of args tested
 # =============================================================================
     
     # perfect parameters : those of the sigmoide used to generate data
@@ -380,14 +392,15 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
     
     # for each level of noise (columns), for each value of args (lines), 
         # we will save here : 1) the criterion obtained 2) the time taken to complete the optomization...
-    results         = np.zeros([ len(noise_levels), len(args_values), 2])
+    criterion_results       = np.zeros([ len(noise_levels), len(args_values)])
+    time_results            = np.zeros([ len(noise_levels), len(args_values)])
     
     
     
     for i in range ( 0, len(noise_levels), 1):
         
         # data to be tested...
-        data = noised_sigmoide(noise_levels[i], Qmax_perfect, ts_perfect, tau_perfect)
+        data = noised_sigmoide(noise_levels[i], Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect)
         
         for j in range ( 0, len(args_values), 1):
             
@@ -400,45 +413,83 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
             end                 = time.time()
             
             # saving the last value of the criterion and the time taken by the descent (seconds)...
-            results[i,j]        = [F[-1], end-start]
+            criterion_results[i,j]   = F[-1]
+            time_results[i,j]        = end-start
     
-    results = np.array(results)
-    for i in range(0,noise_steps,1):
-        delta       = str(1+(k * argsDelta_dt)
-        x = results[:,i]
+    # print("crits = ",criterion_results)
+    # print("times = ",time_results)
+    
+    # max criterion and max time are used to standardize the scale of the plots...
+    max_criterion       = max([ max(c) for c in criterion_results])
+    max_time            = max([ max(t) for t in time_results])
+    
+    plt.close()
+    for i in range(0,argsDelta_steps+1,1):
+        # variation of the perfect args we are testing (percentage)... 
+        delta       = round(i * argsDelta_dt * 100)
+        print("i= ", i, "delta= ", delta)
+        
+        # for a fixed value of init_args, variation of the final criterion 
+                # and execution time depending on the level of noise...
+        times        = time_results[:,i]
+        criterions   = criterion_results[:,i]
             
         fig, ax1 = plt.subplots()
             
-        ax2 = ax1.twinx()
-        ax1.plot(x, y1, label='Criterion')
-        ax2.plot(x, y2, 'r', label='Time(seconds)')
-            
-        ax1.set_xlabel('Noise')
-        ax1.set_ylabel('Criterion (least square)')
-        ax2.set_ylabel('Time (s)')
+        # creating two arrays with a slight offset to plot bars separatly...
+        w       = 0.5
+        bar1    = noise_levels
+        bar2    = [x+w for x in bar1]
+
+        # plotting the time and criterion values for the different levels of noise...
+        ax2     = ax1.twinx()
+        ax1.bar(bar1, criterions, label='Critère')
+        ax2.bar(bar2, times, color='r', label='Temps (s)')
         
-        ax1.legend()
-        ax2.legend()
-        plt.title(r'{}'.format(name))
+        # Definign the window ...
+        ax1.set_ylim([ 0, 1.2*max_criterion])
+        ax2.set_ylim([ 0, 1.2*max_time])
+        
+        # legending the graph...
+        ax1.set_xlabel('Bruit')
+        ax1.set_ylabel('Critère (moindre carrés)')
+        ax2.set_ylabel('Temps (secondes)')
+        
+        ax1.legend(loc=(0,0.9))
+        ax2.legend(loc=(0.75,0.9))
+        plt.title(r'Arguments intiaux = {}% des arguments parfaits'.format(str(100+delta)))
         plt.show()
             
-    return results
+    return time_results, criterion_results
 
 # =============================================================================
-#                                    Testing
+#                                    Testing values
 # =============================================================================
 
 # inital guess of the parameters of the optimized sigmoide for France's data :
-init_args_france = (70000,15,5)
+init_args_france    = ( 70000, 15, 5)
 # inital guess of the parameters of the optimized sigmoide for data generated with zero noise :
-init_args_gen = (90,25,5)
+init_args_gen       = ( 90, 25, 5)
+# actual parameters of the optimized sigmoide for generated data with zero noise :
+perfect_args_gen    = ( 100, 30, 6)
 
-# opti_Country('FRA', init_args_france)
-# opti_generatedData(10, init_args_gen)
 
-testPerf_NoisedData(init_args_gen)
 
-#plot_isocurve_Qmax_fixed(0.9)
-#plot_isocurve_ts_fixed(0.9)
+
+opti_Country('FRA', init_args_france)
+
+# =============================================================================
+# chrono, crit = opti_generatedData(0, perfect_args_gen, delta_args=1)
+# print("chrono = ", chrono, "crit = ", crit)
+# =============================================================================
+
+# =============================================================================
+# testPerf_NoisedData(perfect_args_gen, argsDelta_steps=3)
+# =============================================================================
+
+# =============================================================================
+# plot_isocurve_Qmax_fixed(0.9)
+# plot_isocurve_ts_fixed(0.9)
 # plot_isocurve_tau_fixed(0.9)
-# test_least_square()
+# =============================================================================
+

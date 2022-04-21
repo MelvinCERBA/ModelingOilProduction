@@ -161,9 +161,11 @@ def descentScaled(data, init_args, t_start=0, eps = 0.001, Niter = 100, alpha_ma
     
     # Corresponding value for the criterion...
     Ls      = least_square(data, t_start, alpha_max, sigmoide, theta)
+    # print("ls = ", Ls)
     
     # Initilization of the vector storing the criterion values...
     F       = [Ls]
+    
 
     # Corresponding value for the gradient... 
     grad            = grad_least_square(data, t_start, alpha_max, sigmoide, grad_sigmoide, theta)
@@ -174,7 +176,7 @@ def descentScaled(data, init_args, t_start=0, eps = 0.001, Niter = 100, alpha_ma
     niter = 1
     #print(np.linalg.norm(grad))
     
-    while np.linalg.norm(grad) > eps*norm_grad_init and niter < Niter:
+    while np.linalg.norm(grad) > eps*norm_grad_init and niter < Niter and F[-1] > 1: # added last condition not to loop 100 times when testing generated data with no noise and perfect args
         grad        = grad_least_square(data, t_start, alpha_max, sigmoide, grad_sigmoide, theta) 
         
         # Descent scale...
@@ -214,8 +216,8 @@ def descentScaled(data, init_args, t_start=0, eps = 0.001, Niter = 100, alpha_ma
         niter += 1
         # print(theta, np.linalg.norm(grad), F[-1])
         if niter%100==0:
-            #print(theta, np.linalg.norm(grad), F[-1])
-
+            print(theta, np.linalg.norm(grad), F[-1])
+        
     return theta, F
 
 
