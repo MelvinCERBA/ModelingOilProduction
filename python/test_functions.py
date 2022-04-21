@@ -26,10 +26,10 @@ def plot_noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
 
     """
     t           = np.arange(t_start, t_end, 1)
-    noised_sig  = noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60)
+    noised_sig  = noised_sigmoide(noise,Qmax, ts, tau, t_start, t_end)
 
     plt.figure()
-    plt.plot(t,noised_sig)
+    plt.scatter(t,noised_sig)
     plt.show()
 
 def test_least_square(Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
@@ -283,7 +283,7 @@ def plot_isocurve_tau_fixed(percentage, Smax_init=1, ts_init=50, tau=6, t_start=
 
     
     
-def opti_generatedData(noise, perfect_args, delta_args=1.1, optiFunc = descentScaled):
+def opti_generatedData(noise, perfect_args, delta_args=1.1, tend=60, optiFunc = descentScaled):
 # =============================================================================
 #     Optimization of the parameters of the sigmoide to match generated data
 #input:
@@ -304,7 +304,7 @@ def opti_generatedData(noise, perfect_args, delta_args=1.1, optiFunc = descentSc
     perfect_args                            = np.array(perfect_args)
     
     # data with the desired amount of noise...
-    data        = noised_sigmoide(noise, Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect, t_start=0, t_end=60)
+    data        = noised_sigmoide(noise, Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect, t_start=0, t_end=tend)
     
     # optimized parameters and values of the criterion during the optimization ...
     start       = time.time()
@@ -429,17 +429,24 @@ def plot_F_Data_Sigmoide(F, data, theta):
 
     plt.figure()
     
+    
     # plots the successive values of the criterion...
     plt.subplot(211)
     plt.plot(F)
 
     # plots the data...
     plt.subplot(212)
+    # Definign the window ...
+    ax      = plt.axes()
+    ax.set_xlim([ 0, 2*theta[1]])     # 2*ts
+    ax.set_ylim([ 0, 1.2*theta[0]])   # 1.2*Smax
+    
     plt.scatter(X,Y,marker="+", color="red")
     
     #plots the optimized sigmoide...
-    t = np.linspace(X[0],X[-1],1000)
+    t = np.linspace(X[0],2*theta[1],1000)
     plt.plot(t,sigmoide(t-X[0], theta))
+    
 
     plt.show()
     
@@ -447,7 +454,7 @@ def save_CountryPlot(country, F, data, theta, init_args):
     # years from start (X) and corresponding cumulated production (Y)
     X, Y = [k for k in range(0,len(data))],[data]
 
-    fig = plt.figure()
+    plt.figure()
     # plots the successive values of the criterion...
     plt.subplot(211)
     plt.plot(F)
@@ -463,7 +470,6 @@ def save_CountryPlot(country, F, data, theta, init_args):
     #plots the optimized sigmoide...
     plt.plot( t, sigmoide(t-X[0], theta))
 
-    #plt.close(fig)
     plt.savefig("../graphes/Pays/{}.png".format(country + str(init_args).replace(", ", "_").replace("[", "_").replace("]", "")))
     
 
@@ -506,6 +512,8 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
 
 
 def test_OCDE(save=True):
+    plt.close()
+    
     results = [[]]
     countries = []
     
@@ -525,7 +533,7 @@ def test_OCDE(save=True):
         data        = Data_processing(country).get_data()
         Smax_init   = max(data)
         ts_init     = len(data)//2
-        tau_init    = 5
+        tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
         
         results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save)]
     return results
@@ -542,7 +550,7 @@ init_args_gen       = ( 90, 25, 5)
 # actual parameters of the optimized sigmoide for generated data with zero noise :
 perfect_args_gen    = ( 100, 30, 6)
 
-
+# plot_noised_sigmoide(0,100,30,6,0,20)
 
 
 # =============================================================================
@@ -550,16 +558,16 @@ perfect_args_gen    = ( 100, 30, 6)
 # print("chrono = ", chrono, "crit = ", crit)
 # =============================================================================
 
-# =============================================================================
-# chrono, crit                = opti_generatedData(0, perfect_args_gen, delta_args=1)
-# print("chrono = ", chrono, "crit = ", crit)
-# =============================================================================
+chrono, crit                = opti_generatedData(0, perfect_args_gen, delta_args=1, tend = 30)
+print("chrono = ", chrono, "crit = ", crit)
 
 # =============================================================================
 # testPerf_NoisedData(perfect_args_gen, argsDelta_steps=3)
 # =============================================================================
 
-test_OCDE() # breaks for THA for unknown reasons ( LinAlgError: Singular matrix )
+# =============================================================================
+# test_OCDE() # breaks for THA for unknown reasons ( LinAlgError: Singular matrix )
+# =============================================================================
 
 # =============================================================================
 # plot_isocurve_Qmax_fixed(0.9)
