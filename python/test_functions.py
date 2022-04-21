@@ -281,29 +281,6 @@ def plot_isocurve_tau_fixed(percentage, Smax_init=1, ts_init=50, tau=6, t_start=
     plt.show()
 
 
-def opti_Country(location, init_args, optiFunc = descentScaled):
-# =============================================================================
-#     Optimization of the parameters of the sigmoide to match the data of a specific country
-#input:
-#    location        : abreviation of the country (ex: FRA)
-#    init_args       : initial guess of the parameters to optimize (should not be too far from the solution)
-#    optiFunc        : algorithm to be used for the optimization
-#         
-#output:
-#    plot of F               : shows the evolution of the criterion during the optimization
-#    plot of the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the data
-# =============================================================================
-    
-    # data of the selected country...
-    data        = Data_processing(location).get_data()
-    
-    # optimized parameters and values of the criterion during the optimization... 
-    theta, F    = optiFunc(data, init_args)
-
-    # plots the criterion's values and the optimized sigmoide on top of the data
-    plot_F_Data_Sigmoide(F, data, theta)
-    
-    
     
     
 def opti_generatedData(noise, perfect_args, delta_args=1.1, optiFunc = descentScaled):
@@ -343,26 +320,6 @@ def opti_generatedData(noise, perfect_args, delta_args=1.1, optiFunc = descentSc
 
 
 
-def plot_F_Data_Sigmoide(F, data, theta):
-    
-    # years from start (X) and corresponding cumulated production (Y)
-    X, Y = [k for k in range(0,len(data))],[data]
-
-    plt.figure()
-    
-    # plots the successive values of the criterion...
-    plt.subplot(211)
-    plt.plot(F)
-
-    # plots the data...
-    plt.subplot(212)
-    plt.scatter(X,Y,marker="+", color="red")
-    
-    #plots the optimized sigmoide...
-    t = np.linspace(X[0],X[-1],1000)
-    plt.plot(t,sigmoide(t-X[0], theta))
-
-    plt.show()
     
 def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_steps = 3, argsDelta_dt = 0.1, optiFunc = descentScaled):
 # =============================================================================
@@ -462,6 +419,118 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
             
     return time_results, criterion_results
 
+
+
+
+def plot_F_Data_Sigmoide(F, data, theta):
+    
+    # years from start (X) and corresponding cumulated production (Y)
+    X, Y = [k for k in range(0,len(data))],[data]
+
+    plt.figure()
+    
+    # plots the successive values of the criterion...
+    plt.subplot(211)
+    plt.plot(F)
+
+    # plots the data...
+    plt.subplot(212)
+    plt.scatter(X,Y,marker="+", color="red")
+    
+    #plots the optimized sigmoide...
+    t = np.linspace(X[0],X[-1],1000)
+    plt.plot(t,sigmoide(t-X[0], theta))
+
+    plt.show()
+    
+def save_CountryPlot(country, F, data, theta, init_args):
+    # years from start (X) and corresponding cumulated production (Y)
+    X, Y = [k for k in range(0,len(data))],[data]
+
+    fig = plt.figure()
+    # plots the successive values of the criterion...
+    plt.subplot(211)
+    plt.plot(F)
+
+    # plots the data...
+    plt.subplot(212)
+    plt.scatter(X,Y,marker="+", color="red")
+    
+    # plots the sigmoide corresponding to the initial guess..
+    t = np.linspace(X[0],X[-1],1000)
+    plt.plot( t, sigmoide(t-X[0], init_args), '--', color='black' )
+    
+    #plots the optimized sigmoide...
+    plt.plot( t, sigmoide(t-X[0], theta))
+
+    #plt.close(fig)
+    plt.savefig("../graphes/Pays/{}.png".format(country + str(init_args).replace(", ", "_").replace("[", "_").replace("]", "")))
+    
+
+def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
+# =============================================================================
+#     Optimization of the parameters of the sigmoide to match the data of a specific country
+#input:
+#    location        : abreviation of the country (ex: FRA)
+#    init_args       : initial guess of the parameters to optimize (should not be too far from the solution)
+#    optiFunc        : algorithm to be used for the optimization
+#         
+#output:
+#    location                : name of the country
+#    plot of F               : shows the evolution of the criterion during the optimization
+#    plot of the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the data
+#    chrono                  : time taken by the optimization
+#    crit                    : last value of the criterion
+#    init_args               : init_args passed as input. Used to visualize whether our initial guess was close or not
+# =============================================================================
+    
+    # data of the selected country...
+    data        = Data_processing(location).get_data()
+    
+    # optimized parameters and values of the criterion during the optimization ...
+    start       = time.time()
+    theta, F    = optiFunc(data, init_args)
+    end         = time.time()
+    
+    chrono      = end-start
+    crit        = F[-1]
+
+    if savePlot:
+        save_CountryPlot(location, F, data, theta, init_args)
+    else:
+        # plots the criterion's values and the optimized sigmoide on top of the data
+        plot_F_Data_Sigmoide(F, data, theta)
+    
+    return location, chrono, crit, theta, F, init_args
+
+
+
+def test_OCDE(save=True):
+    results = [[]]
+    countries = []
+    
+    # we get every country's acronym from the file...
+    with open("../data/Crude_oil_production.csv","r") as fileCSV:
+            for line in fileCSV.readlines()[1:]:
+                line_split      = line.split(";")
+                country_name    = line_split[0]
+                if country_name in countries: # one country is present on multiple lines ( one for each year )
+                    continue
+                countries.append(line_split[0])
+                
+    # for each country, we try the optimization process and save its results            
+    for country in countries:
+        print(country, "...")
+        # initial guess of the country's optimal parameters :
+        data        = Data_processing(country).get_data()
+        Smax_init   = max(data)
+        ts_init     = len(data)//2
+        tau_init    = 5
+        
+        results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save)]
+    return results
+    
+
 # =============================================================================
 #                                    Testing values
 # =============================================================================
@@ -476,16 +545,21 @@ perfect_args_gen    = ( 100, 30, 6)
 
 
 
-opti_Country('FRA', init_args_france)
+# =============================================================================
+# name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True)
+# print("chrono = ", chrono, "crit = ", crit)
+# =============================================================================
 
 # =============================================================================
-# chrono, crit = opti_generatedData(0, perfect_args_gen, delta_args=1)
+# chrono, crit                = opti_generatedData(0, perfect_args_gen, delta_args=1)
 # print("chrono = ", chrono, "crit = ", crit)
 # =============================================================================
 
 # =============================================================================
 # testPerf_NoisedData(perfect_args_gen, argsDelta_steps=3)
 # =============================================================================
+
+test_OCDE() # breaks for THA for unknown reasons ( LinAlgError: Singular matrix )
 
 # =============================================================================
 # plot_isocurve_Qmax_fixed(0.9)

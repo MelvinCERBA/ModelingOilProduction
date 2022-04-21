@@ -24,9 +24,13 @@ class Data_processing:
                 line_split = line.split(";")
                 key = line_split[0]
                 if key == location:
-                    if line_split[6] != '':
+                    if line_split[6] != '': # if data is present, we add it
                         T.append(int(line_split[5]))
                         self.oil_production.append(float(line_split[6]))
+                        
+                    else:                   # else, we add 0 production (empty data cause the algortihm to dysfunction )
+                        T.append(int(line_split[5]))
+                        self.oil_production.append(float(0))
 
         if len(T) == 0:
             raise Exception("Location not found")
