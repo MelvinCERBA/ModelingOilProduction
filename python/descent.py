@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from functions import least_square, sigmoide, grad_least_square, grad_sigmoide, noised_sigmoide, scale_matrix
-from data_processing_Sig import Data_processing
 import numpy as np
-import matplotlib.pyplot as plt
 
 
 

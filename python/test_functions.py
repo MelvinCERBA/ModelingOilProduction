@@ -52,7 +52,7 @@ def plot_noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     plt.scatter(t,noised_sig)
     plt.show()
 # =============================================================================
-# plot_noised_sigmoide(0,100,30,6,0,20)
+# plot_noised_sigmoide(10,100,30,6,0,60)
 # =============================================================================
 
 
@@ -586,13 +586,13 @@ def test_OCDE(save=True):
 
 def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = False, filename = ""):
 # =============================================================================
-#     Takes data and executes the optimization on the chosen portion
+#     Takes data and executes the optimization on the chosen portion, then evaluates the final model on the complete data
 #input:
 #       data        : data to be modelized
 #       percent     : percentage of the data to be used for optimization (in ]0,1])
 #       optiFunc    : optimization function to be used
 #       plot        : boolean, whether we want to plot the model or not
-#       save    : boolean, plot is saved if true
+#       save        : boolean, plot is saved if true
 #       filename    : name under wich the plot should be saved
 #output:
 #       theta       : parameters of the optimal sigmoide
@@ -601,7 +601,8 @@ def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = 
 
     # reduced data
     new_data    = [data[i] for i in range( 0, round(len(data)*percent), 1)]
-    print("new_data= ", new_data)
+    print("new_data length = ", len(new_data),
+          "/n data length = ", len(data))
     
     # optimized parameters and values of the criterion during the optimization ...
     start       = time.time()
@@ -610,14 +611,113 @@ def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = 
     
     # performance of the optimization : time of execution and criterion of the final sigmoide
     chrono      = end-start
-    crit        = F[-1]
+    crit        = least_square(data, t_start = 0, Dt = 1, func = sigmoide, args = theta) # we compare the model to the complete data (dt doesn't matter as long as it is the same for every model we compare)
 
     # plots and/or saves the results, according to the parameters
-    plot_ModelAndData(data, theta, F, plot = True, save = True, filename = filename)
+    plot_ModelAndData(new_data, theta, F, plot = plot, save = save, filename = filename)
     
-    return theta, F[-1], chrono, crit
-test_Model(data = noised_sigmoide(0, 100, 30, 6), percent = 0.7, optiFunc = descentScaled, plot = True, save = False, filename ="test")
+    return theta, F, chrono, crit
+# =============================================================================
+# test_Model(data = noised_sigmoide(0, 100, 30, 6), percent = 0.6, optiFunc = descentScaled, plot = True, save = True, filename ="test")
+# =============================================================================
 
+
+
+def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, dataQuantity_steps = 3, dataQuantity_dt = 0.1, optiFunc = descentScaled):
+# =============================================================================
+#     monitors the optimization on generated data for different values of noise and for different initial params
+# input:
+#   perfect_args        : args of the function used to generate data
+#   noise_steps         : number of values of noise to be tested
+#   noise_dt            : amount of noise to add at each step
+#   argsDelta_steps     : number of sets of args to be tested
+#   argsDelta_dt        : percentage the init_args to add at each step
+#   optiFunc            : descent algorithm to be used for optimization
+#
+#output:
+#   criterion_results    : criterion obtained for each level of noise and set of args tested 
+#   time_results         : time needed to complete the optimization for each level of noise and set of args tested
+# =============================================================================
+    
+    # perfect parameters : those of the sigmoide used to generate data
+    Qmax_perfect, ts_perfect, tau_perfect   = perfect_args
+    perfect_args                            = np.array(perfect_args)
+
+    # all levels of noise to be tested...
+    noise_levels    = [ k * noise_dt for k in range( 0, noise_steps+1, 1) ]
+    
+    # all values of args to be tested...
+    dataQuantity_values     = [ (1-(k * dataQuantity_dt)) for k in range( 0, dataQuantity_steps+1, 1)]
+    
+    # for each level of noise (columns), for each value of args (lines), 
+        # we will save here : 1) the criterion obtained 2) the time taken to complete the optomization...
+    criterion_results       = np.zeros([ len(noise_levels), len(dataQuantity_values)])
+    time_results            = np.zeros([ len(noise_levels), len(dataQuantity_values)])
+    
+    
+    
+    for i in range ( 0, len(noise_levels), 1):
+        
+        # data to be tested...
+        data = noised_sigmoide(noise_levels[i], Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect)
+        
+        for j, p in enumerate(dataQuantity_values):
+            print("p =", p)
+            # descent algorithm on the selectad amount of data...
+            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = False)     
+            
+            # saving the last value of the criterion and the time taken by the descent (seconds)...
+            criterion_results[i,j]   = crit
+            time_results[i,j]        = chrono
+    
+    # print("crits = ",criterion_results)
+    # print("times = ",time_results)
+    
+    # max criterion and max time are used to standardize the scale of the plots...
+    max_criterion       = max([ max(c) for c in criterion_results])
+    max_time            = max([ max(t) for t in time_results])
+    
+    plt.close()
+    for i in range(0,dataQuantity_steps+1,1):
+        # variation of the perfect args we are testing (percentage)... 
+        delta       = round(i * dataQuantity_dt * 100)
+        print("i= ", i, "delta= ", delta)
+        
+        # for a fixed value of init_args, variation of the final criterion 
+                # and execution time depending on the level of noise...
+        times        = time_results[:,i]
+        criterions   = criterion_results[:,i]
+            
+        fig, ax1 = plt.subplots()
+            
+        # creating two arrays with a slight offset to plot bars separatly...
+        w       = 0.5
+        bar1    = noise_levels
+        bar2    = [x+w for x in bar1]
+
+        # plotting the time and criterion values for the different levels of noise...
+        ax2     = ax1.twinx()
+        ax1.bar(bar1, criterions, label='Critère')
+        ax2.bar(bar2, times, color='orange', label='Temps (s)')
+        
+        # Definign the window ...
+        ax1.set_ylim([ 0, 1.2*max_criterion])
+        ax2.set_ylim([ 0, 1.2*max_time])
+        
+        # legending the graph...
+        ax1.set_xlabel('Bruit')
+        ax1.set_ylabel('Critère (moindre carrés)')
+        ax2.set_ylabel('Temps (secondes)')
+        
+        ax1.legend(loc=(0,0.9))
+        ax2.legend(loc=(0.75,0.9))
+        plt.title(r'Optimisation sur {}% des données'.format(str(100-delta)))
+        
+        plt.savefig("../graphes/performances/perfs_ModelOnGeneratedData_DataQ_{}.png".format(100-delta))
+        plt.show()
+            
+    return time_results, criterion_results
+testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 5, dataQuantity_steps = 3)
 
 
 

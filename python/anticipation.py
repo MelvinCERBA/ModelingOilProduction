@@ -18,7 +18,7 @@ def model(data, optiFunc=descentScaled):
 # =============================================================================
     Smax_init   = max(data)
     ts_init     = len(data)//2
-    tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
+    tau_init    = 6.5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
     
     init_args   = ( Smax_init, ts_init, tau_init)
     
@@ -105,10 +105,10 @@ def plot_ModelAndData(data, theta, F, plot = True, save = False, filename = ""):
     
     # displays the estimated time of the peak and final cumulated production
     ax2.set_xticks(ticks = [theta[1]])
-    ax2.set_xticklabels(labels= [r'year {}'.format(ts)])
+    ax2.set_xticklabels(labels= [r'année {}'.format(round(ts))])
     
     ax2.set_yticks(ticks = [theta[0]])
-    ax2.set_yticklabels(labels= [r'{} L'.format(Smax)])
+    ax2.set_yticklabels(labels= [r'{} L'.format(round(Smax))])
     
     # plots the doted lines corresponding to ts and Smax
     N       = 100 # number of dots
@@ -131,6 +131,8 @@ def plot_ModelAndData(data, theta, F, plot = True, save = False, filename = ""):
 
     if plot:
         plt.show()
+    else:
+        plt.close()
     
     return
 
