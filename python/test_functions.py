@@ -630,8 +630,8 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
 #   perfect_args        : args of the function used to generate data
 #   noise_steps         : number of values of noise to be tested
 #   noise_dt            : amount of noise to add at each step
-#   argsDelta_steps     : number of sets of args to be tested
-#   argsDelta_dt        : percentage the init_args to add at each step
+#   dataQuantity_steps  : number of dataQuantity values to be tested
+#   datQuantity_dt      : percentage of data to remove at each step
 #   optiFunc            : descent algorithm to be used for optimization
 #
 #output:
@@ -664,7 +664,7 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         for j, p in enumerate(dataQuantity_values):
             print("p =", p)
             # descent algorithm on the selectad amount of data...
-            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = False)     
+            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = True)     
             
             # saving the last value of the criterion and the time taken by the descent (seconds)...
             criterion_results[i,j]   = crit
