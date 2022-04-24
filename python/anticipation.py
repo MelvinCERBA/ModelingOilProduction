@@ -83,7 +83,7 @@ def plot_ModelAndData(data, theta, F, plot = True, save = False, filename = ""):
 # =============================================================================
 
 
-    plt.figure()
+    plt.figure(figsize = (8,10))
     
     # plots the successive values of the criterion...
     ax1             = plt.subplot(211)
@@ -122,12 +122,10 @@ def plot_ModelAndData(data, theta, F, plot = True, save = False, filename = ""):
     t = np.linspace(X[0],2*theta[1],1000)
     plt.plot(t,sigmoide(t-X[0], theta), label = "Modèle")
     
+    
     plt.legend()
     if save:
-        plt.savefig("../graphes/anticipation/{}.png".format(filename + str(theta)
-                                                            .replace(", ", "_")
-                                                            .replace("[", "_")
-                                                            .replace("]", "")))
+        plt.savefig("../graphes/anticipation/{}.png".format(filename + "_crit{}".format(F[-1])))
 
     if plot:
         plt.show()

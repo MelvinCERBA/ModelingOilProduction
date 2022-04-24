@@ -9,19 +9,15 @@ from data_processing_Sig import Data_processing
 import time as time
 from anticipation import model, plot_ModelAndData
 
-# =============================================================================
-#                                    Testing values
-# =============================================================================
 
+# ======================== Testing values =====================================
 # inital guess of the parameters of the optimized sigmoide for France's data :
 init_args_france    = ( 70000, 15, 5)
 # inital guess of the parameters of the optimized sigmoide for data generated with zero noise :
 init_args_gen       = ( 90, 25, 5)
 # actual parameters of the optimized sigmoide for generated data with zero noise :
 perfect_args_gen    = ( 100, 30, 6)
-
-
-
+# =============================================================================
 
 
 
@@ -547,7 +543,7 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
         plot_F_Data_Sigmoide(F, data, theta)
     
     return location, chrono, crit, theta, F, init_args
-# =============================================================================
+# ==================== Test ==================================================
 # name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True)
 # print("chrono = ", chrono, "crit = ", crit)
 # =============================================================================
@@ -579,7 +575,7 @@ def test_OCDE(save=True):
         
         results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save)]
     return results
-# =============================================================================
+# ==================== Test ===================================================
 # test_OCDE() # breaks for THA for unknown reasons ( LinAlgError: Singular matrix )
 # =============================================================================    
 
@@ -617,7 +613,7 @@ def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = 
     plot_ModelAndData(new_data, theta, F, plot = plot, save = save, filename = filename)
     
     return theta, F, chrono, crit
-# =============================================================================
+# ========================= Test =============================================
 # test_Model(data = noised_sigmoide(0, 100, 30, 6), percent = 0.6, optiFunc = descentScaled, plot = True, save = True, filename ="test")
 # =============================================================================
 
@@ -664,7 +660,8 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         for j, p in enumerate(dataQuantity_values):
             print("p =", p)
             # descent algorithm on the selectad amount of data...
-            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = True)     
+            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = True, 
+                                                           filename= "noise{}_dataQ{}".format( noise_levels[i], p))     
             
             # saving the last value of the criterion and the time taken by the descent (seconds)...
             criterion_results[i,j]   = crit
@@ -713,11 +710,15 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         ax2.legend(loc=(0.75,0.9))
         plt.title(r'Optimisation sur {}% des données'.format(str(100-delta)))
         
+        # Size of the plot's window 
+        fig.set_figheight(8)
+        fig.set_figwidth(10)
+
         plt.savefig("../graphes/performances/perfs_ModelOnGeneratedData_DataQ_{}.png".format(100-delta))
         plt.show()
             
     return time_results, criterion_results
-testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 5, dataQuantity_steps = 3)
+testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 4, dataQuantity_steps = 4)
 
 
 

@@ -179,7 +179,7 @@ def descentScaled(data, init_args, t_start=0, eps = 0.001, Niter = 100, alpha_ma
         
         # Descent scale...
         scaler      = scale_matrix(t_start, len(data)-1, grad_sigmoide, theta)
-        
+            
         # Descent direction...
         d           = -np.matmul(scaler,grad.transpose())
         # print(scaler, -grad, d)

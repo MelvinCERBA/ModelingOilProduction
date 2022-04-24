@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
+import pandas as pd
+import math
 
 """
 List of function used by the algorithm
@@ -132,25 +134,42 @@ def grad_least_square(data, t_start, Dt, func, grad_func, args):
     return grad_J
 
 def scale_matrix(t_start, t_end, grad_func, args):
+# =============================================================================
+# Why is B singular when the init_args are to far to the solution ?
+# =============================================================================
     
-    jac = np.zeros((t_end-t_start,3))
+    jac     = np.zeros((t_end-t_start,3))
     
-    T = np.arange(t_start, t_end, 1)
+    T       = np.arange(t_start, t_end, 1)
     
     for k, t in enumerate(T):
-        jac[k] = grad_func(t,args)
+        jac[k]       = grad_func(t,args)
     
-    B = 4*jac.transpose().dot(jac)
+    B       = 4*jac.transpose().dot(jac)
     
-    return np.linalg.inv(B)
- 
+# ============================= trying to handle singular matrices (not working) ==================
+    # # B might be singular (not reversible), in wich case we simply take the inverse of the values of B's diagonal
+    # try:
+    #     M           = np.linalg.inv(B)
+    #     # print( "inverse B = ",M)
+    # except np.linalg.LinAlgError as err:
+    #     if 'Singular matrix' in str(err):
+    #         print("Impossible de calculer l'inverse de /n ", B," /n (matrice singulière)")
+    #         M           = np.zeros([3,3])
+    #         for i in range(0,3,1):
+    #             M[i,i]     = 1/B[i,i]
+    #             if pd.isna(M[i,i]) or math.isinf(M[i,i]): # checks is the value is nan(not a number) or inf (infinity), wich we do not want
+    #                 M[i,i]      = 1
+    #         print("M= ", M)
+    #     else:
+    #         raise
+    
+    # return M
 # =============================================================================
-#     scaler = np.zeros([3,3])
-#     for i in range(0,2,1):
-#         scaler[i,i]=B[i,i]
-#     
-#     return scaler
-# =============================================================================
+
+    return np.linalg.inv(B) 
+
+
 
 def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
 
