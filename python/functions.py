@@ -181,7 +181,7 @@ def noised_sigmoide(noise, Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     for k in range(len(sig)-1):
         rd = np.random.normal(noised_sig[k] + sig[k+1]-sig[k] ,noise*(sig[k+1]-sig[k])/5)
 
-        clip_rd = np.clip(rd,noised_sig[k],np.inf)
+        clip_rd = np.clip(rd,noised_sig[k],np.inf) # year k+1's cumulated production can't be lower than that of year k
         noised_sig.append(clip_rd)
 
     return noised_sig

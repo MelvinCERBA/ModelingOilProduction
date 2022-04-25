@@ -400,12 +400,14 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
             
             # descent algorithm ...
             start               = time.time()
+            print("noise = ", noise_levels[i], "  args_values = ", args_values[j])
             theta, F            = descentScaled(data, init_args)     
             end                 = time.time()
             
             # saving the last value of the criterion and the time taken by the descent (seconds)...
             criterion_results[i,j]   = F[-1]
             time_results[i,j]        = end-start
+            print("critère = ", F[-1], "  temps d'execution = ", end-start)
     
     # print("crits = ",criterion_results)
     # print("times = ",time_results)
@@ -452,8 +454,8 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
         plt.show()
             
     return time_results, criterion_results
-# =============================================================================
-# testPerf_NoisedData(perfect_args_gen, argsDelta_steps=3)
+# ==================== test testPerf_NoisedData() =============================
+testPerf_NoisedData(perfect_args_gen, noise_steps = 0, noise_dt = 50, argsDelta_steps = 10, argsDelta_dt = 0.1, optiFunc = descentScaled)
 # =============================================================================
 
 
@@ -674,6 +676,9 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
     max_criterion       = max([ max(c) for c in criterion_results])
     max_time            = max([ max(t) for t in time_results])
     
+    # width of the bars
+    w               = max(noise_levels)/(2*2*noise_steps)
+    
     plt.close()
     for i in range(0,dataQuantity_steps+1,1):
         # variation of the perfect args we are testing (percentage)... 
@@ -688,14 +693,13 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         fig, ax1 = plt.subplots()
             
         # creating two arrays with a slight offset to plot bars separatly...
-        w       = 0.5
         bar1    = noise_levels
         bar2    = [x+w for x in bar1]
 
         # plotting the time and criterion values for the different levels of noise...
         ax2     = ax1.twinx()
-        ax1.bar(bar1, criterions, label='Critère')
-        ax2.bar(bar2, times, color='orange', label='Temps (s)')
+        ax1.bar(bar1, criterions, label='Critère', width = w)
+        ax2.bar(bar2, times, color='orange', label='Temps (s)', width = w)
         
         # Definign the window ...
         ax1.set_ylim([ 0, 1.2*max_criterion])
@@ -718,7 +722,9 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         plt.show()
             
     return time_results, criterion_results
-testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 4, dataQuantity_steps = 4)
+# ==================== Test testPerfs_Model_onNoisedData() ====================
+# testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 50, dataQuantity_steps = 5)
+# =============================================================================
 
 
 

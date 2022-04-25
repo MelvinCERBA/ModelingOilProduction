@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  17 APR 2022 19:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.26)  25 APR 2022 16:56
 entering extended mode
 **./rapport.tex
 (rapport.tex
@@ -77,27 +77,95 @@ Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
 \l__lipsum_b_int=\count194
 
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/lipsum\lipsum.ltd.tex))
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
 
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks20
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
+Package: amsmath 2021/04/20 v2.17j AMS math features
+\@mathmargin=\skip49
+
+For additional information on amsmath, use the `?' option.
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
+Package: amstext 2000/06/29 v2.01 AMS text
+
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0 generic functions
+\@emptytoks=\toks21
+\ex@=\dimen143
+))
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d Bold Symbols
+\pmbraise@=\dimen144
+)
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
+Package: amsopn 2016/03/08 v2.02 operator names
+)
+\inf@bad=\count195
+LaTeX Info: Redefining \frac on input line 234.
+\uproot@=\count196
+\leftroot@=\count197
+LaTeX Info: Redefining \overline on input line 399.
+\classnum@=\count198
+\DOTSCASE@=\count199
+LaTeX Info: Redefining \ldots on input line 496.
+LaTeX Info: Redefining \dots on input line 499.
+LaTeX Info: Redefining \cdots on input line 620.
+\Mathstrutbox@=\box52
+\strutbox@=\box53
+\big@size=\dimen145
+LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
+\macc@depth=\count266
+\c@MaxMatrixCols=\count267
+\dotsspace@=\muskip16
+\c@parentequation=\count268
+\dspbrk@lvl=\count269
+\tag@help=\toks22
+\row@=\count270
+\column@=\count271
+\maxfields@=\count272
+\andhelp@=\toks23
+\eqnshift@=\dimen146
+\alignsep@=\dimen147
+\tagshift@=\dimen148
+\tagwidth@=\dimen149
+\totwidth@=\dimen150
+\lineht@=\dimen151
+\@envbody=\toks24
+\multlinegap=\skip50
+\multlinetaggap=\skip51
+\mathdisplay@stack=\toks25
+LaTeX Info: Redefining \[ on input line 2923.
+LaTeX Info: Redefining \] on input line 2924.
+)
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/subfigure\subfigure.sty
 Package: subfigure 2002/07/30 v2.1.4 subfigure package
-\subfigtopskip=\skip49
-\subfigcapskip=\skip50
-\subfigcaptopadj=\dimen143
-\subfigbottomskip=\skip51
-\subfigcapmargin=\dimen144
-\subfiglabelskip=\skip52
-\c@subfigure=\count195
-\c@lofdepth=\count196
-\c@subtable=\count197
-\c@lotdepth=\count198
+\subfigtopskip=\skip52
+\subfigcapskip=\skip53
+\subfigcaptopadj=\dimen152
+\subfigbottomskip=\skip54
+\subfigcapmargin=\dimen153
+\subfiglabelskip=\skip55
+\c@subfigure=\count273
+\c@lofdepth=\count274
+\c@subtable=\count275
+\c@lotdepth=\count276
 ****************************************
 * Local config file subfigure.cfg used *
 ****************************************
 
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/subfigure\subfigure.cfg
 )
-\subfig@top=\skip53
-\subfig@bottom=\skip54
+\subfig@top=\skip56
+\subfig@bottom=\skip57
 )
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
 Package: geometry 2020/01/02 v5.9 Page Geometry
@@ -108,108 +176,41 @@ Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
 Package: iftex 2020/03/06 v1.0d TeX engine tests
 ))
-\Gm@cnth=\count199
-\Gm@cntv=\count266
-\c@Gm@tempcnt=\count267
-\Gm@bindingoffset=\dimen145
-\Gm@wd@mp=\dimen146
-\Gm@odd@mp=\dimen147
-\Gm@even@mp=\dimen148
-\Gm@layoutwidth=\dimen149
-\Gm@layoutheight=\dimen150
-\Gm@layouthoffset=\dimen151
-\Gm@layoutvoffset=\dimen152
-\Gm@dimlist=\toks20
+\Gm@cnth=\count277
+\Gm@cntv=\count278
+\c@Gm@tempcnt=\count279
+\Gm@bindingoffset=\dimen154
+\Gm@wd@mp=\dimen155
+\Gm@odd@mp=\dimen156
+\Gm@even@mp=\dimen157
+\Gm@layoutwidth=\dimen158
+\Gm@layoutheight=\dimen159
+\Gm@layouthoffset=\dimen160
+\Gm@layoutvoffset=\dimen161
+\Gm@dimlist=\toks26
 
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsmath.sty
-Package: amsmath 2021/04/20 v2.17j AMS math features
-\@mathmargin=\skip55
-
-For additional information on amsmath, use the `?' option.
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amstext.sty
-Package: amstext 2000/06/29 v2.01 AMS text
-
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsgen.sty
-File: amsgen.sty 1999/11/30 v2.0 generic functions
-\@emptytoks=\toks21
-\ex@=\dimen153
-))
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsbsy.sty
-Package: amsbsy 1999/11/29 v1.2d Bold Symbols
-\pmbraise@=\dimen154
-)
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsmath\amsopn.sty
-Package: amsopn 2016/03/08 v2.02 operator names
-)
-\inf@bad=\count268
-LaTeX Info: Redefining \frac on input line 234.
-\uproot@=\count269
-\leftroot@=\count270
-LaTeX Info: Redefining \overline on input line 399.
-\classnum@=\count271
-\DOTSCASE@=\count272
-LaTeX Info: Redefining \ldots on input line 496.
-LaTeX Info: Redefining \dots on input line 499.
-LaTeX Info: Redefining \cdots on input line 620.
-\Mathstrutbox@=\box52
-\strutbox@=\box53
-\big@size=\dimen155
-LaTeX Font Info:    Redeclaring font encoding OML on input line 743.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 744.
-\macc@depth=\count273
-\c@MaxMatrixCols=\count274
-\dotsspace@=\muskip16
-\c@parentequation=\count275
-\dspbrk@lvl=\count276
-\tag@help=\toks22
-\row@=\count277
-\column@=\count278
-\maxfields@=\count279
-\andhelp@=\toks23
-\eqnshift@=\dimen156
-\alignsep@=\dimen157
-\tagshift@=\dimen158
-\tagwidth@=\dimen159
-\totwidth@=\dimen160
-\lineht@=\dimen161
-\@envbody=\toks24
-\multlinegap=\skip56
-\multlinetaggap=\skip57
-\mathdisplay@stack=\toks25
-LaTeX Info: Redefining \[ on input line 2923.
-LaTeX Info: Redefining \] on input line 2924.
-)
 (rapport.aux
-
-LaTeX Warning: Label `linspring' multiply defined.
-
-
-LaTeX Warning: Label `linspring' multiply defined.
-
-
-LaTeX Warning: Label `linspring' multiply defined.
-
 
 LaTeX Warning: Label `linspring' multiply defined.
 
 )
 \openout1 = `rapport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
-LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
+LaTeX Font Info:    ... okay on input line 23.
 
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
@@ -219,50 +220,18 @@ ii
 \scratchbox=\box54
 \nofMPsegments=\count281
 \nofMParguments=\count282
-\everyMPshowfont=\toks26
+\everyMPshowfont=\toks27
 \MPscratchCnt=\count283
 \MPscratchDim=\dimen163
 \MPnumerator=\count284
 \makeMPintoPDFobject=\count285
-\everyMPtoPDFconversion=\toks27
+\everyMPtoPDFconversion=\toks28
 )
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-b
 ase.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
-
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.s
-ty
-Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
-) (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/grfext\grfext.sty
-Package: grfext 2019/12/03 v1.3 Manage graphics extensions (HO)
-
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefine
-keys.sty
-Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
-))
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
-Package: kvoptions 2020-10-07 v3.14 Key value format for package options (HO)
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
-Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
-)
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/kvsetkeys\kvsetkeys.s
-ty
-Package: kvsetkeys 2019/12/15 v1.18 Key value parser (HO)
-))
-(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds
-.sty
-Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
-)
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 85.
-Package grfext Info: Graphics extension search list:
-(grfext)             [.pdf,.png,.jpg,.mps,.jpeg,.jbig2,.jb2,.PDF,.PNG,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 504.
 
 (E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/00miktex\epstopdf-sys.c
 fg
@@ -305,233 +274,362 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 <graphes/fig1.png, id=1, 903.375pt x 501.875pt>
 File: graphes/fig1.png Graphic file (type png)
 <use graphes/fig1.png>
-Package pdftex.def Info: graphes/fig1.png  used on input line 25.
+Package pdftex.def Info: graphes/fig1.png  used on input line 26.
 (pdftex.def)             Requested size: 361.3436pt x 200.74643pt.
-<graphes/Courbe_de_Hubbert_Data.png, id=2, 361.35pt x 289.08pt>
-File: graphes/Courbe_de_Hubbert_Data.png Graphic file (type png)
-<use graphes/Courbe_de_Hubbert_Data.png>
-Package pdftex.def Info: graphes/Courbe_de_Hubbert_Data.png  used on input line
- 30.
-(pdftex.def)             Requested size: 361.34912pt x 289.07928pt.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
+
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
+
+
+(E:\Users\nivle\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
 [1
 
 {C:/Users/nivle/AppData/Local/MiKTeX/pdftex/config/pdftex.map} <./graphes/fig1.
-png> <./graphes/Courbe_de_Hubbert_Data.png>] (rapport.toc)
+png>] (rapport.toc)
 \tf@toc=\write3
 \openout3 = `rapport.toc'.
 
  [2]
-<graphes/Production.png, id=19, 361.35pt x 289.08pt>
+<graphes/Production.png, id=16, 361.35pt x 289.08pt>
 File: graphes/Production.png Graphic file (type png)
 <use graphes/Production.png>
-Package pdftex.def Info: graphes/Production.png  used on input line 53.
+Package pdftex.def Info: graphes/Production.png  used on input line 42.
 (pdftex.def)             Requested size: 156.49014pt x 125.193pt.
-<graphes/DataEtHubbert.png, id=20, 361.35pt x 289.08pt>
+<graphes/DataEtHubbert.png, id=18, 361.35pt x 289.08pt>
 File: graphes/DataEtHubbert.png Graphic file (type png)
 <use graphes/DataEtHubbert.png>
-Package pdftex.def Info: graphes/DataEtHubbert.png  used on input line 54.
+Package pdftex.def Info: graphes/DataEtHubbert.png  used on input line 43.
 (pdftex.def)             Requested size: 156.49014pt x 125.193pt.
 
-Underfull \hbox (badness 3735) in paragraph at lines 56--59
+Underfull \hbox (badness 1325) in paragraph at lines 45--48
+\OT1/cmr/m/n/10 ressources a tou-jours ete un en-jeu ma-jeur. Il est donc na-
+turel
+ []
+
+
+Underfull \hbox (badness 1609) in paragraph at lines 45--48
+\OT1/cmr/m/n/10 cette evolution soient ap-parus. A travers ce pro-jet, nous vo
+us
+ []
+
+
+Underfull \hbox (badness 2503) in paragraph at lines 45--48
+\OT1/cmr/m/n/10 pro-posons d'etudier en detail l'un d'eux : la courbe de Hub-
+
+ []
+
+
+Underfull \hbox (badness 3735) in paragraph at lines 45--48
 []$ \OT1/cmr/m/n/10 En 1956, Mar-ion King Hub-bert presentait sa "courbe de
  []
 
 
-Underfull \hbox (badness 3396) in paragraph at lines 56--59
+Underfull \hbox (badness 3396) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 Hub-bert" a l'American Petroleum In-sti-tute. Son modele, qui
 
  []
 
 
-Underfull \hbox (badness 5302) in paragraph at lines 56--59
+Underfull \hbox (badness 5302) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 pos-tule que la pro-duc-tion croit, at-teint un unique pic, pui
 s
  []
 
 
-Underfull \hbox (badness 4378) in paragraph at lines 56--59
+Underfull \hbox (badness 4378) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 decroit au m^eme ry-thme qu'elle a aug-mente en pre-mier lieu
 ,
  []
 
 
-Underfull \hbox (badness 2237) in paragraph at lines 56--59
+Underfull \hbox (badness 2237) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 ne fit pas beau-coup par-ler de lui a l'epoque. Mais lorsqu'e
 n
  []
 
 
-Underfull \hbox (badness 4647) in paragraph at lines 56--59
+Underfull \hbox (badness 4647) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 1971, con-formement a ses predictions, la pro-duc-tion petr
 oliere
  []
 
 
-Underfull \hbox (badness 2617) in paragraph at lines 56--59
+Underfull \hbox (badness 2617) in paragraph at lines 45--48
 \OT1/cmr/m/n/10 americaine at-teignit son max-i-mum et com-menca a decliner
 , ses
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 56--59
+Underfull \hbox (badness 10000) in paragraph at lines 45--48
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 56--59
+Underfull \hbox (badness 10000) in paragraph at lines 45--48
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 64--65
+Underfull \hbox (badness 10000) in paragraph at lines 52--54
 
  []
 
-<graphes/CourbeHubbert.png, id=21, 361.35pt x 289.08pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 52--54
+
+ []
+
+<graphes/CourbeHubbert.png, id=19, 361.35pt x 289.08pt>
 File: graphes/CourbeHubbert.png Graphic file (type png)
 <use graphes/CourbeHubbert.png>
-Package pdftex.def Info: graphes/CourbeHubbert.png  used on input line 78.
+Package pdftex.def Info: graphes/CourbeHubbert.png  used on input line 57.
 (pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
-[3 <./graphes/Production.png> <./graphes/DataEtHubbert.png> <./graphes/CourbeHu
-bbert.png>]
-<graphes/Sigmoide.png, id=33, 361.35pt x 289.08pt>
+<graphes/Sigmoide.png, id=20, 361.35pt x 289.08pt>
 File: graphes/Sigmoide.png Graphic file (type png)
 <use graphes/Sigmoide.png>
-Package pdftex.def Info: graphes/Sigmoide.png  used on input line 94.
+Package pdftex.def Info: graphes/Sigmoide.png  used on input line 58.
 (pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 100--102
+Underfull \hbox (badness 10000) in paragraph at lines 61--62
 
  []
 
-<graphes/Courbe_de_Hubbert_annotée.png, id=34, 361.35pt x 289.08pt>
+[3 <./graphes/Production.png> <./graphes/DataEtHubbert.png> <./graphes/CourbeHu
+bbert.png> <./graphes/Sigmoide.png>]
+File: graphes/CourbeHubbert.png Graphic file (type png)
+<use graphes/CourbeHubbert.png>
+Package pdftex.def Info: graphes/CourbeHubbert.png  used on input line 75.
+(pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
+
+Overfull \hbox (3.95099pt too wide) in paragraph at lines 77--87
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 S[]; t[]; \OT1/cmr/m/n/10 )$ per-met de def
+inir sans am-biguite la courbe dans la famille parametree. Comme le mon-tre
+ l'illustration
+ []
+
+File: graphes/Sigmoide.png Graphic file (type png)
+<use graphes/Sigmoide.png>
+Package pdftex.def Info: graphes/Sigmoide.png  used on input line 100.
+(pdftex.def)             Requested size: 193.47577pt x 154.78198pt.
+<graphes/Courbe_de_Hubbert_annotée.png, id=28, 361.35pt x 289.08pt>
 File: graphes/Courbe_de_Hubbert_annotée.png Graphic file (type png)
 <use graphes/Courbe_de_Hubbert_annotée.png>
 Package pdftex.def Info: graphes/Courbe_de_Hubbert_annotée.png  used on input 
-line 107.
+line 114.
 (pdftex.def)             Requested size: 217.6621pt x 174.12862pt.
-<graphes/SigmoideAnnotée.png, id=35, 361.35pt x 289.08pt>
+<graphes/SigmoideAnnotée.png, id=29, 361.35pt x 289.08pt>
 File: graphes/SigmoideAnnotée.png Graphic file (type png)
 <use graphes/SigmoideAnnotée.png>
-Package pdftex.def Info: graphes/SigmoideAnnotée.png  used on input line 108.
+Package pdftex.def Info: graphes/SigmoideAnnotée.png  used on input line 115.
 (pdftex.def)             Requested size: 217.6621pt x 174.12862pt.
-[4 <./graphes/Sigmoide.png> <./graphes/Courbe_de_Hubbert_annotée.png> <./graph
-es/SigmoideAnnotée.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 123--125
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 130--132
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 123--125
+Underfull \hbox (badness 10000) in paragraph at lines 130--132
 
  []
 
+[5 <./graphes/Courbe_de_Hubbert_annotée.png> <./graphes/SigmoideAnnotée.png>]
 
-LaTeX Font Warning: Command \large invalid in math mode on input line 187.
+LaTeX Font Warning: Command \large invalid in math mode on input line 192.
 
-[5]
-LaTeX Font Info:    Calculating math sizes for size <> on input line 194.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.7> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OML/cmm/m/it' in size <0.5> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.7> not available
-(Font)              size <5> substituted on input line 194.
-
-
-LaTeX Font Warning: Font shape `OMS/cmsy/m/n' in size <0.5> not available
-(Font)              size <5> substituted on input line 194.
-
-<graphes/isocurves_Smax.png, id=50, 462.528pt x 346.896pt>
+<graphes/isocurves_Smax.png, id=53, 462.528pt x 346.896pt>
 File: graphes/isocurves_Smax.png Graphic file (type png)
 <use graphes/isocurves_Smax.png>
-Package pdftex.def Info: graphes/isocurves_Smax.png  used on input line 211.
+Package pdftex.def Info: graphes/isocurves_Smax.png  used on input line 216.
 (pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
-<graphes/isocurves_ts.png, id=51, 462.528pt x 346.896pt>
+<graphes/isocurves_ts.png, id=54, 462.528pt x 346.896pt>
 File: graphes/isocurves_ts.png Graphic file (type png)
 <use graphes/isocurves_ts.png>
-Package pdftex.def Info: graphes/isocurves_ts.png  used on input line 212.
+Package pdftex.def Info: graphes/isocurves_ts.png  used on input line 217.
 (pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
-<graphes/isocurves_tau.png, id=52, 462.528pt x 346.896pt>
+<graphes/isocurves_tau.png, id=55, 462.528pt x 346.896pt>
 File: graphes/isocurves_tau.png Graphic file (type png)
 <use graphes/isocurves_tau.png>
-Package pdftex.def Info: graphes/isocurves_tau.png  used on input line 213.
+Package pdftex.def Info: graphes/isocurves_tau.png  used on input line 218.
 (pdftex.def)             Requested size: 159.62083pt x 119.7163pt.
-[6 <./graphes/isocurves_Smax.png> <./graphes/isocurves_ts.png> <./graphes/isocu
-rves_tau.png>] [7] [8] (rapport.aux)
 
-LaTeX Font Warning: Size substitutions with differences
-(Font)              up to 4.5pt have occurred.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 242--247
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--257
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--257
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--257
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--257
+
+ []
+
+[6]
+Underfull \hbox (badness 10000) in paragraph at lines 258--259
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--272
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 281--284
+
+ []
+
+[7 <./graphes/isocurves_Smax.png> <./graphes/isocurves_ts.png> <./graphes/isocu
+rves_tau.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 287--290
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
+
+ []
+
+File: graphes/Production.png Graphic file (type png)
+<use graphes/Production.png>
+Package pdftex.def Info: graphes/Production.png  used on input line 319.
+(pdftex.def)             Requested size: 156.49014pt x 125.193pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 315--321
+
+ []
+
+File: graphes/Production.png Graphic file (type png)
+<use graphes/Production.png>
+Package pdftex.def Info: graphes/Production.png  used on input line 329.
+(pdftex.def)             Requested size: 156.49014pt x 125.193pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 325--332
+
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<graphes/performances/perfs_ModelOnGeneratedData_DataQ_100.png, id=71, 722.7pt 
+x 578.16pt>
+File: graphes/performances/perfs_ModelOnGeneratedData_DataQ_100.png Graphic fil
+e (type png)
+<use graphes/performances/perfs_ModelOnGeneratedData_DataQ_100.png>
+Package pdftex.def Info: graphes/performances/perfs_ModelOnGeneratedData_DataQ_
+100.png  used on input line 339.
+(pdftex.def)             Requested size: 217.6621pt x 174.12863pt.
+<graphes/performances/perfs_ModelOnGeneratedData_DataQ_90.png, id=72, 722.7pt x
+ 578.16pt>
+File: graphes/performances/perfs_ModelOnGeneratedData_DataQ_90.png Graphic file
+ (type png)
+<use graphes/performances/perfs_ModelOnGeneratedData_DataQ_90.png>
+Package pdftex.def Info: graphes/performances/perfs_ModelOnGeneratedData_DataQ_
+90.png  used on input line 340.
+(pdftex.def)             Requested size: 217.6621pt x 174.12863pt.
+<graphes/performances/perfs_ModelOnGeneratedData_DataQ_80.png, id=73, 722.7pt x
+ 578.16pt>
+File: graphes/performances/perfs_ModelOnGeneratedData_DataQ_80.png Graphic file
+ (type png)
+<use graphes/performances/perfs_ModelOnGeneratedData_DataQ_80.png>
+Package pdftex.def Info: graphes/performances/perfs_ModelOnGeneratedData_DataQ_
+80.png  used on input line 341.
+(pdftex.def)             Requested size: 217.6621pt x 174.12863pt.
+<graphes/performances/perfs_ModelOnGeneratedData_DataQ_70.png, id=74, 722.7pt x
+ 578.16pt>
+File: graphes/performances/perfs_ModelOnGeneratedData_DataQ_70.png Graphic file
+ (type png)
+<use graphes/performances/perfs_ModelOnGeneratedData_DataQ_70.png>
+Package pdftex.def Info: graphes/performances/perfs_ModelOnGeneratedData_DataQ_
+70.png  used on input line 342.
+(pdftex.def)             Requested size: 217.6621pt x 174.12863pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8] [9 <./graphes/performances/perfs_ModelOnGeneratedData_DataQ_100.png> <./gra
+phes/performances/perfs_ModelOnGeneratedData_DataQ_90.png> <./graphes/performan
+ces/perfs_ModelOnGeneratedData_DataQ_80.png> <./graphes/performances/perfs_Mode
+lOnGeneratedData_DataQ_70.png>] [10] (rapport.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3640 strings out of 478864
- 59697 string characters out of 2848660
- 462199 words of memory out of 3000000
- 21496 multiletter control sequences out of 15000+600000
- 410893 words of font info for 53 fonts, out of 8000000 for 9000
+ 3751 strings out of 478864
+ 58667 string characters out of 2848660
+ 455920 words of memory out of 3000000
+ 21597 multiletter control sequences out of 15000+600000
+ 418301 words of font info for 80 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 70i,9n,81p,696b,270s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 70i,12n,81p,696b,305s stack positions out of 5000i,500n,10000p,200000b,80000s
 {E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/cm-super/cm-sup
 er-ts1.enc}<E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmbx10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmbx12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/font
-s/type1/public/amsfonts/cm/cmbxti10.pfb><E:/Users/nivle/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><E:/Users/nivle/AppData/Local/
-Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/nivle/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><E:/Users/ni
-vle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><E:/
-Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.
-pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/c
-m/cmmi7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmmi8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmr12.pfb><E:/Users/nivle/AppData/Local/Programs/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmr17.pfb><E:/Users/nivle/AppData/Local/Progr
-ams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><E:/Users/nivle/AppData/Loca
-l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><E:/Users/nivle/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><E:/Users/nivl
-e/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><E:/Use
-rs/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pf
-b><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmsy5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
-onts/cm/cmsy6.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmsy8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX
-/fonts/type1/public/amsfonts/cm/cmti10.pfb><E:/Users/nivle/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on rapport.pdf (8 pages, 425684 bytes).
+fonts/cm/cmbsy10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmbx10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmbx12.pfb><E:/Users/nivle/AppData/Local/Programs/M
+iKTeX/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><E:/Users/nivle/AppData/Local
+/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><E:/Users/nivle/AppD
+ata/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><E:/Users/n
+ivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><E
+:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi
+5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
+/cm/cmmi6.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmmi7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmmib10.pfb><E:/Users/nivle/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><E:/Users/nivle/AppData/Local/P
+rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><E:/Users/nivle/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr17.pfb><E:/Users/nivle
+/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><E:/User
+s/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><
+E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr
+7.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
+/cm/cmr8.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmsy5.pfb><E:/Users/nivle/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmsy6.pfb><E:/Users/nivle/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><E:/Users/nivle/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><E:/Users/nivle/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><E:/Users/nivle/
+AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb><E
+:/Users/nivle/AppData/Local/Programs/MiKTeX/fonts/type1/public/cm-super/sfrm100
+0.pfb>
+Output written on rapport.pdf (10 pages, 580387 bytes).
 PDF statistics:
- 173 PDF objects out of 1000 (max. 8388607)
+ 200 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 
