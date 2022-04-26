@@ -516,7 +516,7 @@ def plot_F_Data_Sigmoide(F, data, theta):
 
     plt.show()
     
-def save_CountryPlot(country, F, data, theta, init_args):
+def save_CountryPlot(country, F, data, theta, init_args, anticipation = False):
     
     # non-cumulated data 
     DP                  = Data_processing_Hub(country)
@@ -549,8 +549,15 @@ def save_CountryPlot(country, F, data, theta, init_args):
     # plt.xlabel("Temps (années)") 
     plt.ylabel("Prodcution totale (L)")
     
-    #plots the optimized sigmoide...
-    t = np.linspace(X[0],X[-1],1000)
+    # previews the future according to the optimized model
+    if anticipation != 0:
+        # print("X0= ", X[0], "years-1= ", years[-1] + anticipation)
+        t = np.linspace( X[0], years[-1] + anticipation, 1000)
+        # print("t= ", t)
+    else:
+        t = np.linspace(X[0],X[-1],1000)
+    
+    # plots the optimized sigmoide...
     plt.plot( t, sigmoide(t-X[0], theta), label = "Courbe sigmoïde optimisée")
     
     # titles and legend the plot
@@ -574,18 +581,22 @@ def save_CountryPlot(country, F, data, theta, init_args):
     plt.plot( t, hubbert(t-X[0], theta), label = "Courbe de Hubbert optimisée")
     plt.legend()
     
-    plt.savefig("../graphes/Pays/{}.png".format(country + str(datetime.date(datetime.now()))))
+    if anticipation != 0:
+        plt.savefig("../graphes/Pays/previsions/prev{}_{}.png".format( anticipation, country + str(datetime.date(datetime.now()))))
+    else:
+        plt.savefig("../graphes/Pays/{}.png".format(country + str(datetime.date(datetime.now()))))
+        
     plt.close()
     
 
-def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
+def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False, anticipation = 0):
 # =============================================================================
 #     Optimization of the parameters of the sigmoide to match the data of a specific country
 #input:
 #    location        : abreviation of the country (ex: FRA)
 #    init_args       : initial guess of the parameters to optimize (should not be too far from the solution)
 #    optiFunc        : algorithm to be used for the optimization
-#         
+#    anticipation    : number of years to predict   
 #output:
 #    location                : name of the country
 #    plot of F               : shows the evolution of the criterion during the optimization
@@ -607,7 +618,7 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
     crit        = F[-1]
 
     if savePlot:
-        save_CountryPlot(location, F, data, theta, init_args)
+        save_CountryPlot(location, F, data, theta, init_args, anticipation = anticipation)
     else:
         # plots the criterion's values and the optimized sigmoide on top of the data
         plot_F_Data_Sigmoide(F, data, theta)
@@ -619,7 +630,15 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot=False):
 # =============================================================================
 
 
-def test_OCDE(save=True):
+def test_OCDE(save=True, anticipation = 0):
+# =============================================================================
+#     Optimization on each country of the OCDE
+#input:
+#    save            : whether we want to save the resulting plots or not
+#    anticipation    : number of years to predict   
+#output:
+#    .png file    : plots of both the sigmoide and hubbert curve corresponding to the optimized parameters, on top of the data
+# =============================================================================    
     plt.close()
     
     results = [[]]
@@ -643,10 +662,10 @@ def test_OCDE(save=True):
         ts_init     = len(data)//2
         tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
         
-        results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save)]
+        results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save, anticipation = anticipation)]
     return results
 # ==================== Test test_OCDE() =======================================
-test_OCDE() # breaks for THA for unknown reasons ( LinAlgError: Singular matrix )
+test_OCDE(save = True, anticipation = 20) 
 # =============================================================================    
 
 
