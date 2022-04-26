@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 Data
 """
 
-class Data_processing:
+class Data_processing_Hub:
 
     t_start: int  # year
     t_end: int  # year
@@ -37,9 +37,6 @@ class Data_processing:
 
         self.t_start = T[0]
         self.t_end = T[-1]
-
-        for k in range(len(self.oil_production[1:])):
-            self.oil_production[k+1] += self.oil_production[k]
 
     def get_data(self):
         return self.oil_production
