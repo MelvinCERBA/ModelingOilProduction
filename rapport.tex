@@ -1,7 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx,wrapfig,lipsum}
-<<<<<<< HEAD
+
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{subfigure}
@@ -10,14 +10,6 @@
 \newcommand{\ramuno}{i}
 \def\MA#1{{\color{blue}#1}}
 \def\bs#1{\boldsymbol{#1}}
-
-=======
-\usepackage{subfigure}
-\usepackage{geometry}
-\usepackage{amsmath}
-\newcommand{\euler}{e}
-\newcommand{\ramuno}{i}
->>>>>>> parent of c8e4c37 (Update rapport.tex)
 % proportions du docc
  \geometry{
  a4paper,
@@ -75,44 +67,7 @@ $\indent$ Malgré tout, l'avènement du calcul informatique et la grande disponi
 % Introduction du modèle mathématique et explication des paramètres %
 $\indent$ Les auteurs qui se sont rapproprié la courbe de Hubbert ont notamment travaillé à lui donner une expression mathématique. Ceci leur a permis de définir son intégrale, que nous appellerons "fonction sigmoïde" tout au long de ce rapport. Pour des raisons que nous expliciterons plus bas, cette dernière s'avère plus facile à manier que la courbe de Hubbert.\\
 
-%\begin{figure}[h]
-%	\centering
-%    \subfigure{\includegraphics[width=0.40\textwidth]{graphes/CourbeHubbert.png}} 
-%    \subfigure{\includegraphics[width=0.40\textwidth]{graphes/Sigmoide.png}} 
-%    \caption{Une courbe de Hubbert et sa sigmoïde (son intégrale)}
-%    %\label{fig:foobar}
-%\end{figure}
 
-$\indent$ Une \textbf{courbe de Hubbert} est une fonction à 4 paramètres : $a$,$b$ et $\tau$, qui définissent sa forme ; et $t$, qui représente le temps. Par la suite, on notera indifféremment $Hubbert_{a,b,\tau}(t)$ ou $H_{a,b,\tau}(t)$.
-
-\begin{equation}\label{linspring}
-\begin{gathered}
-\includegraphics[width=0.40\textwidth]{graphes/CourbeHubbert.png}
-\end{gathered}
-Hubbert_{a,b,\tau}(t) = \frac{\frac{a b}{\tau} e^{-\frac{t}{\tau}}}{(1+b e^{-\frac{t}{\tau}})^2}
-\qquad
-\end{equation}
-\\
-$\indent$ Son intégrale, que nous appellerons \textbf{courbe sigmoïde}, est définie par :
-
-\begin{equation}\label{linspring}
-Sigmoide_{a,b,\tau}(t) =\frac{a}{1+ b e^{-t}{\tau}}
-\end{equation}
-
-$\indent$ Posons $S_{max} = a$, $t_* = \tau ln(b)$ et $\Theta = (S_{max}, t_*, \tau)$,. On obtient :
-
-\begin{equation}\label{linspring}
-\begin{gathered}
-\includegraphics[width=0.40\textwidth]{graphes/Sigmoide.png}
-\end{gathered}
-Sigmoide_{\Theta}(t) = S_{max} \frac{1}{1+ e^{-\frac{(t-t_*)}{\tau}}}
-\qquad
-\end{equation}
-
-\textit{ Par la suite, on notera indifféremment $Sigmoide_{\Theta}(t)$, $Sig_{\Theta}(t)$ ou $Sig(t ; \Theta)$.}
-\\
-
-<<<<<<< HEAD
 \begin{figure}[h]
 	\centering
     \subfigure{\includegraphics[width=0.40\textwidth]{graphes/CourbeHubbert.png}}
@@ -167,11 +122,7 @@ Cette fonction est largement connue sous le nom de \textit{fonction
 de ressources naturelles, la sigmoïde modélise l'évolution temporelle
 \textit{cumulée} de ressource extrait du sol.
 
-
-Rappelons notre objectif et nos hypothèses : nous voulons modéliser la production de pétrole au cours du temps, et nous supposons que celle-ci atteint un unique pic. Il nous faudra donc déterminer le $t$ pour lequel ce pic est atteint ainsi que la hauteur de ce pic (quantité de pétrole produit à l'instant $t$).
-=======
 $\indent$ Rappelons notre objectif et nos hypothèses : nous voulons modéliser la production de pétrole au cours du temps, et nous supposons que celle-ci atteint un unique pic. Il nous faudra donc déterminer le $t$ pour lequel ce pic est atteint ainsi que la hauteur de ce pic (quantité de pétrole produit à l'instant $t$).
->>>>>>> parent of c8e4c37 (Update rapport.tex)
 
 \begin{figure}[h]
 	\centering
@@ -203,13 +154,8 @@ $\indent$ \textbf{Conditions à vérifier}
 $\indent$\textbf{Algorithme}\\
 $\indent$ L'algorithme fonctionne de la manière suivante : 
 \begin{enumerate}
-<<<<<<< HEAD
 \item Il calcule $\bs{\nabla}\text{Crit}_{\text{D}}(S(t; \boldsymbol{\theta}))$ le gradient de la fonction critère.
 \item Il définit une direction de descente $d$ à partir de $\bs{\nabla}C$.
-=======
-\item Il calcule $\vec{\nabla}Crit_D(Sig(t;\Theta))$ le gradient de la fonction critère.
-\item Il définit une direction de descente $d$ à partir de $vec{\nabla}C$.
->>>>>>> parent of c8e4c37 (Update rapport.tex)
 \item Il modifie les paramètres initiaux selon $d$ et un pas $\delta t$.
 \item Puis il recommence, jusqu'à satisfaire des conditions prédéfinies qui assure une certaine proximité au minimum de la fonction.
 \end{enumerate}
@@ -241,11 +187,7 @@ $\indent$ Afin de converger vers les paramètres optimaux, l'algorithme de la de
 $\indent$ A partir de (\ref{eqn:eqCrit}), on obtient :
 
 \begin{equation}\label{linspring}
-<<<<<<< HEAD
 	\nabla \text{Crit}(\text{S}(t;\boldsymbol{\theta } )) = \sum_{k=1}^{N} 2 *\nabla\text{ S}(t_k ;\boldsymbol{\theta }) * (\text{S}(t_k ;\boldsymbol{\theta } )- \text{D}(t_k))
-=======
-	\vec{\nabla} Crit(Sig(t;\Theta )) = \sum_{k=1}^{N} 2 * \vec{\nabla} Sig(t_k ;\Theta) * (Sig(t_k ; \Theta )- D(t_k))
->>>>>>> parent of c8e4c37 (Update rapport.tex)
 \end{equation}
 
 $\indent$ Il nous faut donc définir $\vec{\nabla} Sig(\Theta)$ :
@@ -316,7 +258,6 @@ Le gradient nous d
 \subsubsection{Vérification du gradient par différences finies}
 % Test rapide du gradient par la méthode des différences finies %
 \textit{Test rapide du gradient par la méthode des différences finies}
-<<<<<<< HEAD
 Rappel de la méthode des différences finies\footnote{
 
 G. Allaire. Analyse numérique et optimisation (French Edition). ECOLE POLYTECHNIQUE, 2012.} :\\
@@ -365,8 +306,6 @@ Et donc on trouve bien que $diff$ est un petit nombre qui converge vers le $0$.\
 Alors, on a bien fait la vérification de notre gradient par la méthode de différences finies de la fonction \textit{Sigmoide}.\\
 Et de la m\^{e}me manière on vérifie aussi le gradient de la fonction \textit{Critère}.\\
 
-=======
->>>>>>> parent of c8e4c37 (Update rapport.tex)
 
 \subsubsection{Test de convergence avec données bruitées et non bruitées, en commençant plus ou moins loin de la solution}
 
@@ -467,7 +406,7 @@ $\indent$ Dans le cas de la France, nous avions approximé manuellement les des 
 
 \begin{equation}\label{linspring}
 \bs{\Theta}_{\text{init}} = \left[\begin{array}{c}
-S_{\text{max}} = max{D_n}\\
+S_{\text{max}} = max \left\{ D_n \right\} \\
 \\
 t_* = \frac{N}{2} \\
 \\
@@ -475,7 +414,7 @@ t_* = \frac{N}{2} \\
 \end{array}\right]
 \end{equation}
 
-\subsubsection{Vérification de la pertinence sur la somme de la production mondiale \textit{-optionnel}}
+\subsubsection{ Modélisation de la production mondiale}
 % Test de la pertinence du modèle sur une vue globale %
 \textit{Test de la pertinence du modèle sur une vue globale}
 
@@ -483,11 +422,11 @@ t_* = \frac{N}{2} \\
 % Après avoir mit en exergue les lacunes sur quelques jeux de données, tentatives de caractérisations des hypothèses de validité du modèle %
 \textit{Après avoir mit en exergue les lacunes sur quelques jeux de données, tentatives de caractérisations des hypothèses de validité du modèle}
 
-\subsection{Pic de production \textit{-optionnel}}
+\subsection{Prévisions à partir du modèle}
 % Vérification de la performance de l'algorithme pour trouver les pics de production %
-\textit{Vérification de la performance de l'algorithme pour trouver les pics de production}
+$\indent$ Nous avons constaté que, lorsque certaines hypothèses sont vérifiées, le modèle de Hubbert colle relativement bien au données réelles. Cependant, modéliser des données à posteriori n'a que peu d'intérêt. Notre algorithme est-il capable de plus ? Le modèle obtenu permet-il de prédire l'évolution de la production dans une fenêtre qui dépasse celle des données sur lesquelles il a été optimisé ?
 
-\subsubsection{Vérification de la performance de l'algorithme pour trouver les pics de production a posteriori}
+\subsubsection{Optimisation sur données incomplètes}
 % La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori %
 \textit{La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori}
 
@@ -497,9 +436,9 @@ t_* = \frac{N}{2} \\
 
 \subsection{Amélioration de modèle}
 % Avec un algorithme flexible, on peut essayer d'améliorer la modélisation %
-\textit{Avec un algorithme flexible, on peut essayer d'améliorer la modélisation}
+$\indent$ Le modèle de Hubbert nous donne des résultats plutôt satisfaisants, mais ses hypothèses sont assez contraignantes. Nous avons donc réfléchi à une façon de l'étendre, de sorte à ce qu'il soit applicable à des cas plus variés.
 
-\subsubsection{Deux sigmoïdes}
+\subsubsection{ Deux sigmoïdes}
 % Si il y a deux pics, est-ce que deux sigmoïdes additionnées est un bonne modélisation? %
 \textit{Si il y a deux pics, est-ce que deux sigmoïdes additionnées est un bonne modélisation?}
 
