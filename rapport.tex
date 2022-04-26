@@ -375,30 +375,21 @@ $\indent$ Tentons désormais de définir le cadre au sein duquel notre algorithm
 
 
 \begin{itemize}
-
-	\item Le \textit{bruit}. Nous allons "salir" nos données en leur ajoutant un bruit gaussien, c'est à dire une perturbation égale à une variable aléatoire qui suit la loi de probabilités normale centrée en $0$ :
-		\begin{equation}
-			p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{\frac{x^2}{2 \sigma^2}}
-		\end{equation}\\
-	Nous jouerons donc sur le paramètre $\sigma$.
 	
 	\item La \textit{distance} à la solution des paramètres d'initialisation. Comme nous générons les données à partir d'une courbe sigmoïde que nous définissons, nous avons connaissance des paramètres optimaux $\bs{\Theta}_{\text{opti}}$. Nous pouvons donc définir les paramètres d'initialisation $\bs{\Theta}_{\text{init}}$ de l'algorithme en fonction de ceux-ci, et donc décider de la "distance" qui sépare l'état initial de l'état optimal.  
 		\begin{equation}
 			\bs{\Theta}_{init} = (1+a)*\bs{\Theta}_{opti}
 		\end{equation}\\
 	 Nous jouerons ici sur le paramètre a.
+	 
+	\item Le \textit{bruit}. Nous allons "salir" nos données en leur ajoutant un bruit gaussien, c'est à dire une perturbation égale à une variable aléatoire qui suit la loi de probabilités normale centrée en $0$ :
+		\begin{equation}
+			p(x) = \frac{1}{\sqrt{2 \pi \sigma^2}} e^{\frac{x^2}{2 \sigma^2}}
+		\end{equation}\\
+	Nous jouerons donc sur le paramètre $\sigma$.
+	
+	
 \end{itemize}
-
-
-% Extremum de bruit avec éloingement nul
-$\indent$ Cherchons donc le niveau de bruit limite : celui au delà duquel notre algorithme ne converge plus, même avec des paramètres initiaux très proches de la solution.\\
-% à illustrer
-\begin{figure}[h]
-	\center
-	\includegraphics[width=5.5cm]{graphes/Production.png} % remplacer par le bon graphe
-\end{figure} \\
-
-$\indent$ On constate qu'avec des paramètres initiaux parfait, l'algorithme bloque à partir d'un bruit de 200. ( la matrice B est singulière )
 
 % Extremum de l'éloignement des params initiaux avec bruit nul
 $\indent$ Cherchons maintenant la distance limite : celle à partir de laquelle l'algorithme ne converge plus, même avec des données non-bruitées.\\
@@ -409,10 +400,28 @@ $\indent$ Cherchons maintenant la distance limite : celle à partir de laquelle 
 \end{figure}\\
 $\indent$ On remarque donc qu'avec des données non bruitées, l'algorithme ne bloque pas, mais ne converge plus à partir de $a = 1$.\\
 
+% Extremum de bruit avec éloingement nul
+$\indent$ Cherchons donc le niveau de bruit limite : la valeur de $\sigma$ au delà de laquelle notre algorithme ne converge plus, même avec des paramètres initiaux très proches de la solution ($\bs{\Theta}_{init} = 1,10*\bs{\Theta}_{opti}.$)\\
+% à illustrer
+\begin{figure}[h]
+	\center
+	\includegraphics[width=5.5cm]{graphes/Production.png} % remplacer par le bon graphe
+\end{figure} \\
+
+$\indent$ On constate qu'avec des paramètres initiaux très proches de la solution, l'algorithme bloque à partir d'un bruit de 200. ( la matrice B est singulière )
+
+
+
 \subsection{Performance \textit{-optionnel}}
 % Test des performances de l'algorithme %
-\textit{Test des performances de l'algorithme}
-% performances sur données plus ou moins bruitées
+$\indent$ Testons maintenant les performances de notre algorithme de manière plus rigoureuse. 
+
+
+\subsubsection{Temps de convergence selon diffèrent paramètres}
+% Différents tests sur la vitesse de convergence sur par exemple :  le niveau de bruit, la distance de départ par rapport à la solution, facteur de rebroussement, etc %
+Pour chaque valeurs de $\sigma$ et de $a$, nous allons lancer l'algorithme d'optimisation 15 fois et calculer les moyennes du temps d'exécution et de la valeur du critère des courbes sigmoïdes obtenues.
+ 
+% performances sur données plus ou moins bruitées avec 
 \begin{figure}[h]
 	\center
 	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/performances/perfs_ModelOnGeneratedData_DataQ_100.png}}
@@ -421,23 +430,50 @@ $\indent$ On remarque donc qu'avec des données non bruitées, l'algorithme ne b
 	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/performances/perfs_ModelOnGeneratedData_DataQ_70.png}}
 \end{figure}
 
-
-\subsubsection{Temps de convergence selon diffèrent paramètres}
-% Différents tests sur la vitesse de convergence sur par exemple :  le niveau de bruit, la distance de départ par rapport à la solution, facteur de rebroussement, etc %
-\textit{Différents tests sur la vitesse de convergence sur par exemple : le niveau de bruit, la distance entre le point de départ et la solution, le facteur de rebroussement, etc }
-
 \section{Données réelles}
 % Après l'introduction de l'algorithme, introduction de l'algorithme aux données réelles et évaluation des ces performances %
-$\indent$ Maintenant que nous savons que notre algorithme fonctionne, voyons si le modèle qu'il génère est pertinent lorsqu'il s'agit de représenter des données réelles.
+$\indent$ Maintenant que nous savons que notre algorithme fonctionne, voyons si le modèle qu'il génère est pertinent lorsqu'il s'agit de représenter des données réelles. Pour cela, nous utiliserons les données de production pétrolière que l'OCDE met à disposition de chacun sur son site web.
 
-\subsection{Vérification de la pertinence du modèle}
+\subsection{Modélisation de la production pétrolière de la France}
 % Application de l'algorithme sur un jeu de données pertinentes %
-$\indent$ Essayons par exemple d'appliquer notre algorithme aux données de production pétrolière de la France.
+$\indent$ Essayons par exemple d'appliquer notre algorithme aux données de production pétrolière de la France. On jouant manuellement sur les paramètres, on trouve une première approximation de la sigmoide optimale :
 
+%remplacer par la sigmoide obtenue avec les sliders
+\begin{equation}\label{linspring} 
+\begin{gathered}
+\includegraphics[width=0.40\textwidth]{graphes/CourbeHubbert.png} 
+\end{gathered}
+S_{75000,16,6.5}(t) 
+\qquad
+\end{equation}
 
-\subsubsection{Vérification de la pertinence du modèle sur plusieurs set de donnés \textit{-optionnel}}
+$\indent$ Nous allons donc lancer l'algorithme avec ces paramètres initiaux. Voici le modèle que l'on obtient :
+
+% remplacer par le graphe ploté par l'optimisation et par les paramètres rendus
+\begin{equation}\label{linspring} 
+\begin{gathered}
+\includegraphics[width=0.40\textwidth]{graphes/CourbeHubbert.png} 
+\end{gathered}
+S_{75000,16,6.5}(t) 
+\qquad
+\end{equation}
+
+$\indent$ Le résultat est pertinent : il colle bien aux données et reconnait avec précision le pic de production ainsi que la quantité totale de pétrole produite. A priori, l'algorithme est assez efficace et ses résultats sont pertinents. Mais d'une part nous avons dû l'initialiser manuellement, et d'autre part, la production pétrolière de certains pays ne suit pas aussi clairement une courbe en cloche que celle de la France.
+
+\subsubsection{Application de l'algorithme aux données des pays de l'OCDE}
 % Généralisation du test de pertinence %
-\textit{Généralisation du test de pertinence}
+$\indent$ Essayons maintenant d'automatiser notre démarche pour la généraliser à l'ensemble des pays dont les données de production pétrolière sont présentes sur le site de l'OCDE. \\
+$\indent$ Dans le cas de la France, nous avions approximé manuellement les des paramètres initiaux. Ici, afin d'automatiser le processus, nous allons définir $\bs{\Theta}_{\text{init}}$ comme suit : \\
+
+\begin{equation}\label{linspring}
+\bs{\Theta}_{\text{init}} = \left[\begin{array}{c}
+S_{\text{max}} = max{D_n}\\
+\\
+t_* = \frac{N}{2} \\
+\\
+\tau = 6,5
+\end{array}\right]
+\end{equation}
 
 \subsubsection{Vérification de la pertinence sur la somme de la production mondiale \textit{-optionnel}}
 % Test de la pertinence du modèle sur une vue globale %
