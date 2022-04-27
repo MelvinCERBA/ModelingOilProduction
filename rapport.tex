@@ -397,9 +397,9 @@ S_{75000,16,6.5}(t)
 \qquad
 \end{equation}
 
-$\indent$ Le résultat est pertinent : il colle bien aux données et reconnait avec précision le pic de production ainsi que la quantité totale de pétrole produite. A priori, l'algorithme est assez efficace et ses résultats sont pertinents. Mais d'une part nous avons dû l'initialiser manuellement, et d'autre part, la production pétrolière de certains pays ne suit pas aussi clairement une courbe en cloche que celle de la France.
+$\indent$ Le résultat semble pertinent : il colle bien aux données et reconnait avec précision le pic de production ainsi que la quantité totale de pétrole produite. A priori, l'algorithme est assez efficace et ses résultats sont pertinents. Mais d'une part nous avons dû l'initialiser manuellement, et d'autre part, la production pétrolière de certains pays ne suit pas aussi clairement une courbe en cloche que celle de la France.
 
-\subsubsection{Application de l'algorithme aux données des pays de l'OCDE}
+\subsection{Application de l'algorithme aux données des pays de l'OCDE}
 % Généralisation du test de pertinence %
 $\indent$ Essayons maintenant d'automatiser notre démarche pour la généraliser à l'ensemble des pays dont les données de production pétrolière sont présentes sur le site de l'OCDE. \\
 $\indent$ Dans le cas de la France, nous avions approximé manuellement les des paramètres initiaux. Ici, afin d'automatiser le processus, nous allons définir $\bs{\Theta}_{\text{init}}$ comme suit : \\
@@ -413,26 +413,83 @@ t_* = \frac{N}{2} \\
 \tau = 6,5
 \end{array}\right]
 \end{equation}
+\\
+$\indent$ Voici quelques cas intéressants :
+\newpage
+\subsubsection{Un modèle généralement pertinent}
+$\indent$ La plupart des cas sont semblables à celui de la Norvège : la courbe obtenue colle relativement bien aux données, la production totale et l'année du pic sont estimés avec une marge d'erreur assez faible.\\
+
+\begin{figure}[h]
+	\center
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/NOR2022-04-26.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/SVN2022-04-26.png}}
+\end{figure}
+
+
+\subsubsection{Un modèle parfois inadapté}
+$\indent$ Dans des pays comme l'Azerbaijan, où la production est relativement constante, le modèle s'avère sans surprise complètement inadapté.\\
+  
+\begin{figure}[h]
+	\center
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/MEX2022-04-26.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/BHR2022-04-26.png}}
+\end{figure}
+% Chercher à expliquer ce schéma de production dans ces pays
+
+
+\newpage
+\subsubsection{Des cas ambigus}
+$\indent$ Pour certains pays, comme l'Albanie ou l'Australie, le modèle colle vaguement aux données, mais il apparait assez clairement qu'il est limité par ses hypothèses : il y a eu dans ces pays plus d'un pic de production. Néanmoins, si l'on regarde chaque pic indépendant, il ne semble pas déraisonnable de penser qu'il pourrait être modélisé par une courbe de Hubbert. Pourrait-on modifier notre modèle pour lui permettre de représenter des cas de ce genre ? Nous étudierons la question par la suite.
+
+\begin{figure}[h!]
+	\center
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/ALB2022-04-26.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/AUS2022-04-26.png}}
+\end{figure}
+
 
 \subsubsection{ Modélisation de la production mondiale}
 % Test de la pertinence du modèle sur une vue globale %
-\textit{Test de la pertinence du modèle sur une vue globale}
+$\indent$ Qu'en est-il de la production cumulée de tous les pays de l'OCDE ? La courbe de Hubbert permet-elle d'estimer la quantité de pétrole que l'humanité entière pourrait exploiter ? Il semblerait que non : la production mondiale ne semble pas vérifier l'hypothèse du pic unique et symétrique. 
 
-\subsubsection{Explication des lacunes du modèle}
-% Après avoir mit en exergue les lacunes sur quelques jeux de données, tentatives de caractérisations des hypothèses de validité du modèle %
-\textit{Après avoir mit en exergue les lacunes sur quelques jeux de données, tentatives de caractérisations des hypothèses de validité du modèle}
+\begin{figure}[h]
+	\center
+	\subfigure{\includegraphics[width=0.7\textwidth]{graphes/Pays/OECD2022-04-26.png}}
+\end{figure}
+
+
+
+
 
 \subsection{Prévisions à partir du modèle}
 % Vérification de la performance de l'algorithme pour trouver les pics de production %
 $\indent$ Nous avons constaté que, lorsque certaines hypothèses sont vérifiées, le modèle de Hubbert colle relativement bien au données réelles. Cependant, modéliser des données à posteriori n'a que peu d'intérêt. Notre algorithme est-il capable de plus ? Le modèle obtenu permet-il de prédire l'évolution de la production dans une fenêtre qui dépasse celle des données sur lesquelles il a été optimisé ?
 
+
 \subsubsection{Optimisation sur données incomplètes}
 % La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori %
 \textit{La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori}
 
+
 \subsubsection{Performance de l'algorithme pour trouver les pics de production sur les données qui peuvent être modélisées par une sigmoïde}
 % En prenant des sets de données qui peuvent être convenablement modélisé par une sigmoïde, on peut cherche à quel point le modèle est prédictif. Pour cela on calcul la précision avec laquelle l'algorithme prédit le pic de production en se limitant aux premières données jusqu'à un temps $t$ %
 \textit{En prenant des sets de données qui peuvent être convenablement modélisé par une sigmoïde, on peut cherche à quel point le modèle est prédictif. Pour cela on calcul la précision avec laquelle l'algorithme prédit le pic de production en se limitant aux premières données jusqu'à un temps $t$}
+
+
+
+
+
+
+\subsection{Les lacunes du modèle}
+% Après avoir mit en exergue les lacunes sur quelques jeux de données, tentatives de caractérisations des hypothèses de validité du modèle %
+$\indent$ Comme nous l'avons vu, la pertinence du modèle de Hubbert est inconstant. Si dans la plupart des cas il colle assez bien à la réalité, les cas qui le tiennent en échec ne manquent pas. Nous avons clairement défini ses hypothèses dans l'introduction :
+\begin{itemize}
+	\item La production de ressources premières croit, atteint un unique pic, puis décroit.
+	\item Son évolution est symétrique par rapport à cet unique pic
+\end{itemize}
+
+$\indent$ L'expérience nous montre que ces hypothèse sont souvent fausses : certains pays, comme l'Albanie ou l'Australie, découvrent un nouveau gisement après avoir commencé, et potentiellement terminé, d'en exploiter un premier. D'autres, comme le Mexique, n'entrent pas dans le schéma industriel classique : la croissance initiale laisse place à la stagnation plutôt qu'à la décroissance. 
+
 
 \subsection{Amélioration de modèle}
 % Avec un algorithme flexible, on peut essayer d'améliorer la modélisation %

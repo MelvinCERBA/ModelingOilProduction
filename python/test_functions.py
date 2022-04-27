@@ -515,79 +515,6 @@ def plot_F_Data_Sigmoide(F, data, theta):
     
 
     plt.show()
-    
-def save_CountryPlot(country, F, data, theta, init_args, anticipation = False):
-    
-    # non-cumulated data 
-    DP                  = Data_processing_Hub(country)
-    hubData             = DP.get_data() 
-    startYear           = DP.get_Tstart()
-    
-    # years from start to last data
-    years               = [startYear + k for k in range( 0, len(data), 1)]
-    
-    #  years from start (W) and corresponding non-cumulated production (Z)
-    W, Z                = years, hubData
-    
-    # years from start (X) and corresponding cumulated production (Y)
-    X, Y                = years, data
-
-    plt.figure()
-    
-# ======== plots the successive values of the criterion... ====================
-#     plt.subplot(211)
-#     plt.plot(F)
-#     plt.xlabel("Itérations")
-#     plt.ylabel("Critère")
-# =============================================================================
-
-    # plots the cumulated data...
-    plt.subplot(211)
-    plt.scatter(X,Y,marker="+", color="red", label = "Données de l'OCDE")
-    
-    # titles the axes...
-    # plt.xlabel("Temps (années)") 
-    plt.ylabel("Prodcution totale (L)")
-    
-    # previews the future according to the optimized model
-    if anticipation != 0:
-        # print("X0= ", X[0], "years-1= ", years[-1] + anticipation)
-        t = np.linspace( X[0], years[-1] + anticipation, 1000)
-        # print("t= ", t)
-    else:
-        t = np.linspace(X[0],X[-1],1000)
-    
-    # plots the optimized sigmoide...
-    plt.plot( t, sigmoide(t-X[0], theta), label = "Courbe sigmoïde optimisée")
-    
-    # titles and legend the plot
-    plt.title(country)
-    plt.legend()
-    
-    
-# ========== plots the sigmoide corresponding to the initial guess ============
-#     plt.plot( t, sigmoide(t-X[0], init_args), '--', color='black' )
-# =============================================================================
-    
-    # plots the non cumulated data...
-    plt.subplot(212)
-    plt.scatter(W,Z,marker="+", color="red", label = "Données de l'OCDE")
-    
-    # titles the axes...
-    plt.xlabel("Temps (années)")
-    plt.ylabel("Prodcution (L)")
-    
-    #plots the optimized sigmoide...
-    plt.plot( t, hubbert(t-X[0], theta), label = "Courbe de Hubbert optimisée")
-    plt.legend()
-    
-    if anticipation != 0:
-        plt.savefig("../graphes/Pays/previsions/prev{}_{}.png".format( anticipation, country + str(datetime.date(datetime.now()))))
-    else:
-        plt.savefig("../graphes/Pays/{}.png".format(country + str(datetime.date(datetime.now()))))
-        
-    plt.close()
-    
 
 def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False, anticipation = 0):
 # =============================================================================
@@ -607,11 +534,14 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False
 # =============================================================================
     
     # data of the selected country...
-    data        = Data_processing(location).get_data()
+    data                = Data_processing(location).get_data()
+    
+    # data to be used for optimization ( = data - the years we want the model to anticipate)
+    shortData       = [data[k] for k in range(len(data) - anticipation)]
     
     # optimized parameters and values of the criterion during the optimization ...
     start       = time.time()
-    theta, F    = optiFunc(data, init_args)
+    theta, F    = optiFunc(shortData, init_args)
     end         = time.time()
     
     chrono      = end-start
@@ -626,6 +556,133 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False
     return location, chrono, crit, theta, F, init_args
 # ==================== Test ==================================================
 # name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True)
+# print("chrono = ", chrono, "crit = ", crit)
+# =============================================================================
+    
+def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
+    
+    # non-cumulated data 
+    DP                  = Data_processing_Hub(country)
+    dataHub             = DP.get_data() 
+    startYear           = DP.get_Tstart()
+    
+    # first year to be anticipated
+    pivotYear           = len(data) - anticipation
+    
+    # years from start to last data used by the optimization
+    years               = [startYear + k for k in range( 0, pivotYear , 1)]
+    
+    # years the model is trying to anticipate
+    yearsAnticipated    = [ years[-1] + k for k in range( 1, anticipation + 1, 1)]
+
+
+    # sets of data to be used to plot in different colors the data that's been used or not
+    usedDataSig         = [ data[k] for k in range( 0, pivotYear , 1)]
+    unusedDataSig       = [ data[k] for k in range( pivotYear, len(data) , 1)]
+    
+    usedDataHub         = [ dataHub[k] for k in range( 0, pivotYear , 1)]
+    unusedDataHub       = [ dataHub[k] for k in range( pivotYear, len(dataHub) , 1)]
+    
+    
+    plt.figure()
+    
+# ======== plots the successive values of the criterion... ====================
+#     plt.subplot(211)
+#     plt.plot(F)
+#     plt.xlabel("Itérations")
+#     plt.ylabel("Critère")
+# =============================================================================
+
+    # plots the cumulated data...
+    plt.subplot(211)
+    
+    
+    # titles the axes...
+    # plt.xlabel("Temps (années)") 
+    plt.ylabel("Prodcution totale (L)")
+    
+    # previews the future according to the optimized model
+    if anticipation != 0:
+        # plots both used and unused data
+        plt.scatter(years, usedDataSig, marker="+", color="red")
+        plt.scatter(yearsAnticipated, unusedDataSig, marker="+", color="orange", label = "Production totale réelle")
+        
+        # plots the optimized sigmoide and its previsions in different colors...
+        t1 = np.linspace( years[0], years[-1], 1000)
+        t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
+        
+        # optimized sigmoide...
+        plt.plot( t1, sigmoide(t1-years[0], theta))
+        
+        # previsions of the model...
+        plt.plot( t2, sigmoide(t2-years[0], theta), label = "Prévisions")
+        
+        
+    else:
+        # plots the data
+        plt.scatter(years, data, marker="+", color="red", label = "Courbe sigmoïde")
+        
+        # plots the optimized sigmoide...
+        t = np.linspace(years[0],years[-1],1000)
+        plt.plot( t, sigmoide(t-years[0], theta), label = "Courbe sigmoïde")
+    
+    
+    
+    # titles and legend the plot
+    plt.title(country + f" : prévisions sur {anticipation} ans")
+    plt.legend()
+    
+    
+# ========== plots the sigmoide corresponding to the initial guess ============
+#     plt.plot( t, sigmoide(t-X[0], init_args), '--', color='black' )
+# =============================================================================
+    
+    # plots the non cumulated data...
+    plt.subplot(212)
+    plt.scatter(years, usedDataHub ,marker="+", color="red", label = "Données de l'OCDE")
+    plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange")
+    
+    # titles the axes...
+    plt.xlabel("Temps (années)")
+    plt.ylabel("Prodcution (L)")
+    
+    #plots the optimized sigmoide...
+    # previews the future according to the optimized model
+    if anticipation != 0:
+        # plots both used and unused data
+        plt.scatter(years, usedDataHub, marker="+", color="red")
+        plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Production réelle")
+        
+        # plots the optimized sigmoide and its previsions in different colors...
+        t1 = np.linspace( years[0], years[-1], 1000)
+        t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
+        
+        # optimized sigmoide...
+        plt.plot( t1, hubbert(t1-years[0], theta))
+        
+        # previsions of the model...
+        plt.plot( t2, hubbert(t2-years[0], theta), label = "Prévisions")
+        
+        
+    else:
+        # plots the data
+        plt.scatter(years, dataHub, marker="+", color="red", label = "Courbe de Hubbert")
+        
+        # plots the optimized sigmoide...
+        t = np.linspace(years[0],years[-1],1000)
+        plt.plot( t, hubbert(t-years[0], theta), label = "Courbe de Hubbert")
+        
+
+    plt.legend()
+    
+    if anticipation != 0:
+        plt.savefig("../graphes/Pays/previsions/prev{}_{}.png".format( anticipation, country + str(datetime.date(datetime.now()))))
+    else:
+        plt.savefig("../graphes/Pays/{}.png".format(country + str(datetime.date(datetime.now()))))
+        
+    plt.close()
+# ==================== Test save_countryPlot() ================================
+# name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True, anticipation = 20)
 # print("chrono = ", chrono, "crit = ", crit)
 # =============================================================================
 
@@ -665,9 +722,13 @@ def test_OCDE(save=True, anticipation = 0):
         results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save, anticipation = anticipation)]
     return results
 # ==================== Test test_OCDE() =======================================
-test_OCDE(save = True, anticipation = 20) 
+# test_OCDE(save = True, anticipation = 20) 
 # =============================================================================    
 
+# ==================== Test tes_OCDE() previsions =============================
+for a in range(5,26,5):
+    test_OCDE(save = True, anticipation = a) 
+# =============================================================================
 
 def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = False, filename = ""):
 # =============================================================================
