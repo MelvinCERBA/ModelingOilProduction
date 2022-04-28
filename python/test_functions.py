@@ -2,7 +2,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from functions import sigmoide, noised_sigmoide, grad_sigmoide, least_square,grad_least_square, hubbert
+from functions import sigmoide, noised_sigmoide, grad_sigmoide, least_square,grad_least_square, hubbert, sig_toHub
 from mpl_toolkits.axes_grid.axislines import SubplotZero
 from descent import descent, descentArmijo, descentScaled
 from data_processing_Sig import Data_processing
@@ -357,7 +357,7 @@ def opti_generatedData(noise, perfect_args, delta_args=1.1, tend=60, optiFunc = 
 
 
     
-def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_steps = 3, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1, Niter = 100):
+def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_steps = 3, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1, Niter = 100):
 # =============================================================================
 #     monitors the optimization on generated data for different values of noise and for different initial params
 # input:
@@ -483,7 +483,7 @@ def testPerf_NoisedData(perfect_args, noise_steps = 3, noise_dt = 10, argsDelta_
             
     return time_results, criterion_results
 # ==================== test testPerf_NoisedData() =============================
-# testPerf_NoisedData(perfect_args_gen, noise_steps = 5, noise_dt = 20, argsDelta_steps = 6, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 30)
+# testPerf_NoisedData(perfect_args_gen, noise_steps = 5, noise_dt = 20, argsDelta_steps = 6, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 100)
 # =============================================================================
 
 
@@ -516,12 +516,11 @@ def plot_F_Data_Sigmoide(F, data, theta):
 
     plt.show()
 
-def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False, anticipation = 0):
+def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipation = 0):
 # =============================================================================
 #     Optimization of the parameters of the sigmoide to match the data of a specific country
 #input:
 #    location        : abreviation of the country (ex: FRA)
-#    init_args       : initial guess of the parameters to optimize (should not be too far from the solution)
 #    optiFunc        : algorithm to be used for the optimization
 #    anticipation    : number of years to predict   
 #output:
@@ -535,6 +534,13 @@ def opti_Country(location, init_args, optiFunc = descentScaled, savePlot = False
     
     # data of the selected country...
     data                = Data_processing(location).get_data()
+    
+    # initial guess of the country's optimal parameters :
+    Smax_init   = max(data)
+    ts_init     = len(data)//2
+    tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
+    
+    init_args   = (Smax_init, ts_init, tau_init)
     
     # data to be used for optimization ( = data - the years we want the model to anticipate)
     shortData       = [data[k] for k in range(len(data) - anticipation)]
@@ -604,15 +610,15 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
     # previews the future according to the optimized model
     if anticipation != 0:
         # plots both used and unused data
-        plt.scatter(years, usedDataSig, marker="+", color="red")
-        plt.scatter(yearsAnticipated, unusedDataSig, marker="+", color="orange", label = "Production totale réelle")
+        plt.scatter(years, usedDataSig, marker="+", color="red", label = "Données utilisées")
+        plt.scatter(yearsAnticipated, unusedDataSig, marker="+", color="orange", label = "Données inutilisées")
         
         # plots the optimized sigmoide and its previsions in different colors...
         t1 = np.linspace( years[0], years[-1], 1000)
         t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
         
         # optimized sigmoide...
-        plt.plot( t1, sigmoide(t1-years[0], theta))
+        plt.plot( t1, sigmoide(t1-years[0], theta), label = "Sigmoïde optimisée")
         
         # previsions of the model...
         plt.plot( t2, sigmoide(t2-years[0], theta), label = "Prévisions")
@@ -620,11 +626,11 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
         
     else:
         # plots the data
-        plt.scatter(years, data, marker="+", color="red", label = "Courbe sigmoïde")
+        plt.scatter(years, data, marker="+", color="red", label = "Données de l'OCDE")
         
         # plots the optimized sigmoide...
         t = np.linspace(years[0],years[-1],1000)
-        plt.plot( t, sigmoide(t-years[0], theta), label = "Courbe sigmoïde")
+        plt.plot( t, sigmoide(t-years[0], theta), label = "Courbe sigmoïde optimisée")
     
     
     
@@ -639,8 +645,8 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
     
     # plots the non cumulated data...
     plt.subplot(212)
-    plt.scatter(years, usedDataHub ,marker="+", color="red", label = "Données de l'OCDE")
-    plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange")
+    # plt.scatter(years, usedDataHub ,marker="+", color="red", label = "Données utilisées")
+    # plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Données inutilisée")
     
     # titles the axes...
     plt.xlabel("Temps (années)")
@@ -650,15 +656,15 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
     # previews the future according to the optimized model
     if anticipation != 0:
         # plots both used and unused data
-        plt.scatter(years, usedDataHub, marker="+", color="red")
-        plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Production réelle")
+        plt.scatter(years, usedDataHub, marker="+", color="red", label = "Données utilisées")
+        plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Données inutilisées")
         
-        # plots the optimized sigmoide and its previsions in different colors...
+        # plots the optimized hubbert curve and its previsions in different colors...
         t1 = np.linspace( years[0], years[-1], 1000)
         t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
         
-        # optimized sigmoide...
-        plt.plot( t1, hubbert(t1-years[0], theta))
+        # optimized hubbert curve...
+        plt.plot( t1, hubbert(t1-years[0], theta), label = "Hubbert optimisée")
         
         # previsions of the model...
         plt.plot( t2, hubbert(t2-years[0], theta), label = "Prévisions")
@@ -666,11 +672,11 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
         
     else:
         # plots the data
-        plt.scatter(years, dataHub, marker="+", color="red", label = "Courbe de Hubbert")
+        plt.scatter(years, dataHub, marker="+", color="red", label = "Données de l'OCDE")
         
         # plots the optimized sigmoide...
         t = np.linspace(years[0],years[-1],1000)
-        plt.plot( t, hubbert(t-years[0], theta), label = "Courbe de Hubbert")
+        plt.plot( t, hubbert(t-years[0], theta), label = "Courbe de Hubbert optimisée")
         
 
     plt.legend()
@@ -684,6 +690,12 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
 # ==================== Test save_countryPlot() ================================
 # name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True, anticipation = 20)
 # print("chrono = ", chrono, "crit = ", crit)
+# =============================================================================
+
+# ==================== Test save_countryPlot() anticipations ==================
+for a in range(5,21,5):
+    print("a = ", a)
+    opti_Country('DNK', savePlot=True, anticipation = a)
 # =============================================================================
 
 
@@ -712,25 +724,20 @@ def test_OCDE(save=True, anticipation = 0):
                 
     # for each country, we try the optimization process and save its results            
     for country in countries:
-        print(country, "...")
-        # initial guess of the country's optimal parameters :
-        data        = Data_processing(country).get_data()
-        Smax_init   = max(data)
-        ts_init     = len(data)//2
-        tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
+        print(country, f" : prévisions sur {anticipation} ans...")
+        results += [opti_Country(country, optiFunc = descentScaled, savePlot=save, anticipation = anticipation)]
         
-        results += [opti_Country(country, (Smax_init, ts_init, tau_init), optiFunc = descentScaled, savePlot=save, anticipation = anticipation)]
     return results
 # ==================== Test test_OCDE() =======================================
 # test_OCDE(save = True, anticipation = 20) 
 # =============================================================================    
 
 # ==================== Test tes_OCDE() previsions =============================
-for a in range(5,26,5):
-    test_OCDE(save = True, anticipation = a) 
+# for a in range(5,31,5):
+#     test_OCDE(save = True, anticipation = a) 
 # =============================================================================
 
-def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = False, filename = ""):
+def test_Model(data, optiFunc = descentScaled, plot = True, save = False, filename = "", anticipation = 0):
 # =============================================================================
 #     Takes data and executes the optimization on the chosen portion, then evaluates the final model on the complete data
 #input:
@@ -746,7 +753,7 @@ def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = 
 # =============================================================================
 
     # reduced data
-    new_data    = [data[i] for i in range( 0, round(len(data)*percent), 1)]
+    new_data    = [data[i] for i in range( 0, len(data) - anticipation, 1)]
     print("new_data length = ", len(new_data),
           "/n data length = ", len(data))
     
@@ -760,24 +767,154 @@ def test_Model(data, percent = 1, optiFunc = descentScaled, plot = True, save = 
     crit        = least_square(data, t_start = 0, Dt = 1, func = sigmoide, args = theta) # we compare the model to the complete data (dt doesn't matter as long as it is the same for every model we compare)
 
     # plots and/or saves the results, according to the parameters
-    plot_ModelAndData(new_data, theta, F, plot = plot, save = save, filename = filename)
+    save_Model(filename, data, theta, anticipation)
     
     return theta, F, chrono, crit
 # ========================= Test =============================================
 # test_Model(data = noised_sigmoide(0, 100, 30, 6), percent = 0.6, optiFunc = descentScaled, plot = True, save = True, filename ="test")
 # =============================================================================
 
+def save_Model(name, data, theta, anticipation = 0):
+    
+    # non-cumulated data 
+    dataHub             = sig_toHub(data)
+    startYear           = 0
+    
+    # first year to be anticipated
+    pivotYear           = len(data) - anticipation
+    
+    # years from start to last data used by the optimization
+    years               = [startYear + k for k in range( 0, pivotYear , 1)]
+    
+    # years the model is trying to anticipate
+    yearsAnticipated    = [ years[-1] + k for k in range( 1, anticipation + 1, 1)]
 
 
-def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, dataQuantity_steps = 3, dataQuantity_dt = 0.1, optiFunc = descentScaled):
+    # sets of data to be used to plot in different colors the data that's been used or not
+    usedDataSig         = [ data[k] for k in range( 0, pivotYear , 1)]
+    unusedDataSig       = [ data[k] for k in range( pivotYear, len(data) , 1)]
+    
+    usedDataHub         = [ dataHub[k] for k in range( 0, pivotYear , 1)]
+    unusedDataHub       = [ dataHub[k] for k in range( pivotYear, len(dataHub) , 1)]
+    
+    
+    plt.figure()
+    
+# ======== plots the successive values of the criterion... ====================
+#     plt.subplot(211)
+#     plt.plot(F)
+#     plt.xlabel("Itérations")
+#     plt.ylabel("Critère")
+# =============================================================================
+
+    # plots the cumulated data...
+    plt.subplot(211)
+    
+    
+    # titles the axes...
+    # plt.xlabel("Temps (années)") 
+    plt.ylabel("Prodcution totale (L)")
+    
+    # previews the future according to the optimized model
+    if anticipation != 0:
+        # plots both used and unused data
+        plt.scatter(years, usedDataSig, marker="+", color="red", label = "Données utilisées")
+        plt.scatter(yearsAnticipated, unusedDataSig, marker="+", color="orange", label = "Données inutilisées")
+        
+        # plots the optimized sigmoide and its previsions in different colors...
+        t1 = np.linspace( years[0], years[-1], 1000)
+        t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
+        
+        # optimized sigmoide...
+        plt.plot( t1, sigmoide(t1-years[0], theta), label = "Sigmoïde optimisée")
+        
+        # previsions of the model...
+        plt.plot( t2, sigmoide(t2-years[0], theta), label = "Prévisions")
+        
+        
+    else:
+        # plots the data
+        plt.scatter(years, data, marker="+", color="red", label = "Données utilisées")
+        
+        # plots the optimized sigmoide...
+        t = np.linspace(years[0],years[-1],1000)
+        plt.plot( t, sigmoide(t-years[0], theta), label = "Courbe sigmoïde optimisée")
+    
+    
+    
+    # titles and legend the plot
+    plt.title( f" Prévisions sur {anticipation} ans")
+    plt.legend()
+    
+    
+# ========== plots the sigmoide corresponding to the initial guess ============
+#     plt.plot( t, sigmoide(t-X[0], init_args), '--', color='black' )
+# =============================================================================
+    
+    # plots the non cumulated data...
+    plt.subplot(212)
+    # plt.scatter(years, usedDataHub ,marker="+", color="red", label = "Données utilisées")
+    # plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Données inutilisée")
+    
+    # titles the axes...
+    plt.xlabel("Temps (années)")
+    plt.ylabel("Prodcution (L)")
+    
+    #plots the optimized sigmoide...
+    # previews the future according to the optimized model
+    if anticipation != 0:
+        # plots both used and unused data
+        plt.scatter(years, usedDataHub, marker="+", color="red", label = "Données utilisées")
+        plt.scatter(yearsAnticipated, unusedDataHub, marker="+", color="orange", label = "Données inutilisées")
+        
+        # plots the optimized hubbert curve and its previsions in different colors...
+        t1 = np.linspace( years[0], years[-1], 1000)
+        t2 = np.linspace( yearsAnticipated[0], yearsAnticipated[-1], 1000)
+        
+        # optimized hubbert curve...
+        plt.plot( t1, hubbert(t1-years[0], theta), label = "Hubbert optimisée")
+        
+        # previsions of the model...
+        plt.plot( t2, hubbert(t2-years[0], theta), label = "Prévisions")
+        
+        
+    else:
+        # plots the data
+        plt.scatter(years, dataHub, marker="+", color="red", label = "Données utilisées")
+        
+        # plots the optimized sigmoide...
+        t = np.linspace(years[0],years[-1],1000)
+        plt.plot( t, hubbert(t-years[0], theta), label = "Courbe de Hubbert optimisée")
+        
+
+    plt.legend()
+    
+    if anticipation != 0:
+        plt.savefig("../graphes/anticipation/model{}_{}.png".format( anticipation, name + str(datetime.date(datetime.now()))))
+    else:
+        plt.savefig("../graphes/{}.png".format(name + str(datetime.date(datetime.now()))))
+        
+    # plt.close()
+
+# ================== test save_Model() ========================================
+# for a in range( 5, 51, 5):
+#     save_Model("", noised_sigmoide(0) , perfect_args_gen , anticipation = a)
+# =============================================================================
+
+# =================== test noise variable =====================================
+# for n in range( 0, 4, 1):
+#     save_Model(f"noise{n}", noised_sigmoide(n) , perfect_args_gen , anticipation = 40)
+# =============================================================================
+
+def test_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, anticipation_steps = 3, anticipation_dt = 1, optiFunc = descentScaled):
 # =============================================================================
 #     monitors the optimization on generated data for different values of noise and for different initial params
 # input:
 #   perfect_args        : args of the function used to generate data
 #   noise_steps         : number of values of noise to be tested
 #   noise_dt            : amount of noise to add at each step
-#   dataQuantity_steps  : number of dataQuantity values to be tested
-#   datQuantity_dt      : percentage of data to remove at each step
+#   anticipation_steps  : number of anticipation values to be tested
+#   anticipation_dt     : number of years of data to remove at each step
 #   optiFunc            : descent algorithm to be used for optimization
 #
 #output:
@@ -793,12 +930,12 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
     noise_levels    = [ k * noise_dt for k in range( 0, noise_steps+1, 1) ]
     
     # all values of args to be tested...
-    dataQuantity_values     = [ (1-(k * dataQuantity_dt)) for k in range( 0, dataQuantity_steps+1, 1)]
+    anticipation_values     = [ k * anticipation_dt for k in range( 0, anticipation_steps+1, 1)]
     
     # for each level of noise (columns), for each value of args (lines), 
         # we will save here : 1) the criterion obtained 2) the time taken to complete the optomization...
-    criterion_results       = np.zeros([ len(noise_levels), len(dataQuantity_values)])
-    time_results            = np.zeros([ len(noise_levels), len(dataQuantity_values)])
+    criterion_results       = np.zeros([ len(noise_levels), len(anticipation_values)])
+    time_results            = np.zeros([ len(noise_levels), len(anticipation_values)])
     
     
     
@@ -807,11 +944,11 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
         # data to be tested...
         data = noised_sigmoide(noise_levels[i], Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect)
         
-        for j, p in enumerate(dataQuantity_values):
+        for j, p in enumerate(anticipation_values):
             print("p =", p)
             # descent algorithm on the selectad amount of data...
-            theta, F, chrono, crit            = test_Model(data, percent = p, plot = False, save = True, 
-                                                           filename= "noise{}_dataQ{}".format( noise_levels[i], p))     
+            theta, F, chrono, crit            = test_Model(data, plot = False, save = True, 
+                                                           filename= "noise{}_prev{}".format( noise_levels[i], p), anticipation = p)     
             
             # saving the last value of the criterion and the time taken by the descent (seconds)...
             criterion_results[i,j]   = crit
@@ -828,9 +965,9 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
     w               = max(noise_levels)/(2*2*noise_steps)
     
     plt.close()
-    for i in range(0,dataQuantity_steps+1,1):
+    for i in range(0,anticipation_steps+1,1):
         # variation of the perfect args we are testing (percentage)... 
-        delta       = round(i * dataQuantity_dt * 100)
+        delta       = round(i * anticipation_dt * 100)
         print("i= ", i, "delta= ", delta)
         
         # for a fixed value of init_args, variation of the final criterion 
@@ -871,7 +1008,7 @@ def testPerfs_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, d
             
     return time_results, criterion_results
 # ==================== Test testPerfs_Model_onNoisedData() ====================
-# testPerfs_Model_onNoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 50, dataQuantity_steps = 5)
+# test_Model_onNoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 0.1, anticipation_steps = 3, anticipation_dt= 10)
 # =============================================================================
 
 

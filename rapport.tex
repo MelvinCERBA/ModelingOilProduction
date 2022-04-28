@@ -358,7 +358,7 @@ $\indent$ Testons maintenant les performances de notre algorithme de manière pl
 
 \subsubsection{Temps de convergence selon diffèrent paramètres}
 % Différents tests sur la vitesse de convergence sur par exemple :  le niveau de bruit, la distance de départ par rapport à la solution, facteur de rebroussement, etc %
-Pour chaque valeurs de $\sigma$ et de $a$, nous allons lancer l'algorithme d'optimisation 15 fois et calculer les moyennes du temps d'exécution et de la valeur du critère des courbes sigmoïdes obtenues.
+Pour chaque valeurs de $\sigma$ et de $a$, nous allons lancer l'algorithme d'optimisation 100 fois et calculer les moyennes du temps d'exécution et de la valeur du critère final (l'adéquation au données du modèle obtenu).
  
 % performances sur données plus ou moins bruitées avec 
 \begin{figure}[h]
@@ -367,6 +367,7 @@ Pour chaque valeurs de $\sigma$ et de $a$, nous allons lancer l'algorithme d'opt
 	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/performances/perfs_ModelOnGeneratedData_DataQ_90.png}}
 	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/performances/perfs_ModelOnGeneratedData_DataQ_80.png}}
 	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/performances/perfs_ModelOnGeneratedData_DataQ_70.png}}
+	\caption{Temps d'exécution et critère final moyens selon différents niveau de bruitage des données initiales pour des arguments initiaux égaux à 100\%, 90\%, 80\% et 70\% des arguments de génération.}
 \end{figure}
 
 \section{Données réelles}
@@ -450,7 +451,7 @@ $\indent$ Pour certains pays, comme l'Albanie ou l'Australie, le modèle colle v
 
 \subsubsection{ Modélisation de la production mondiale}
 % Test de la pertinence du modèle sur une vue globale %
-$\indent$ Qu'en est-il de la production cumulée de tous les pays de l'OCDE ? La courbe de Hubbert permet-elle d'estimer la quantité de pétrole que l'humanité entière pourrait exploiter ? Il semblerait que non : la production mondiale ne semble pas vérifier l'hypothèse du pic unique et symétrique. 
+$\indent$ Qu'en est-il de la production cumulée de tous les pays de l'OCDE ? La courbe de Hubbert permet-elle d'estimer la quantité de pétrole que l'humanité entière pourrait exploiter ? Il apparait que non : la production mondiale ne semble pas vérifier l'hypothèse du pic unique et symétrique. 
 
 \begin{figure}[h]
 	\center
@@ -468,10 +469,21 @@ $\indent$ Nous avons constaté que, lorsque certaines hypothèses sont vérifié
 
 \subsubsection{Optimisation sur données incomplètes}
 % La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori %
-\textit{La détermination du pics étant simple a posteriori, on peut calculer de la performance de l'algorithme à trouver le pic de production a posteriori}
+$\indent$ Pour évaluer la capacité de notre algorithme à prévoir l'évolution de la production, nous allons le lancer sur des versions écourtées des données de l'OCDE, et comparer les prévisions du modèle obtenu aux données réelles. Nous nous limiterons bien entendu aux pays pour lesquels nous obtenions des résultats cohérents lorsque nous lancions l'algorithme sur les données complètes.\\
 
+$\indent$ Voici ce que nous obtenons dans le cas du Danemark, par exemple :
+\begin{figure}[h]
+	\center
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/previsions/prev5_DNK2022-04-27.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/previsions/prev10_DNK2022-04-27.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/previsions/prev15_DNK2022-04-27.png}}
+	\subfigure{\includegraphics[width=0.45\textwidth]{graphes/Pays/previsions/prev20_DNK2022-04-27.png}}
+	\caption{Prévisions de la production pétrolière du danemark sur 5, 10, 15 et 20 ans.}
+\end{figure}
 
-\subsubsection{Performance de l'algorithme pour trouver les pics de production sur les données qui peuvent être modélisées par une sigmoïde}
+$\indent$ On remarque que l'algorithme ne converge pas en deçà d'une certaine quantité de données (ici, l'algorithme n'a pas été capable de prédire l'évolution de la production lorsque le pic n'avait pas encore été atteint).
+
+\subsubsection{Capacités prédictive du modèle de Hubbert obtenu par descente de gradient}
 % En prenant des sets de données qui peuvent être convenablement modélisé par une sigmoïde, on peut cherche à quel point le modèle est prédictif. Pour cela on calcul la précision avec laquelle l'algorithme prédit le pic de production en se limitant aux premières données jusqu'à un temps $t$ %
 \textit{En prenant des sets de données qui peuvent être convenablement modélisé par une sigmoïde, on peut cherche à quel point le modèle est prédictif. Pour cela on calcul la précision avec laquelle l'algorithme prédit le pic de production en se limitant aux premières données jusqu'à un temps $t$}
 
