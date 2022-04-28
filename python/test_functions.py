@@ -379,6 +379,8 @@ def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_
     perfect_args                            = np.array(perfect_args)
 
     # all levels of noise to be tested...
+    n_dt            = noise_dt
+    noise_dt        = n_dt * Qmax_perfect
     noise_levels    = [ k * noise_dt for k in range( 0, noise_steps+1, 1) ]
     
     # all values of args to be tested...
@@ -438,7 +440,8 @@ def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_
     plt.close()
     
     # width of the bars
-    w               = max(noise_levels)/(2*2*noise_steps)
+    w               = (n_dt * noise_steps) / (2*1.5*noise_steps)
+    # w               = max(noise_levels)/(2*2*noise_steps)
     for i in range(0,argsDelta_steps+1,1):
         # variation of the perfect args we are testing (percentage)... 
         delta       = round(i * argsDelta_dt * 100)
@@ -453,7 +456,147 @@ def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_
         fig, ax1 = plt.subplots()
             
         # creating two arrays with a slight offset to plot bars separatly...
-        bar1    = noise_levels
+        bar1    = [ k * n_dt for k in range(0, noise_steps + 1, 1)]
+        bar2    = [x+w for x in bar1]
+
+        # plotting the time and criterion values for the different levels of noise...
+        ax2     = ax1.twinx()
+        ax1.bar(bar1, criterions, label='Critère', width = w)
+        ax2.bar(bar2, iters, color='r', label='Itérations', width = w)
+        # ax2.bar(bar2, times, color='r', label='Temps (s)', width = w)
+        
+        # Definign the window ...
+        # ax1.set_ylim([ 0, 1.2*max_criterion])  # results vary a lot, making the smaller ones invisible
+        # ax1.set_yscale('log')                  # wich is why we will be using a logarithmic scale
+        # ax2.set_ylim([ 0, 1.2*Niter])
+        # ax2.set_ylim([ 0, 1.2*max_time])
+        
+        # legending the graph...
+        ax1.set_xlabel(r'Bruit ($\sigma$) = pourcentage de $S_{max}^{init}$')
+        ax1.set_ylabel('Critère (moindre carrés)')
+        ax2.set_ylabel('Itérations (maximum = 100)')
+        
+        # ticks 
+        # ax2.set_xticks([k for k in noise_levels])
+        # ax2.set_xticklabels(["{}".format(n * noise_dt) + r"$ * S_{max}^{init}$" for n in range(0, len(noise_levels), 1)])
+        
+        # ax1.set_xticks([])
+        # ax2.set_ylabel('Temps (secondes)')
+        
+        ax1.legend(loc=(0,0.9))
+        ax2.legend(loc=(0.75,0.9))
+        plt.title(r'Arguments intiaux = {}% des arguments parfaits'.format(str(100+delta)))
+        
+        plt.savefig("../graphes/performances/percent_noise_{}_args{}perc.png".format( noise_levels[-1], str(100+delta)))
+        plt.show()
+            
+    return time_results, criterion_results
+# ==================== test testPerf_NoisedData() =============================
+testPerf_NoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 0.1, argsDelta_steps = 1, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1)
+# =============================================================================
+
+
+
+def testPerf_argsDelta(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_steps = 3, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1, Niter = 100):
+# =============================================================================
+#     monitors the optimization on generated data for different values of noise and for different initial params
+# input:
+#   perfect_args        : args of the function used to generate data
+#   noise_steps         : number of values of noise to be tested
+#   noise_dt            : amount of noise to add at each step
+#   argsDelta_steps     : number of sets of args to be tested
+#   argsDelta_dt        : percentage the init_args to add at each step
+#   optiFunc            : descent algorithm to be used for optimization
+#   average_of          : number of time we want to test the same values of noise and deltaArgs
+#   Niter               : max number of iteration to be completed by the descent algorithm
+#output:
+#   criterion_results    : criterion obtained for each level of noise and set of args tested 
+#   time_results         : time needed to complete the optimization for each level of noise and set of args tested
+# =============================================================================
+    
+    # perfect parameters : those of the sigmoide used to generate data
+    Qmax_perfect, ts_perfect, tau_perfect   = perfect_args
+    perfect_args                            = np.array(perfect_args)
+
+    # all levels of noise to be tested...
+    n_dt            = noise_dt
+    noise_dt        = n_dt * Qmax_perfect
+    noise_levels    = [ k * noise_dt for k in range( 0, noise_steps+1, 1) ]
+    
+    # all values of args to be tested...
+    args_values     = [ [(1+(k * argsDelta_dt))] * perfect_args for k in range( 0, argsDelta_steps+1, 1)]
+    
+    # for each level of noise (columns), for each value of args (lines), 
+        # we will save here : 1) the criterion obtained 2) the time taken to complete the optomization...
+    criterion_results       = np.zeros([ len(noise_levels), len(args_values)])
+    time_results            = np.zeros([ len(noise_levels), len(args_values)])
+    
+    # counts the number of iteration of the descent algorithm
+    iter_results            = np.zeros([ len(noise_levels), len(args_values)])
+    
+    # we want the average value of the criterion and execution time, because it can vary a lot for the same values of noise and argsDelta
+    for a in range(average_of):
+        
+        # Testing each level of noise...
+        for i in range ( 0, len(noise_levels), 1):
+            
+            # data to be tested...
+            data = noised_sigmoide(noise_levels[i], Qmax=Qmax_perfect, ts=ts_perfect, tau=tau_perfect)
+            
+            # Testing each value of argsDelta ...
+            for j in range ( 0, len(args_values), 1):
+                
+                # value of the args to be tested...
+                init_args           = args_values[j]
+                
+                # descent algorithm ...
+                start               = time.time()
+                # print("noise = ", noise_levels[i], "  args_values = ", args_values[j])
+                theta, F            = descentScaled(data, init_args, Niter = Niter)     
+                end                 = time.time()
+                
+                # saving the last value of the criterion and the time taken by the descent (seconds)...
+                criterion_results[i,j]   += F[-1]
+                time_results[i,j]        += end-start
+                
+                #
+                iter_results[i,j]        += len(F)
+                # print("critère = ", F[-1], "  temps d'execution = ", end-start)
+    
+    # print("crits = ",criterion_results)
+    # print("times = ",time_results)
+    
+    # calculating the average
+    for i in range ( 0, len(noise_levels), 1):
+        for j in range ( 0, len(args_values), 1):
+            criterion_results[i,j]      = criterion_results[i,j] / average_of
+            # time_results[i,j]           = time_results[i,j] / average_of
+            iter_results[i,j]           = iter_results[i,j] / average_of
+    
+    # max criterion and max time are used to standardize the scale of the plots...
+    max_criterion       = max([ max(c) for c in criterion_results])
+    # max_time            = max([ max(t) for t in time_results])
+    
+    plt.close()
+    
+    # width of the bars
+    w               = (argsDelta_dt * argsDelta_steps) / (2*1.5*argsDelta_steps)
+    # w               = max(noise_levels)/(2*2*noise_steps)
+    for i in range(0,noise_steps+1,1):
+        # level of noise we are testing (percentage)... 
+        delta       = i * noise_dt
+        # print("i= ", i, "delta= ", delta)
+        
+        # for a fixed value of init_args, variation of the final criterion 
+                # and execution time depending on the level of noise...
+        # times        = time_results[:,i]
+        criterions   = criterion_results[i,:]
+        iters        = iter_results[i,:]
+            
+        fig, ax1 = plt.subplots()
+            
+        # creating two arrays with a slight offset to plot bars separatly...
+        bar1    = [ k * argsDelta_dt for k in range(0, argsDelta_steps + 1, 1)]
         bar2    = [x+w for x in bar1]
 
         # plotting the time and criterion values for the different levels of noise...
@@ -469,23 +612,28 @@ def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_
         # ax2.set_ylim([ 0, 1.2*max_time])
         
         # legending the graph...
-        ax1.set_xlabel('Bruit')
+        ax1.set_xlabel(r'''Distance d'initialisation ($a$)''')
         ax1.set_ylabel('Critère (moindre carrés)')
-        ax2.set_ylabel('Itérations')
+        ax2.set_ylabel('Itérations (maximum = 100)')
+        
+        # ticks 
+        # ax2.set_xticks([k for k in noise_levels])
+        # ax2.set_xticklabels(["{}".format(n * noise_dt) + r"$ * S_{max}^{init}$" for n in range(0, len(noise_levels), 1)])
+        
+        # ax1.set_xticks([])
         # ax2.set_ylabel('Temps (secondes)')
         
         ax1.legend(loc=(0,0.9))
         ax2.legend(loc=(0.75,0.9))
-        plt.title(r'Arguments intiaux = {}% des arguments parfaits'.format(str(100+delta)))
+        plt.title(r'Bruit ( $\sigma$ ) = {}% de '.format(delta) + r'$S_{max}^{init}$')
         
-        plt.savefig("../graphes/performances/noise_0-{}_args{}perc.png".format( noise_levels[-1], str(100+delta)))
+        plt.savefig("../graphes/performances/percent_args{}_noise_{}.png".format(argsDelta_steps * argsDelta_dt ,  delta))
         plt.show()
             
     return time_results, criterion_results
 # ==================== test testPerf_NoisedData() =============================
-# testPerf_NoisedData(perfect_args_gen, noise_steps = 5, noise_dt = 20, argsDelta_steps = 6, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 100)
+# testPerf_argsDelta(perfect_args_gen, noise_steps = 1, noise_dt = 0.1, argsDelta_steps = 9, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1)
 # =============================================================================
-
 
 
 def plot_F_Data_Sigmoide(F, data, theta):
@@ -515,6 +663,10 @@ def plot_F_Data_Sigmoide(F, data, theta):
     
 
     plt.show()
+
+
+
+
 
 def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipation = 0):
 # =============================================================================
@@ -565,6 +717,10 @@ def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipat
 # print("chrono = ", chrono, "crit = ", crit)
 # =============================================================================
     
+
+
+
+
 def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
     
     # non-cumulated data 
@@ -693,10 +849,13 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
 # =============================================================================
 
 # ==================== Test save_countryPlot() anticipations ==================
-for a in range(5,21,5):
-    print("a = ", a)
-    opti_Country('DNK', savePlot=True, anticipation = a)
+# for a in range(5,21,5):
+#     print("a = ", a)
+#     opti_Country('DNK', savePlot=True, anticipation = a)
 # =============================================================================
+
+
+
 
 
 def test_OCDE(save=True, anticipation = 0):
