@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid.axislines import SubplotZero
 from funcs import Hubbert_curve,Q
+from functions import sigmoide, Hubbert
 
 # Define initial parameters
 global tau, a, b, N, tmin, tmax, t, Qmax, tmid
@@ -86,8 +87,8 @@ def plotHubbert(hideScale=True):
         ax.set_xticklabels([])
 
     # titles the axis
-    plt.xlabel("x")
-    plt.ylabel(r"$H(x)$")
+    plt.xlabel("t")
+    plt.ylabel(r"$H(t)$")
         
     # Plots the curve
     line, = plt.plot(t, H(t-tmin, (a, b, tau)), lw=2)
@@ -111,8 +112,8 @@ def plotHubbertAnnote(hideScale=False):
     ax = SubplotZero(fig, 111)
     fig.add_subplot(ax)
     
-    plt.xticks([tmid],[r'$\tau ln(b)$'])
-    plt.yticks([Hmax],[r'$\frac{a}{4 \tau }$'], fontsize='xx-large') # fontsize ne change rien au latex
+    plt.xticks([tmid],[r'$t_*$'])
+    plt.yticks([Hmax],[r'$\frac{S_{max}}{4 \tau }$'], fontsize='xx-large') # fontsize ne change rien au latex
     ax.tick_params(axis='both', which='minor', labelsize='large') # Ne change rien
     
     for direction in ["right", "top"]:
@@ -124,7 +125,7 @@ def plotHubbertAnnote(hideScale=False):
     
     # titles the axis
     plt.xlabel("t")
-    plt.ylabel(r"$Hubbert_{a,b,\tau}(t)$")
+    plt.ylabel(r"$H_(t ; \Theta )$")
     
     # turns off axis numbers if desired
     if hideScale:
@@ -221,8 +222,8 @@ def plotSigmoide(hideScale=True):
         ax.set_xticklabels([])
     
     # titles the axis
-    plt.xlabel("x")
-    plt.ylabel(r"$S(x)$")
+    plt.xlabel("t")
+    plt.ylabel(r"$S(t)$")
         
     # Plots the curve
     line, = plt.plot(t, S(t-tmin, (Qmax, tmid, tau)), lw=2)
@@ -254,7 +255,7 @@ def plotSigmoideAnnote(hideScale=False):
     
     # titles the axis
     plt.xlabel("t")
-    plt.ylabel(r"$Sigmoide_{S_{max},t_*,\tau}(t)$")
+    plt.ylabel(r"$S(t; \Theta )$")
         
     # Plots the curve
     line, = plt.plot(t, S(t-tmin, (Qmax, tmid, tau)), lw=2)
@@ -288,8 +289,10 @@ def delta(x): # tangente à la sigmoide au point d'inflexion
     global tau, a, b, N, tmin, tmax, t, Qmax, tmid
     return Hubbert_curve(tmid,(a,b,tau))*(x-tmid)+(Qmax/2) # tangente de f en a = f'(a)*(x-a)+f(a) 
 
-#plotHubbert()
-#plotSigmoide()
+
+
+# plotHubbert()
+# plotSigmoide()
 
 plotHubbertAnnote()
 # plotSigmoideAnnote()

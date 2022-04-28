@@ -55,6 +55,53 @@ def plot_noised_sigmoide(noise,Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
 
 
 
+def plot_nSigmoides(n):
+    t               = np.linspace(0, 60, 1000)
+    
+    # sigs
+    plt.subplot(221)
+    for i in range(1, n+1, 1):
+        args = [perfect_args_gen[k] / i for k in range(3)]
+        plt.plot(t, sigmoide(t, args))#, label = f"Sigmoïdes n°{i}")
+    plt.ylabel("Production totale (L)")
+    # plt.legend()
+        
+    # hubbert curvess
+    plt.subplot(223)
+    for i in range(1, n+1, 1):
+        plt.plot(t, hubbert(t, [perfect_args_gen[k] / i for k in range(3)]))#, label = f"Courbe de Hubbert n°{i}")
+    plt.ylabel("Production (L)")
+    plt.xlabel("Temps (années)")
+    # plt.legend()
+        
+    # cumulated sigs
+    plt.subplot(222)
+    cumu_sig = [ 0 for k in range(len(t))]
+    for i in range(1, n+1, 1):
+        cumu_sig = [ cumu_sig[k] + sigmoide(t[k], [perfect_args_gen[k] / i for k in range(3)]) for k in range(len(t))]
+    plt.plot(t, cumu_sig, label = "Sigmoïdes cumulées")
+    plt.legend()
+    
+    # cumulated hubbert's curves
+    plt.subplot(224)
+    cumu_hub = [ 0 for k in range(len(t))]
+    for i in range(1, n+1, 1):
+        cumu_hub = [ cumu_hub[k] + hubbert(t[k], [perfect_args_gen[k] / i for k in range(3)]) for k in range(len(t))]
+    plt.plot(t, cumu_hub, label = "Courbes de Hubbert cumulées")
+    plt.xlabel("Temps (années)")
+    plt.legend()
+    
+    # display plot
+    plt.show()
+    
+    
+    
+    return
+# ======== nSigmoides test ====================================================
+plot_nSigmoides(3)
+# =============================================================================
+
+
 def test_least_square(Qmax=100, ts=30, tau=6, t_start=0, t_end=60):
     t       = np.linspace(t_start, t_end, 10000)
     sig     = sigmoide(t, (Qmax, ts, tau))
@@ -150,37 +197,39 @@ def test_grad_least_square(delta, Qmax=100, ts=10, tau=6, t_start=0, t_end=50):
 def plot_isocurve_Qmax_fixed(percentage, Qmax=1, ts_init=50, tau_init=6, t_start=0, t_end=200):
 
     # Sigmoide
-    t = np.arange(t_start, t_end, 1)
-    sig = sigmoide(t, (Qmax, ts_init, tau_init))
+    t               = np.arange(t_start, t_end, 1)
+    sig             = sigmoide(t, (Qmax, ts_init, tau_init))
 
     # window of value
-    n = 10**2
-    L_ts = np.linspace((1-percentage)*ts_init,(1+percentage)*ts_init,n)
-    L_tau = np.linspace(np.clip((1-percentage)*tau_init,0.1,(1-percentage)*tau_init),(1+percentage)*tau_init,n)
+    n               = 10**2
+    L_ts            = np.linspace((1-percentage)*ts_init,(1+percentage)*ts_init,n)
+    L_tau           = np.linspace(np.clip((1-percentage)*tau_init,0.1,(1-percentage)*tau_init),(1+percentage)*tau_init,n)
 
     # Matrix of potential
-    M = np.zeros((n,n))
+    M               = np.zeros((n,n))
 
     for i,ts in enumerate(L_ts):
         for j,tau in enumerate(L_tau):
-            M[i,j] = least_square(sig, t_start, 1, sigmoide, (Qmax, ts, tau))
+            
+            M[i,j]          = least_square(sig, t_start, 1, sigmoide, (Qmax, ts, tau))
 
     # Number of isocurve
-    N_isocurve = least_square
+    N_isocurve      = least_square
 
-    potentials = [M[k*(n//2)//N_isocurve +n//2-1,n//2] for k in range(N_isocurve)]
+    potentials      = [ M [ k * ( n // 2 )  //  N_isocurve + n  //  2-1, n // 2] for k in range(N_isocurve)]
 
-    np.sort([M[n//2,n//2]] + potentials)
+    np.sort([ M [ n // 2, n // 2] ] + potentials)
 
-    Isocurve_i = [[] for _ in range(N_isocurve)]
+    Isocurve_i      = [[] for _ in range(N_isocurve)]
 
-    Isocurve_j = [[] for _ in range(N_isocurve)]
+    Isocurve_j      = [[] for _ in range(N_isocurve)]
 
     # Seeking for isocurve
     for i in range(n):
         for j in range(n):
             for k,potential in enumerate(potentials[1:]):
-                if abs(M[i,j]-potential)<(potentials[k+1]-potentials[k])*2*N_isocurve/n:
+                
+                if abs( M[i,j] - potential ) < ( potentials[k+1] - potentials[k])*2*N_isocurve/n:
                     Isocurve_i[k].append(L_tau[i])  # y coordinate of the point of the isocurve
                     Isocurve_j[k].append(L_ts[j])   # x coordinate
 
@@ -492,7 +541,7 @@ def testPerf_NoisedData(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_
             
     return time_results, criterion_results
 # ==================== test testPerf_NoisedData() =============================
-testPerf_NoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 0.1, argsDelta_steps = 1, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1)
+# testPerf_NoisedData(perfect_args_gen, noise_steps = 10, noise_dt = 0.1, argsDelta_steps = 1, argsDelta_dt = 0.1, optiFunc = descentScaled, average_of = 1)
 # =============================================================================
 
 
@@ -1062,8 +1111,12 @@ def save_Model(name, data, theta, anticipation = 0):
 
 # =================== test noise variable =====================================
 # for n in range( 0, 4, 1):
-#     save_Model(f"noise{n}", noised_sigmoide(n) , perfect_args_gen , anticipation = 40)
+#     save_Model(f"noise{n}", noised_sigmoide(n * ( 0.01 * perfect_args_gen[1])) , perfect_args_gen , anticipation = 40)
 # =============================================================================
+
+
+
+
 
 def test_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, anticipation_steps = 3, anticipation_dt = 1, optiFunc = descentScaled):
 # =============================================================================
