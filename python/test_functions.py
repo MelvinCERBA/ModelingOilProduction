@@ -98,7 +98,7 @@ def plot_nSigmoides(n):
     
     return
 # ======== nSigmoides test ====================================================
-plot_nSigmoides(3)
+# plot_nSigmoides(3)
 # =============================================================================
 
 
@@ -191,6 +191,7 @@ def test_grad_least_square(delta, Qmax=100, ts=10, tau=6, t_start=0, t_end=50):
     grad_sig = grad_least_square(data, t_start, 1,sigmoide, grad_sigmoide,(Qmax, ts, tau))
 
     return grad_sig , np.array([dJdQmax, dJdts, dJdtau]),np.array([dJdQmax, dJdts, dJdtau])/grad_sig
+
 
 
 
@@ -685,7 +686,7 @@ def testPerf_argsDelta(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_s
 # =============================================================================
 
 
-def plot_F_Data_Sigmoide(F, data, theta):
+def plot_F_Data_Sigmoide(F, data, theta, init_args):
     
     # years from start (X) and corresponding cumulated production (Y)
     X, Y = [k for k in range(0,len(data))],[data]
@@ -695,8 +696,11 @@ def plot_F_Data_Sigmoide(F, data, theta):
     
     # plots the successive values of the criterion...
     ax1             = plt.subplot(211)
-    plt.plot(F)
-
+    plt.plot(F, label = "Critère")
+    plt.xlabel("n (itérations)")
+    plt.ylabel(r"$C_D(t; \theta^{(n)})$")
+    #plt.title("Optimisation par la descente de gradient (avec critère d'Armijo) sur données générées ")
+    
     # plots the data...
     ax2             = plt.subplot(212)
     
@@ -708,9 +712,21 @@ def plot_F_Data_Sigmoide(F, data, theta):
     
     #plots the optimized sigmoide...
     t = np.linspace(X[0],2*theta[1],1000)
-    plt.plot(t,sigmoide(t-X[0], theta))
+    plt.xlabel("Production totale (L)")
+    plt.ylabel(r"Temps (années)")
+    plt.plot(t,sigmoide(t-X[0], theta), label = "Courbe optimisée")
+    plt.plot(t,sigmoide(t-X[0], init_args), ls = "--", color = "black", label = "Première estimation")
     
-
+    # set the spacing between subplots
+    # plt.subplots_adjust(left=0,
+    #                     bottom=0, 
+    #                     right=0.1, 
+    #                     top=0.5, 
+    #                     wspace=0, 
+    #                     hspace=0)
+    
+    plt.subplot_tool()
+    plt.legend()
     plt.show()
 
 
@@ -1051,7 +1067,10 @@ def save_Model(name, data, theta, anticipation = 0):
     
     
     # titles and legend the plot
-    plt.title( f" Prévisions sur {anticipation} ans")
+    if anticipation != 0:
+        plt.title( f" Prévisions sur {anticipation} ans")
+    else:
+        plt.title("Production pétrolière")
     plt.legend()
     
     
@@ -1224,8 +1243,15 @@ def test_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, antici
 # =============================================================================
 
 
+def opti(data, init_args, optiFunc = descentArmijo):
+# =============================================================================
+# plots the evolution of the criterion, the data and the optimized model
+# =============================================================================
 
-
+    theta, F = optiFunc(data, init_args)
+    plot_F_Data_Sigmoide(F, data, theta, init_args)
+    return
+opti(noised_sigmoide(0), [perfect_args_gen[k] * 0.8 for k in range(3)])
 
 
 

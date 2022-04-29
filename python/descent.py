@@ -55,7 +55,7 @@ def descent(data, init_args, t_start=0, dt=10**-6, eps = 0.1, Niter= 10000): # n
 
 
 
-def descentArmijo(data, init_args, t_start=0, eps = 0.001, Niter = 5000, alpha_max= 10**-6, reb = 0.1, omega = 0.5): # ne fonctionne qu'avec un dt assez petit
+def descentArmijo(data, init_args, t_start=0, eps = 0.001, Niter = 1000, alpha_max= 10**-6, reb = 0.1, omega = 0.5): # ne fonctionne qu'avec un dt assez petit
 # =============================================================================
 #     Gradient descent with Armijo rule applied to the sigmoide
 #
