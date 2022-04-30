@@ -686,7 +686,7 @@ def testPerf_argsDelta(perfect_args, noise_steps = 8, noise_dt = 25, argsDelta_s
 # =============================================================================
 
 
-def plot_F_Data_Sigmoide(F, data, theta, init_args):
+def plot_F_Data_Sigmoide(F, data, theta, init_args = []):
     
     # years from start (X) and corresponding cumulated production (Y)
     X, Y = [k for k in range(0,len(data))],[data]
@@ -715,7 +715,8 @@ def plot_F_Data_Sigmoide(F, data, theta, init_args):
     plt.xlabel("Production totale (L)")
     plt.ylabel(r"Temps (années)")
     plt.plot(t,sigmoide(t-X[0], theta), label = "Courbe optimisée")
-    plt.plot(t,sigmoide(t-X[0], init_args), ls = "--", color = "black", label = "Première estimation")
+    if len(init_args) == 3:
+        plt.plot(t,sigmoide(t-X[0], init_args), ls = "--", color = "black", label = "Première estimation")
     
     # set the spacing between subplots
     # plt.subplots_adjust(left=0,
@@ -728,62 +729,6 @@ def plot_F_Data_Sigmoide(F, data, theta, init_args):
     plt.subplot_tool()
     plt.legend()
     plt.show()
-
-
-
-
-
-def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipation = 0):
-# =============================================================================
-#     Optimization of the parameters of the sigmoide to match the data of a specific country
-#input:
-#    location        : abreviation of the country (ex: FRA)
-#    optiFunc        : algorithm to be used for the optimization
-#    anticipation    : number of years to predict   
-#output:
-#    location                : name of the country
-#    plot of F               : shows the evolution of the criterion during the optimization
-#    plot of the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the data
-#    chrono                  : time taken by the optimization
-#    crit                    : last value of the criterion
-#    init_args               : init_args passed as input. Used to visualize whether our initial guess was close or not
-# =============================================================================
-    
-    # data of the selected country...
-    data                = Data_processing(location).get_data()
-    
-    # initial guess of the country's optimal parameters :
-    Smax_init   = max(data)
-    ts_init     = len(data)//2
-    tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
-    
-    init_args   = (Smax_init, ts_init, tau_init)
-    
-    # data to be used for optimization ( = data - the years we want the model to anticipate)
-    shortData       = [data[k] for k in range(len(data) - anticipation)]
-    
-    # optimized parameters and values of the criterion during the optimization ...
-    start       = time.time()
-    theta, F    = optiFunc(shortData, init_args)
-    end         = time.time()
-    
-    chrono      = end-start
-    crit        = F[-1]
-
-    if savePlot:
-        save_CountryPlot(location, F, data, theta, init_args, anticipation = anticipation)
-    else:
-        # plots the criterion's values and the optimized sigmoide on top of the data
-        plot_F_Data_Sigmoide(F, data, theta)
-    
-    return location, chrono, crit, theta, F, init_args
-# ==================== Test ==================================================
-# name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True)
-# print("chrono = ", chrono, "crit = ", crit)
-# =============================================================================
-    
-
-
 
 
 def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
@@ -908,6 +853,58 @@ def save_CountryPlot(country, F, data, theta, init_args, anticipation = 0):
         plt.savefig("../graphes/Pays/{}.png".format(country + str(datetime.date(datetime.now()))))
         
     plt.close()
+
+
+def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipation = 0):
+# =============================================================================
+#     Optimization of the parameters of the sigmoide to match the data of a specific country
+#input:
+#    location        : abreviation of the country (ex: FRA)
+#    optiFunc        : algorithm to be used for the optimization
+#    anticipation    : number of years to predict   
+#output:
+#    location                : name of the country
+#    plot of F               : shows the evolution of the criterion during the optimization
+#    plot of the sigmoid     : plots the sigmoide corresponding to the optimized parameters on top of the data
+#    chrono                  : time taken by the optimization
+#    crit                    : last value of the criterion
+#    init_args               : init_args passed as input. Used to visualize whether our initial guess was close or not
+# =============================================================================
+    
+    # data of the selected country...
+    data                = Data_processing(location).get_data()
+    
+    # initial guess of the country's optimal parameters :
+    Smax_init   = max(data)
+    ts_init     = len(data)//2
+    tau_init    = 5 # value of tau used when testing the descent on france's data. It's a bit arbitrary, but it seems to work
+    
+    init_args   = (Smax_init, ts_init, tau_init)
+    
+    # data to be used for optimization ( = data - the years we want the model to anticipate)
+    shortData       = [data[k] for k in range(len(data) - anticipation)]
+    
+    # optimized parameters and values of the criterion during the optimization ...
+    start       = time.time()
+    theta, F    = optiFunc(shortData, init_args)
+    end         = time.time()
+    
+    chrono      = end-start
+    crit        = F[-1]
+
+    if savePlot:
+        save_CountryPlot(location, F, data, theta, init_args, anticipation = anticipation)
+    else:
+        # plots the criterion's values and the optimized sigmoide on top of the data
+        plot_F_Data_Sigmoide(F, data, theta)
+    
+    return location, chrono, crit, theta, F, init_args
+# ==================== Test ==================================================
+name, chrono, crit, theta, F, init_args        = opti_Country('FRA', savePlot=False)
+print("chrono = ", chrono, "crit = ", crit)
+print("theta = ", theta)
+# =============================================================================
+    
 # ==================== Test save_countryPlot() ================================
 # name, chrono, crit, theta, F, init_args        = opti_Country('FRA', init_args_france, savePlot=True, anticipation = 20)
 # print("chrono = ", chrono, "crit = ", crit)
@@ -1243,7 +1240,7 @@ def test_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, antici
 # =============================================================================
 
 
-def opti(data, init_args, optiFunc = descentArmijo):
+def opti(data, init_args, optiFunc = descentScaled):
 # =============================================================================
 # plots the evolution of the criterion, the data and the optimized model
 # =============================================================================
@@ -1251,7 +1248,9 @@ def opti(data, init_args, optiFunc = descentArmijo):
     theta, F = optiFunc(data, init_args)
     plot_F_Data_Sigmoide(F, data, theta, init_args)
     return
-opti(noised_sigmoide(0), [perfect_args_gen[k] * 0.8 for k in range(3)])
+# ======================test=================================================
+# opti(noised_sigmoide(0), [perfect_args_gen[k] * 0.8 for k in range(3)])
+# =============================================================================
 
 
 
