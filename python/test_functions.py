@@ -202,7 +202,7 @@ def plot_isocurve_Qmax_fixed(percentage, Qmax=1, ts_init=50, tau_init=6, t_start
     sig             = sigmoide(t, (Qmax, ts_init, tau_init))
 
     # window of value
-    n               = 10**2
+    n               = 2*10**2
     L_ts            = np.linspace((1-percentage)*ts_init,(1+percentage)*ts_init,n)
     L_tau           = np.linspace(np.clip((1-percentage)*tau_init,0.1,(1-percentage)*tau_init),(1+percentage)*tau_init,n)
 
@@ -215,7 +215,7 @@ def plot_isocurve_Qmax_fixed(percentage, Qmax=1, ts_init=50, tau_init=6, t_start
             M[i,j]          = least_square(sig, t_start, 1, sigmoide, (Qmax, ts, tau))
 
     # Number of isocurve
-    N_isocurve      = least_square
+    N_isocurve      = 4
 
     potentials      = [ M [ k * ( n // 2 )  //  N_isocurve + n  //  2-1, n // 2] for k in range(N_isocurve)]
 
@@ -239,6 +239,13 @@ def plot_isocurve_Qmax_fixed(percentage, Qmax=1, ts_init=50, tau_init=6, t_start
     # plt.pcolormesh(L_ts,L_tau,M)
     for k in range(N_isocurve):
         plt.scatter(Isocurve_j[k],Isocurve_i[k],marker=".", label=f'isocourbe {k+1}')
+        for i in range(len(Isocurve_j[k])):
+            if i%50 == 0:
+                print("arrow",i)
+                grad        = grad_least_square(sig, t_start, Dt = 1, func = sigmoide, grad_func = grad_sigmoide, args = (Qmax, Isocurve_j[k][i], Isocurve_i[k][i]))
+                print("grad= ", grad)
+                plt.arrow(Isocurve_j[k][i], Isocurve_i[k][i], grad[1], grad[2], fc='red', ec='red')#, width = 0.5 )
+    
     
     # Plots the center "+" 
     plt.plot(L_ts[n//2],L_tau[n//2],"+")
@@ -358,8 +365,8 @@ def plot_isocurve_tau_fixed(percentage, Smax_init=1, ts_init=50, tau=6, t_start=
     plt.legend()
     plt.show()
 
-# =============================================================================
-# plot_isocurve_Qmax_fixed(0.9)
+# ========================== isocurves ====================================
+plot_isocurve_Qmax_fixed(0.9)
 # plot_isocurve_ts_fixed(0.9)
 # plot_isocurve_tau_fixed(0.9)
 # =============================================================================
@@ -900,9 +907,9 @@ def opti_Country(location, optiFunc = descentScaled, savePlot = False, anticipat
     
     return location, chrono, crit, theta, F, init_args
 # ==================== Test ==================================================
-name, chrono, crit, theta, F, init_args        = opti_Country('FRA', savePlot=False)
-print("chrono = ", chrono, "crit = ", crit)
-print("theta = ", theta)
+# name, chrono, crit, theta, F, init_args        = opti_Country('FRA', savePlot=False)
+# print("chrono = ", chrono, "crit = ", crit)
+# print("theta = ", theta)
 # =============================================================================
     
 # ==================== Test save_countryPlot() ================================
