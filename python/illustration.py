@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid.axislines import SubplotZero
 from funcs import Hubbert_curve,Q
-from functions import sigmoide, Hubbert
+from functions import sigmoide, hubbert
 
 # Define initial parameters
 global tau, a, b, N, tmin, tmax, t, Qmax, tmid
@@ -278,7 +278,7 @@ def plotSigmoideAnnote(hideScale=False):
         ax.set_yticklabels([])
         ax.set_xticklabels([])
     
-    plt.annotate(r'$\Delta = \frac{t_{*} S_{max}}{\tau} (x-t_{*})+\frac{S_{max}}{2}$', (tmid+3,Qmax/2), fontsize=12)
+    plt.annotate(r'$\Delta = \frac{S_{max}}{4 \tau} (t-t_{*})+\frac{S_{max}}{2}$', (tmid+3,Qmax/2), fontsize=12)
     
     # plots to curve's tangent at tmid
     plt.plot(t, delta(t-tmin))
@@ -294,8 +294,8 @@ def delta(x): # tangente à la sigmoide au point d'inflexion
 # plotHubbert()
 # plotSigmoide()
 
-plotHubbertAnnote()
-# plotSigmoideAnnote()
+# plotHubbertAnnote()
+plotSigmoideAnnote()
 
 #plotData('oil_france', True)
 #plotHubbertAndData()

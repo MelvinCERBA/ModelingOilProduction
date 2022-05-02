@@ -6,7 +6,7 @@ import numpy as np
 
 
 
-def descent(data, init_args, t_start=0, dt=10**-6, eps = 0.1, Niter= 10000): # ne fonctionne qu'avec un dt assez petit
+def descent(data, init_args, t_start=0, dt=10**-10, eps = 0.1, Niter= 1000): # ne fonctionne qu'avec un dt assez petit
 # =============================================================================
 #     Basic gradient descent applied to the sigmoide
 #

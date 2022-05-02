@@ -194,6 +194,6 @@ def sig_toHub(data):
 #     Simple function wich takes cumulated production data and turns it into production per year data
 # =============================================================================
     new_data = [ data[k+1] - data[k] for k in range( 0, len(data)-1, 1)]
-    new_data.insert(0, data[0])
+    new_data.insert(0, 0)
     print("len(data) = ", len(data),  " len(new_data) = ", len(new_data))
     return new_data

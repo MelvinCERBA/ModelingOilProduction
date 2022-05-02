@@ -366,7 +366,7 @@ def plot_isocurve_tau_fixed(percentage, Smax_init=1, ts_init=50, tau=6, t_start=
     plt.show()
 
 # ========================== isocurves ====================================
-plot_isocurve_Qmax_fixed(0.9)
+# plot_isocurve_Qmax_fixed(0.9)
 # plot_isocurve_ts_fixed(0.9)
 # plot_isocurve_tau_fixed(0.9)
 # =============================================================================
@@ -999,7 +999,7 @@ def test_Model(data, optiFunc = descentScaled, plot = True, save = False, filena
     
     return theta, F, chrono, crit
 # ========================= Test =============================================
-# test_Model(data = noised_sigmoide(0, 100, 30, 6), percent = 0.6, optiFunc = descentScaled, plot = True, save = True, filename ="test")
+# test_Model(data = noised_sigmoide(1, 100, 30, 6), percent = 0.6, optiFunc = descentScaled, plot = True, save = True, filename ="test")
 # =============================================================================
 
 def save_Model(name, data, theta, anticipation = 0):
@@ -1129,7 +1129,7 @@ def save_Model(name, data, theta, anticipation = 0):
 
 # ================== test save_Model() ========================================
 # for a in range( 5, 51, 5):
-#     save_Model("", noised_sigmoide(0) , perfect_args_gen , anticipation = a)
+#     save_Model("", noised_sigmoide(0.01*perfect_args_gen[0]) , perfect_args_gen , anticipation = a)
 # =============================================================================
 
 # =================== test noise variable =====================================
@@ -1247,7 +1247,7 @@ def test_Model_onNoisedData(perfect_args, noise_steps = 3, noise_dt = 10, antici
 # =============================================================================
 
 
-def opti(data, init_args, optiFunc = descentScaled):
+def opti(data, init_args, optiFunc = descent):
 # =============================================================================
 # plots the evolution of the criterion, the data and the optimized model
 # =============================================================================
@@ -1256,14 +1256,34 @@ def opti(data, init_args, optiFunc = descentScaled):
     plot_F_Data_Sigmoide(F, data, theta, init_args)
     return
 # ======================test=================================================
-# opti(noised_sigmoide(0), [perfect_args_gen[k] * 0.8 for k in range(3)])
+opti(noised_sigmoide(0), [perfect_args_gen[k] * 0.8 for k in range(3)])
 # =============================================================================
 
 
+def hubData_SigData(sigData):
+    X       = [k for k in range(0,len(sigData))]
+    hubData = sig_toHub(sigData)
+    
+    plt.figure()
+    
+    plt.subplot(211)
+    plt.scatter(X, hubData, marker ="+", color ="red", label ="Production annuelle")
+    plt.ylabel("Production")
+    plt.legend()
+    plt.title("Transformation des données de l'OCDE")
+    
+    plt.subplot(212)
+    plt.scatter(X, sigData, marker ="+", color ="red", label ="Production cumulée")
+    plt.xlabel("Temps")
+    plt.ylabel("Production totale")
+    plt.legend()
+    
+    return
 
-
-
-
+# =========illu=============================================
+# t = np.arange(0,60,1) 
+# hubData_SigData(sigmoide(t, perfect_args_gen))
+# =============================================================================
 
 
 
